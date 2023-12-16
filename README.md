@@ -44,4 +44,4 @@ study-project-for-react-data-grid\frontend-user-board> npm run dev
 
 ## Notes
 http://13.125.214.210/study-note/53/1
-http://13.125.214.210/study-note/53/2)http://13.125.214.210/study-note/53/2
+http://13.125.214.210/study-note/53/2
