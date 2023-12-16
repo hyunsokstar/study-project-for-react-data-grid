@@ -1,4 +1,4 @@
-import { apiForDeleteUsersForCheckedIds } from '@/pages/api/apiForUserBoard';
+import { apiForDeleteUsersForCheckedIds } from '@/api/apiForUserBoard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@chakra-ui/react'; // Chakra UI의 useToast 추가
 

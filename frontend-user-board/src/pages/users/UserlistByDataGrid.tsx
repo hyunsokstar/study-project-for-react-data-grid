@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import 'react-data-grid/lib/styles.css';
 import { Box, Button, Center, Checkbox, Spacer, useToast } from '@chakra-ui/react';
 import DataGrid, { Column, RenderCellProps, RenderCheckboxProps, RenderEditCellProps, RenderHeaderCellProps, RenderSortStatusProps, SelectCellFormatter, SortColumn, useRowSelection } from 'react-data-grid';
-import { apiForGetAllUsers, apiForSaveOrUpdateUserInfoForChecked } from '../api/apiForUserBoard';
+import { apiForGetAllUsers, apiForSaveOrUpdateUserInfoForChecked } from '../../api/apiForUserBoard';
 import styles from './styles.module.scss';
 import { Direction, ITypeForResponseDataForGetAllUsers, IUser, Row } from '@/types/typeForUserBoard';
 import { SelectColumnForRdg } from '@/components/Formatter/CheckBox/SelectColumnForRdg';

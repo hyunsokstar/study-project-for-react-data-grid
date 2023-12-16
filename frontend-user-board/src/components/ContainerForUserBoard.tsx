@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     Box,
-    Text,
     Flex,
     Button,
     Table,
@@ -15,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import MyPagination from '@/components/MyPagination';
 import { UseMutationOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { apiForDeleteUsersForCheckedIds, apiForGetAllUsers } from '@/pages/api/apiForUserBoard';
+import { apiForDeleteUsersForCheckedIds, apiForGetAllUsers } from '@/api/apiForUserBoard';
 import { ITypeForResponseDataForGetAllUsers } from '@/types/typeForUserBoard';
 
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect } from 'react';
 import { RootState } from '../store'; // RootState 불러오기
 import { logoutUser, setLoginUser } from '@/store/userSlice';
-import { apiForLoginCheckWithAccessToken, apiForLoginCheckWithRefreshToken } from '@/pages/api/apiForUserBoard';
+import { apiForLoginCheckWithAccessToken, apiForLoginCheckWithRefreshToken } from '@/api/apiForUserBoard';
 
 const useUser = () => {
     const dispatch = useDispatch();

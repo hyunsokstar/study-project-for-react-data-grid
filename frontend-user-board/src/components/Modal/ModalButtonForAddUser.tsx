@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { UseMutationOptions, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiForAddUser } from '../../pages/api/apiForUserBoard';
+import { apiForAddUser } from '../../api/apiForUserBoard';
 
 
 interface FormData {

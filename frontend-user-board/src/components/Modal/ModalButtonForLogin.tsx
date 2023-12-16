@@ -19,7 +19,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { useMutation } from '@tanstack/react-query';
-import { apiForLogin } from '@/pages/api/apiForUserBoard';
+import { apiForLogin } from '@/api/apiForUserBoard';
 import { IParamterTypeForLogin } from '@/types/typeForAuthentication';
 
 // redux 관련
