@@ -1,8 +1,8 @@
-issue:
+현재 고쳐야 되는 부분:
 /Test/HeaderFilter 에서 헤더 필터 추가하려고 하는데 일단 헤더 필터 출력 자체가 안되고 있음
 
-개발 환경
 
+개발 환경
 1. 모듈 설치
 study-project-for-react-data-grid\backend-user-board> npm i 
 study-project-for-react-data-grid\frontend-user-board> npm i 
