@@ -18,32 +18,28 @@ https://github.com/adazzle/react-data-grid/blob/main/website/demos/HeaderFilters
 
 ###
 
-## Install Modules
-
+## Install BackEnd Module
 study-project-for-react-data-grid\backend-user-board> npm i  
 
+## Install FrontEnd Module
 study-project-for-react-data-grid\frontend-user-board> npm i
 
 ###
 
 ## Run DB Server  
-
 study-project-for-react-data-grid\backend-user-board> docker-compose up
 
 ###
 
 ## Run NestJS Server
-
 study-project\study-project-for-react-data-grid\backend-user-board> npm run start:dev
 
 ###
 
 ## Run React Server
-
 study-project-for-react-data-grid\frontend-user-board> npm run dev  
 
 ###
 
-## Notes  
-
-http://127.0.0.1:3001/study-note/23/1
+## Notes
+http://127.0.0.1:301/study-note/23/1
