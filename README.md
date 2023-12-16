@@ -1,6 +1,6 @@
 # Problem to Solve
 trying to add header filters but the header filters are not showing at all initially.
-<br /><br />
+<br /><br /><br />
 
 ## Problem Code
 https://github.com/hyunsokstar/study-project-for-react-data-grid/blob/main/frontend-user-board/src/pages/Test/HeaderFilter.tsx
