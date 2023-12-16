@@ -100,7 +100,6 @@ const ContainerForUserBoard = ({
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            {/* <Counter /> */}
             <Flex width={"80%"} justifyContent={"space-between"} pr={2} gap={2} mt={5}>
                 <Button
                     variant="outline"
@@ -108,7 +107,6 @@ const ContainerForUserBoard = ({
                 >
                     Delete
                 </Button>
-                {/* <ModalButtonForAddUser buttonText={'회원 가입'} /> */}
             </Flex>
 
 
