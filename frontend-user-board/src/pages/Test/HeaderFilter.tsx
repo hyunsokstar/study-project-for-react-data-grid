@@ -4,7 +4,10 @@ import DataGrid, { RenderHeaderCellProps } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import useApiForGetAllUsersData from '@/hooks/useApiForGetAllUsersData';
 import { Row } from '@/types/typeForUserBoard';
-import styles from "./styles.module.scss"
+import styles from './styles.module.scss';
+// import css from 'styled-jsx/css';
+import { css } from '@emotion/react';
+
 
 interface Filter extends Omit<Row, 'id' | 'complete'> {
     complete: number | undefined;
@@ -28,6 +31,24 @@ function inputStopPropagation(event: React.KeyboardEvent<HTMLInputElement>) {
     if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
         event.stopPropagation();
     }
+}
+
+const filterColumnClassName = 'filter-cell';
+
+const filterClassname = css`
+  background-color: "red";
+`;
+
+// const filterClassname = css`
+//   inline-size: 100%;
+//   padding: 4px;
+//   font-size: 14px;
+// `;
+
+interface SummaryRow {
+    id: string;
+    totalCount: number;
+    yesCount: number;
 }
 
 const HeaderFilter = () => {
@@ -55,30 +76,38 @@ const HeaderFilter = () => {
         {
             key: 'nickname',
             name: 'Nick Name',
-            width: 160,
-            minWidth: 160,
-            maxWidth: 35,
-            resizable: false,
-            sortable: false,
+            renderHeaderCell: (p: any) => {
+                console.log("p :", p);
 
-            renderHeaderCell: (p: any) => (
-                <FilterRenderer<Row> {...p}>
-                    {({ filters, ...rest }) => (
-                        <input
-                            {...rest}
-                            className={styles.filterInput}
-                            value={filters.nickname}
-                            onChange={(e) =>
-                                setFilters({
-                                    ...filters,
-                                    nickname: e.target.value
-                                })
-                            }
-                            onKeyDown={inputStopPropagation}
-                        />
-                    )}
-                </FilterRenderer>
-            )
+                return (
+                    <FilterRenderer<Row> {...p} tabIndex={3}>
+                        {({ filters, ...rest }) => {
+                            console.log("filters : ", filters);
+                            console.log("filters, ...rest : ", { filters, ...rest });
+
+                            return (
+                                <>
+                                    <div style={{ "height": "20px" }}>
+                                        {p.column.name}
+                                    </div>
+                                    <input
+                                        {...rest}
+                                        autoFocus
+                                        style={{ height: "20px" }}
+                                        onChange={(e) =>
+                                            setFilters({
+                                                ...filters,
+                                                nickname: e.target.value
+                                            })
+                                        }
+                                        onKeyDown={inputStopPropagation}
+                                    />
+                                </>
+                            )
+                        }}
+                    </FilterRenderer>
+                )
+            }
         },
 
         { key: 'role', name: 'Role' },
@@ -92,24 +121,30 @@ const HeaderFilter = () => {
     const filteredRows = useMemo(() => {
         return userRows.filter((r) => {
             return (
-                // (filters.task ? r.task.includes(filters.task) : true) &&
-                // (filters.priority !== 'All' ? r.priority === filters.priority : true) &&
-                // (filters.issueType !== 'All' ? r.issueType === filters.issueType : true) &&
-                // (filters.developer
-                // ? r.developer.toLowerCase().startsWith(filters.developer.toLowerCase())
-                // : true) &&
                 (filters.nickname !== undefined ? r.nickname.includes(filters.nickname) : true)
             );
         });
     }, [userRows, filters]);
 
+    // const summaryRows = useMemo((): readonly SummaryRow[] => {
+    //     return [
+    //         {
+    //             id: 'total_0',
+    //             totalCount: userRows.length,
+    //             yesCount: userRows.filter((r) => r).length
+    //         }
+    //     ];
+    // }, [userRows]);
+
     return (
         <Box width={"80%"} mt={3} mx={"auto"}>
             <FilterContext.Provider value={filters}>
+                {filteredRows.length} 개
                 <DataGrid
                     columns={columns}
                     rows={filteredRows}
-                    headerRowHeight={filters.enabled ? 70 : undefined}
+                    headerRowHeight={filters.enabled ? 80 : undefined}
+                // topSummaryRows={summaryRows}
                 />
             </FilterContext.Provider>
         </Box>
@@ -125,13 +160,16 @@ function FilterRenderer<R>({
 }) {
     const filters = useContext(FilterContext)!;
     console.log("children : ", children);
+    console.log("tabIndex : ", tabIndex);
+
 
     return (
-        <Box >
-            {/* <div>{column.name}</div> */}
-            <Box>{children({ tabIndex, filters })}</Box>
-        </Box>
+        <>
+            {/* <div>{column.name}</div> <hr /> */}
+            <div>{children({ tabIndex, filters })}</div>
+        </>
     );
+
 }
 
 export default HeaderFilter;

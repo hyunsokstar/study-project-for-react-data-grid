@@ -146,7 +146,7 @@ const UserlistByDataGrid = () => {
   if (error) return <Box>Error: {error.message}</Box>;
 
   return (
-    <Box width={'80%'} mx={'auto'} mt={5}>
+    <Box width={'80%'} mx={'auto'} mt={5} className={styles.basic}>
       <Box display={"flex"} justifyContent={"space-between"} mt={3} mx={"auto"} gap={2}>
         <Button
           size='sm'
