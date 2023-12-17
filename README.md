@@ -2,7 +2,7 @@
 trying to add header filters but the header filters are not showing at all initially.
 <br /><br /><br />
 
-## Problem Code (header filter 주석 problem1 problem2 봐주세요, 헤더 필터 설정과 관련해서 css 설정이 잘못된거 같긴 한데 뭔가 잘못된건지 모르겠어요)
+## Problem Code (header filter 주석 pr1 pr2 로 단어 검색해서 봐주세요, 헤더 필터 설정과 관련해서 css 설정이 잘못된거 같긴 한데 뭔가 잘못된건지 모르겠어요)
 https://github.com/hyunsokstar/study-project-for-react-data-grid/blob/main/frontend-user-board/src/pages/Test/HeaderFilter.tsx
 <br /><br /><br /><br /><br /><br />
 
