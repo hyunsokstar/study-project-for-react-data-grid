@@ -5,7 +5,6 @@ import 'react-data-grid/lib/styles.css';
 import useApiForGetAllUsersData from '@/hooks/useApiForGetAllUsersData';
 import { Row } from '@/types/typeForUserBoard';
 import styles from './styles.module.scss';
-// import css from 'styled-jsx/css';
 import { css } from '@emotion/react';
 
 
@@ -71,8 +70,6 @@ const HeaderFilter = () => {
     const columns = [
         { key: 'id', name: 'ID' },
         { key: 'email', name: 'Email' },
-        // { key: 'nickname', name: 'Nickname' },
-
         {
             key: 'nickname',
             name: 'Nick Name',
@@ -87,9 +84,10 @@ const HeaderFilter = () => {
 
                             return (
                                 <>
-                                    <div style={{ "height": "20px" }}>
+                                    {/* ## pr1 원래 여기서 p.column.name 을 출력하면 안됨 */}
+                                    <Box style={{ "height": "20px" }}>
                                         {p.column.name}
-                                    </div>
+                                    </Box>
                                     <input
                                         {...rest}
                                         autoFocus
@@ -165,7 +163,8 @@ function FilterRenderer<R>({
 
     return (
         <>
-            {/* <div>{column.name}</div> <hr /> */}
+            {/* ## pr2 원래 여기서 출력해야 함 근데 여기서 출력하면 nickname 만 보임 */}
+            <div>{column.name}</div> <hr />
             <div>{children({ tabIndex, filters })}</div>
         </>
     );

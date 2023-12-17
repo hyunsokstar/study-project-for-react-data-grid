@@ -146,7 +146,7 @@ const UserlistByDataGrid = () => {
   if (error) return <Box>Error: {error.message}</Box>;
 
   return (
-    <Box width={'80%'} mx={'auto'} mt={5} className={styles.basic}>
+    <Box width={'80%'} mx={'auto'} mt={5}>
       <Box display={"flex"} justifyContent={"space-between"} mt={3} mx={"auto"} gap={2}>
         <Button
           size='sm'
@@ -160,12 +160,8 @@ const UserlistByDataGrid = () => {
           delete
         </Button>
         <Spacer />
-        {/* <Button size='sm' variant='outline' leftIcon={<EmailIcon />} flex={0.2} onClick={addNewRow} >
-          New Row
-        </Button> */}
         <Button
           size='sm'
-          // variant='outline'
           rightIcon={<ArrowForwardIcon />}
           flex={0.1}
           disabled={selectedRows.size === 0}
