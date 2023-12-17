@@ -7,6 +7,8 @@ import { UsersModel } from "./users/entities/users.entity";
 import { APP_FILTER } from "@nestjs/core";
 import { TypeORMExceptionFilter } from "./filters/exceptions.filter";
 import { ConfigModule } from '@nestjs/config';
+import { UserPostingsModel } from "./postings/entities/user_postings.entity";
+import { PostingsModule } from './postings/postings.module';
 
 
 @Module({
@@ -18,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
       username: "postgres",
       password: "postgres",
       database: "userAdminBoard",
-      entities: [UsersModel],
+      entities: [UsersModel, UserPostingsModel],
       synchronize: true,
     }),
     ConfigModule.forRoot({
@@ -26,6 +28,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env', // 환경 변수 파일 경로 지정
     }),
     UsersModule,
+    PostingsModule,
   ],
   controllers: [AppController],
   providers: [AppService,

@@ -44,7 +44,7 @@ export class UsersService {
         return await this.usersRepository.findOne({ where: { email } });
     }
 
-    async getAllUsers(pageNum: number = 1, perPage: number = 5): Promise<{ users: DtoForUserList[], totalCount: number, perPage: number }> {
+    async getAllUsers(pageNum, perPage: number = 5): Promise<{ users: DtoForUserList[], totalCount: number, perPage: number }> {
         const skip = (pageNum - 1) * perPage;
 
         const [users, totalCount] = await this.usersRepository.findAndCount({

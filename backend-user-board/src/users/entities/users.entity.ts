@@ -1,6 +1,8 @@
+// src\users\entities\users.entity.ts
 import { Max, Min } from "class-validator";
 import { GendersEnum, RolesEnum } from "../enums/roles.enum";
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { UserPostingsModel } from "../../postings/entities/user_postings.entity";
 
 @Entity()
 @Unique(["email", "nickname"])
@@ -44,4 +46,8 @@ export class UsersModel {
     @Min(1)
     @Max(10)
     frontEndLevel: number | null;
+
+    @OneToMany(() => UserPostingsModel, posting => posting.user)
+    postings: UserPostingsModel[];
+
 }
