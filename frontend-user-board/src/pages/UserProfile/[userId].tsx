@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import { Box, Divider, Image, Text } from '@chakra-ui/react';
+import { Avatar, Box, Divider, Image, Spacer, Text, IconButton } from '@chakra-ui/react';
 import useUserPostings from '@/hooks/useUserPostings';
+import { AiFillHeart, AiFillStar, AiFillGithub, AiFillFileText } from "react-icons/ai"; // 사용할 아이콘을 가져와야 합니다.
+import { useRouter } from 'next/router';
 
 
 interface IProps { }
@@ -31,11 +32,81 @@ const UserProfile = (props: IProps) => {
     return (
         <Box width="80%" margin="auto" mt={2} display="flex">
             {/* 왼쪽 영역 */}
-            <Box flex="3" border={"1px dotted black"}>
+            <Box width={"75%"} border={"1px dotted black"}>
                 유저 포스팅 리스트 출력 for {userId}
+                <Box
+                    border={"1px solid blue"}
+                    display={"flex"}
+                >
+                    <Box
+                        border={"1px solid red"}
+                        width={"30%"}
+                    >
+                        <Image
+                            src="https://via.placeholder.com/150"
+                            width={"100%"}
+                        />
+                    </Box>
+                    <Box
+                        width={"70%"}
+                        display={"flex"}
+                        flexDirection={"column"}
+                        p={2} /* 박스와 타이틀 콘텐트 간의 간격 * */
+                    >
+                        <Box>
+                            <Text fontWeight="bold">Title:</Text>
+                            <Text fontSize="xl">오늘은 짜파게티 먹는날</Text>
+
+                            {/* 내용(content) */}
+                            <Text fontWeight="bold" mt={3}>Content:</Text>
+                            <Text>짜짜 짜파게티</Text>
+
+                            {/* 작성일(createdAt) */}
+                            <Text fontWeight="bold" mt={3}>Created At:</Text>
+                            <Text>2023-12-17T13:15:38.700Z</Text>
+                        </Box>
+                        <Spacer />
+                        <Box
+                            width={"100%"}
+                            display={"flex"}
+                            justifyContent={"space-around"}
+                            border={"0px solid red"}
+                        // pb={1}
+                        >
+                            <IconButton
+                                aria-label="좋아요"
+                                icon={<AiFillHeart />}
+                                onClick={() => {
+                                    // 좋아요 기능 구현
+                                }}
+                            />
+                            <IconButton
+                                aria-label="즐겨찾기"
+                                icon={<AiFillStar />}
+                                onClick={() => {
+                                    // 즐겨찾기 기능 구현
+                                }}
+                            />
+                            <IconButton
+                                aria-label="GitHub"
+                                icon={<AiFillGithub />}
+                                onClick={() => {
+                                    // GitHub 기능 구현
+                                }}
+                            />
+                            <IconButton
+                                aria-label="노트"
+                                icon={<AiFillFileText />}
+                                onClick={() => {
+                                    // 노트 기능 구현
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
 
-            <Box flex="1" display="flex" flexDirection="column" alignItems="center">
+            <Box width={"25%"} display="flex" flexDirection="column" alignItems="center" border={"1px solid green"}>
                 <Box>
                     <Image
                         mt={2}
