@@ -1,4 +1,16 @@
-import { Box, Heading, Text, Divider, Avatar, Flex, Image, Grid } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    Text,
+    Divider,
+    Avatar, Flex,
+    Image,
+    Grid,
+    HStack,
+    Icon,
+    IconButton
+} from '@chakra-ui/react';
+import { AiOutlineHeart, AiOutlineStar } from 'react-icons/ai';
 
 interface Posting {
     id: number;
@@ -46,7 +58,66 @@ const samplePostings: Posting[] = [
         "user": {
             "nickname": "reactlover123"
         }
+    },
+    {
+        "id": 13,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
+    },
+
+    {
+        "id": 14,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
+    },
+
+    {
+        "id": 15,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
+    },
+
+    {
+        "id": 16,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
+    },
+    {
+        "id": 16,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
+    },
+
+    {
+        "id": 17,
+        "title": "리액트에 대한 질문",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "createdAt": "2023-12-18T09:15:37.944Z",
+        "user": {
+            "nickname": "reactlover123"
+        }
     }
+
 ];
 
 const PostingList = () => {
@@ -55,42 +126,70 @@ const PostingList = () => {
             <Grid
                 templateColumns="repeat(2, 1fr)" // 2열 그리드 설정
                 gap={4}
-                width="75%"
+                width="100%"
+                mt={5}
+                mx={3}
                 py={5}
                 px={5}
+                overflowY={"scroll"}
+                maxHeight={"70vh"}
+                border={"2px solid black"}
             >
-                {samplePostings.map(posting => (
-                    <Flex
+                {samplePostings.map((posting) => (
+                    <Box
                         key={posting.id}
-                        borderWidth="1px"
-                        borderRadius="lg"
-                        overflow="hidden"
-                        p={4}
-                        flexDirection="column"
+                        display={"flex"}
+                        p={2}
+                        gap={2}
                         boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
                     >
-                        {/* <Flex alignItems="center">
-                            <Avatar name={posting.user.nickname} mr={2} />
-                            <Text fontSize="sm" fontWeight="bold">
-                                {posting.user.nickname}
+                        <Box width={"8em"} border="1px solid black">
+                            <Image
+                                boxSize="100%"
+                                // objectFit="fill"
+                                src="https://via.placeholder.com/150"
+                                alt="Sample Image"
+                            />
+                        </Box>
+                        <Box width={"24em"}>
+                            <Heading as="h3" size="md" my={2}>
+                                {posting.title}
+                            </Heading>
+
+                            <Text mb={2} isTruncated>
+                                {posting.content}
                             </Text>
-                        </Flex> */}
 
-                        <Heading as="h3" size="md" my={2}>
-                            {posting.title}
-                        </Heading>
+                            {/* <Divider mb={2} /> */}
 
-                        <Text mb={2}>
-                            {posting.content}
-                        </Text>
+                            <Text fontSize="sm" color="gray.500">
+                                {posting.createdAt}
+                            </Text>
 
-                        <Divider mb={2} />
+                            <Box
+                                display={"flex"}
+                                justifyContent={"flex-end"}
+                                alignItems="center"
+                                border={"0px solid green"}
+                                p={2}
+                            >
+                                <IconButton
+                                    aria-label="Like"
+                                    icon={<Icon as={AiOutlineHeart} />}
+                                    variant="outline"
+                                    mr={2}
+                                />
+                                <IconButton
+                                    aria-label="Bookmark"
+                                    icon={<Icon as={AiOutlineStar} />}
+                                    variant="outline"
+                                />
+                            </Box>
 
-                        <Text fontSize="sm" color="gray.500">
-                            {posting.createdAt}
-                        </Text>
-                    </Flex>
+                        </Box>
+                    </Box>
                 ))}
+
             </Grid>
 
             {/* 우측 영역 */}
@@ -98,12 +197,14 @@ const PostingList = () => {
 
                 <Box
                     width="100%"
+                    height={"80%"}
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
-                    borderLeft="1px solid black" // 오른쪽 영역과 구분선 추가
                     pl={4} // 패딩 추가
+                    border={"1px solid black"}
+                    mt={5}
                 >
                     <Box>
                         <Image
