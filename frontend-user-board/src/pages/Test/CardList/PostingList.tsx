@@ -11,6 +11,8 @@ import {
     IconButton
 } from '@chakra-ui/react';
 import { AiOutlineHeart, AiOutlineStar } from 'react-icons/ai';
+import { FaGithub, FaStickyNote } from 'react-icons/fa';
+import { format } from 'date-fns';
 
 interface Posting {
     id: number;
@@ -122,38 +124,67 @@ const samplePostings: Posting[] = [
 
 const PostingList = () => {
     return (
-        <Flex width="80%" margin="auto">
+        <Flex width="80%" mx="auto" gap={2}>
             <Grid
                 templateColumns="repeat(2, 1fr)" // 2열 그리드 설정
-                gap={4}
+                gap={2}
                 width="100%"
                 mt={5}
-                mx={3}
-                py={5}
-                px={5}
+                // py={2}
+                // pr={10}
+                // mr={2}
                 overflowY={"scroll"}
                 maxHeight={"70vh"}
                 border={"2px solid black"}
+                py={2}
+                px={2}
             >
+
                 {samplePostings.map((posting) => (
                     <Box
                         key={posting.id}
                         display={"flex"}
-                        p={2}
                         gap={2}
+                        width={"100%"}
+                        borderRadius={5}
                         boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+                    // border={"1px solid red"}
                     >
-                        <Box width={"8em"} border="1px solid black">
+                        <Box width={"9rem"} border="0px solid black">
                             <Image
                                 boxSize="100%"
-                                // objectFit="fill"
                                 src="https://via.placeholder.com/150"
                                 alt="Sample Image"
+                                overflow={"hidden"}
+                                borderRadius={5}
                             />
                         </Box>
-                        <Box width={"24em"}>
-                            <Heading as="h3" size="md" my={2}>
-                                {posting.title}
+                        <Box width={"25.4rem"}>
+                            <Heading as="h3"
+                                size="md" my={2}
+                                display={"flex"}
+                                justifyContent={"space-between"}>
+                                <Box>
+                                    {posting.title}
+                                </Box>
+                                <HStack>
+                                    <IconButton
+                                        aria-label="GitHub 아이콘"
+                                        icon={<FaGithub />}
+                                        onClick={() => {
+                                            // GitHub 아이콘 클릭 시 동작 추가
+                                        }}
+                                        variant={"outline"}
+                                    />
+                                    <IconButton
+                                        aria-label="노트 아이콘"
+                                        icon={<FaStickyNote />}
+                                        onClick={() => {
+                                            // 노트 아이콘 클릭 시 동작 추가
+                                        }}
+                                        variant={"outline"}
+                                    />
+                                </HStack>
                             </Heading>
 
                             <Text mb={2} isTruncated>
@@ -163,7 +194,7 @@ const PostingList = () => {
                             {/* <Divider mb={2} /> */}
 
                             <Text fontSize="sm" color="gray.500">
-                                {posting.createdAt}
+                                {format(new Date(posting.createdAt), 'yyyy.MM.dd hh:mm a')}
                             </Text>
 
                             <Box
@@ -171,7 +202,7 @@ const PostingList = () => {
                                 justifyContent={"flex-end"}
                                 alignItems="center"
                                 border={"0px solid green"}
-                                p={2}
+                                py={1}
                             >
                                 <IconButton
                                     aria-label="Like"
@@ -193,11 +224,11 @@ const PostingList = () => {
             </Grid>
 
             {/* 우측 영역 */}
-            <Box width="25%">
+            <Box width="30%">
 
                 <Box
                     width="100%"
-                    height={"80%"}
+                    height={"70vh"}
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
