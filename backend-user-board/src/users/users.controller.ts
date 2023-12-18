@@ -103,7 +103,6 @@ export class UsersController {
       }
 
       const accessToken = authorizationHeader.replace('Bearer ', '');
-
       const userOrError = await this.usersService.loginCheck(accessToken);
 
       if (!userOrError.success) {

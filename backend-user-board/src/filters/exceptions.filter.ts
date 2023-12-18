@@ -1,18 +1,15 @@
-// src/filters/exceptions.filter.ts
 import { Catch, ArgumentsHost, ExceptionFilter, HttpException } from '@nestjs/common';
-import { Response } from 'express';
 import { QueryFailedError } from 'typeorm';
 
 @Catch(QueryFailedError)
 export class TypeORMExceptionFilter implements ExceptionFilter {
     catch(exception: QueryFailedError, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
+        const response = ctx.getResponse();
 
         const status = exception instanceof HttpException ? exception.getStatus() : 500;
 
         console.log("exception : ", exception);
-
 
         response.status(status).json({
             statusCode: status,

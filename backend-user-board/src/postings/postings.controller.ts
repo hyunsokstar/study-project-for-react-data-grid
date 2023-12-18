@@ -1,6 +1,6 @@
 // postings.controller.ts
 
-import { Body, Controller, Get, Post, Delete, Param, Res, HttpStatus, Query, NotFoundException } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Res, HttpStatus, Query, NotFoundException, Req } from '@nestjs/common';
 import { PostingsService } from './postings.service';
 import { CreatePostingDto } from './dtos/create-posting.dto';
 import { UserPostingsModel } from './entities/user_postings.entity';
@@ -40,9 +40,11 @@ export class PostingsController {
         @Param('userId') userId: string,
         @Query('pageNum') pageNum = '1',
         @Query('perPage') perPage = '10',
+        @Req() req: Request, // 요청 객체 주입
     ) {
 
-        console.log("posting list 요청 check");
+        console.log("req.user : ", req['user']);
+
 
         try {
             const userPostings = await this.postingsService.getUserPostings(

@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+// import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -9,6 +9,8 @@ import { TypeORMExceptionFilter } from "./filters/exceptions.filter";
 import { ConfigModule } from '@nestjs/config';
 import { UserPostingsModel } from "./postings/entities/user_postings.entity";
 import { PostingsModule } from './postings/postings.module';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { AuthMiddleware } from "./middlewares/AuthMiddleware";
 
 
 @Module({
@@ -38,4 +40,13 @@ import { PostingsModule } from './postings/postings.module';
     },
   ],
 })
-export class AppModule { }
+// export class AppModule { }
+
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware) // 사용할 미들웨어
+      // .forRoutes('/users/login-check-by-accessToken'); // 적용할 경로 설정
+      .forRoutes('*'); // 적용할 경로 설정
+  }
+}
