@@ -71,7 +71,7 @@ const UserProfile = (props: IProps) => {
                             display={"flex"}
                             justifyContent={"space-around"}
                             border={"0px solid red"}
-                        // pb={1}
+                        // pbbgrg={1}
                         >
                             <IconButton
                                 aria-label="좋아요"
@@ -112,7 +112,8 @@ const UserProfile = (props: IProps) => {
                         mt={2}
                         boxSize="200px"
                         objectFit="cover"
-                        src="https://wimg.mk.co.kr/news/cms/202306/12/news-p.v1.20230609.5101dc06d57b46f3bc552e95933d31c4_P1.jpg"
+                        // src="https://wimg.mk.co.kr/news/cms/202306/12/news-p.v1.20230609.5101dc06d57b46f3bc552e95933d31c4_P1.jpg"
+                        src="https://www.seventoy.co.kr/data/item/1649909695/thumb-7ZGc7KeA1_800x800.jpg"
                         alt="Sample Image"
                     />
                 </Box>
