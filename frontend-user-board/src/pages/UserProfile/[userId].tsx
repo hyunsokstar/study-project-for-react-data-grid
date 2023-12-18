@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Image, Text } from '@chakra-ui/react';
+import useUserPostings from '@/hooks/useUserPostings';
+
 
 interface IProps { }
 
 const UserProfile = (props: IProps) => {
     const router = useRouter();
+    const { userId } = router.query;
+    const [pageNum, setPageNum] = useState(1);
+    const actualUserId = userId as string; // nullish coalescing operator를 사용하여 더 간단하게 처리 가능
 
-    const { userId } = router.query; // 동적으로 전달된 파라미터 가져오기
+    const { isLoading, error, dataForUserPosting } = useUserPostings(actualUserId, pageNum);
 
+    console.log("dataForUserPosting : ", dataForUserPosting);
+
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (
         <Box width="80%" margin="auto" mt={2} display="flex">

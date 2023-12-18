@@ -46,7 +46,7 @@ const samplePostings: Posting[] = [
     {
         "id": 11,
         "title": "더미 포스팅 2",
-        "content": "여기에는 더미 콘텐츠 2가 들어갑니다. 약간의 텍스트를 채워 넣습니다.",
+        "content": "여기에는 더미 콘텐츠 2가 들어갑니다. 약간의 텍스트를 채워 넣습니다. 또 약간의 텍스트를 채워 넣습니다.",
         "createdAt": "2023-12-17T15:47:52.813Z",
         "user": {
             "nickname": "dummyuser2"
@@ -94,7 +94,7 @@ const samplePostings: Posting[] = [
     {
         "id": 16,
         "title": "리액트에 대한 질문",
-        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "content": "리액트 사용팁이 있나요?",
         "createdAt": "2023-12-18T09:15:37.944Z",
         "user": {
             "nickname": "reactlover123"
@@ -103,7 +103,7 @@ const samplePostings: Posting[] = [
     {
         "id": 16,
         "title": "리액트에 대한 질문",
-        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "content": "리액트 hook의 효과적인 사용팁이 있나요 사용팁이 있나요?",
         "createdAt": "2023-12-18T09:15:37.944Z",
         "user": {
             "nickname": "reactlover123"
@@ -113,7 +113,7 @@ const samplePostings: Posting[] = [
     {
         "id": 17,
         "title": "리액트에 대한 질문",
-        "content": "리액트 hook의 효과적인 사용팁이 있나요?",
+        "content": "리액트 hook의 효과적인?",
         "createdAt": "2023-12-18T09:15:37.944Z",
         "user": {
             "nickname": "reactlover123"
@@ -126,89 +126,98 @@ const PostingList = () => {
     return (
         <Flex width="80%" mx="auto" gap={2}>
             <Grid
-                templateColumns="repeat(2, 1fr)" // 2열 그리드 설정
+                width={"75%"}
+                templateColumns="repeat(1, 1fr)" // 2열 그리드 설정
                 gap={2}
-                width="100%"
                 mt={5}
-                // py={2}
-                // pr={10}
-                // mr={2}
-                overflowY={"scroll"}
                 maxHeight={"70vh"}
                 border={"2px solid black"}
-                py={2}
-                px={2}
+                overflowY={"scroll"}
             >
-
                 {samplePostings.map((posting) => (
                     <Box
                         key={posting.id}
                         display={"flex"}
-                        gap={2}
+                        // gap={2}
                         width={"100%"}
                         borderRadius={5}
                         boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
-                    // border={"1px solid red"}
+                        height={"100%"}
+                    // mr={2}
+                    // border={"1px solid black"}
                     >
-                        <Box width={"9rem"} border="0px solid black">
+                        <Box width={"30%"} border="1px solid black" p={1}>
                             <Image
-                                boxSize="100%"
                                 src="https://via.placeholder.com/150"
                                 alt="Sample Image"
-                                overflow={"hidden"}
+                                // overflow={"hidden"}
+                                width={"100%"}
+                                objectFit={"fill"}
+                                height={"100%"}
                                 borderRadius={5}
                             />
                         </Box>
-                        <Box width={"25.4rem"}>
-                            <Heading as="h3"
-                                size="md" my={2}
+                        <Box width={"70%"} border={"0px solid orange"}>
+                            <Box
                                 display={"flex"}
-                                justifyContent={"space-between"}>
-                                <Box>
-                                    {posting.title}
+                                justifyContent={"space-between"}
+                                flexDirection={"row"}
+                                // border={"2px solid pink"}
+                                p={2}
+                                height={"72%"}
+                            >
+                                <Box
+                                    my={2}
+                                    display={"flex"}
+                                    // justifyContent={"space-between"}
+                                    flexDirection={"column"}
+                                >
+                                    <Text fontSize={"3xl"}>
+                                        {posting.title}
+                                    </Text>
+                                    <Text fontSize={"1xl"} mb={2} pr={2}>
+                                        {posting.content}
+                                    </Text>
                                 </Box>
-                                <HStack>
-                                    <IconButton
-                                        aria-label="GitHub 아이콘"
-                                        icon={<FaGithub />}
-                                        onClick={() => {
-                                            // GitHub 아이콘 클릭 시 동작 추가
-                                        }}
-                                        variant={"outline"}
-                                    />
-                                    <IconButton
-                                        aria-label="노트 아이콘"
-                                        icon={<FaStickyNote />}
-                                        onClick={() => {
-                                            // 노트 아이콘 클릭 시 동작 추가
-                                        }}
-                                        variant={"outline"}
-                                    />
-                                </HStack>
-                            </Heading>
 
-                            <Text mb={2} isTruncated>
-                                {posting.content}
-                            </Text>
+                                <Text fontSize="sm" color="gray.500">
+                                    {format(new Date(posting.createdAt), 'yyyy.MM.dd hh:mm a')}
+                                </Text>
+                            </Box>
 
-                            {/* <Divider mb={2} /> */}
 
-                            <Text fontSize="sm" color="gray.500">
-                                {format(new Date(posting.createdAt), 'yyyy.MM.dd hh:mm a')}
-                            </Text>
 
                             <Box
                                 display={"flex"}
                                 justifyContent={"flex-end"}
                                 alignItems="center"
                                 border={"0px solid green"}
-                                py={1}
+                                height={"28%"}
+                                p={1}
+                                gap={2}
                             >
+
+                                <IconButton
+                                    aria-label="GitHub 아이콘"
+                                    icon={<FaGithub />}
+                                    onClick={() => {
+                                        // GitHub 아이콘 클릭 시 동작 추가
+                                    }}
+                                    variant={"outline"}
+                                />
+                                <IconButton
+                                    aria-label="노트 아이콘"
+                                    icon={<FaStickyNote />}
+                                    onClick={() => {
+                                        // 노트 아이콘 클릭 시 동작 추가
+                                    }}
+                                    variant={"outline"}
+                                />
+
                                 <IconButton
                                     aria-label="Like"
                                     icon={<Icon as={AiOutlineHeart} />}
                                     variant="outline"
-                                    mr={2}
                                 />
                                 <IconButton
                                     aria-label="Bookmark"
