@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreatePostingDto } from './dtos/create-posting.dto';
 import { UserPostingsModel } from './entities/user_postings.entity';
 import { UsersModel } from 'src/users/entities/users.entity';
+import { UserPostingsDto } from './dtos/userPostingDto.dto';
 
 @Injectable()
 export class PostingsService {
@@ -66,5 +67,37 @@ export class PostingsService {
         await this.postingsRepository.delete(postingId);
     }
 
+    // postings.service.ts
+
+    // ...
+
+    async getUserPostings(
+        userId: number,
+        pageNum: number = 1,
+        perPage: number = 10
+    ): Promise<{ postings: UserPostingsModel[], totalCount: number, perPage: number }> {
+
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        const [postings, totalCount] = await this.postingsRepository.findAndCount({
+            where: {
+                user
+            },
+            skip: (pageNum - 1) * perPage,
+            take: perPage
+        });
+
+        return {
+            postings,
+            totalCount,
+            perPage
+        };
+    }
+
+    // ...
 
 }

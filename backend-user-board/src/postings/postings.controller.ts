@@ -1,6 +1,6 @@
 // postings.controller.ts
 
-import { Body, Controller, Get, Post, Delete, Param, Res, HttpStatus, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Res, HttpStatus, Query, NotFoundException } from '@nestjs/common';
 import { PostingsService } from './postings.service';
 import { CreatePostingDto } from './dtos/create-posting.dto';
 import { UserPostingsModel } from './entities/user_postings.entity';
@@ -35,6 +35,40 @@ export class PostingsController {
         }
     }
 
+    @Get('user/:userId')
+    async getUserPostings(
+        @Param('userId') userId: string,
+        @Query('pageNum') pageNum = '1',
+        @Query('perPage') perPage = '10',
+    ) {
+        try {
+            const userPostings = await this.postingsService.getUserPostings(
+                parseInt(userId, 10),
+                parseInt(pageNum, 10),
+                parseInt(perPage, 10),
+            );
 
+            return {
+                success: true,
+                data: {
+                    postings: userPostings.postings,
+                    totalCount: userPostings.totalCount,
+                    perPage: userPostings.perPage,
+                },
+                message: `Retrieved postings for user ${userId} (page ${pageNum})`,
+            };
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                return {
+                    success: false,
+                    message: error.message,
+                };
+            }
+            return {
+                success: false,
+                message: 'Failed to retrieve user postings',
+            };
+        }
+    }
 
 }
