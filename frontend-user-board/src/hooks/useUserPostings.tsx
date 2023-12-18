@@ -4,12 +4,16 @@ import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
 
 const useUserPostings = (userId: string, pageNum: number) => {
-    const { isLoading: isPending, error, data: dataForUserPosting } = useQuery<IResponseTypeForUserPostings>({
+
+    console.log("userId at api : ", userId);
+
+
+    const { isLoading, error, data: dataForUserPosting } = useQuery<any>({
         queryKey: ['userPostings', userId, pageNum],
         queryFn: apiForGetAllUserPostings,
     });
 
-    return { isLoading, error, dataForUserPosting: data };
+    return { isLoading, error, dataForUserPosting };
 
 };
 

@@ -12,6 +12,9 @@ const UserProfile = (props: IProps) => {
     const [pageNum, setPageNum] = useState(1);
     const actualUserId = userId as string; // nullish coalescing operator를 사용하여 더 간단하게 처리 가능
 
+    console.log("actualUserId : ", actualUserId);
+
+
     const { isLoading, error, dataForUserPosting } = useUserPostings(actualUserId, pageNum);
 
     console.log("dataForUserPosting : ", dataForUserPosting);

@@ -41,6 +41,9 @@ export class PostingsController {
         @Query('pageNum') pageNum = '1',
         @Query('perPage') perPage = '10',
     ) {
+
+        console.log("posting list 요청 check");
+
         try {
             const userPostings = await this.postingsService.getUserPostings(
                 parseInt(userId, 10),
@@ -66,7 +69,7 @@ export class PostingsController {
             }
             return {
                 success: false,
-                message: 'Failed to retrieve user postings',
+                message: 'Failed to retrieve user postings : ' + error,
             };
         }
     }

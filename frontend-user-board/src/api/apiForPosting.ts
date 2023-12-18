@@ -8,10 +8,13 @@ const instance = axios.create({
 });
 
 export const apiForGetAllUserPostings = ({ queryKey }: QueryFunctionContext) => {
-    const [userId, pageNum] = queryKey;
+    const [_, userId, pageNum] = queryKey;
+
+    console.log("userId at api function : ", userId);
+
 
     return instance
-        .get(`postings/user/${userId}`, {
+        .get(`user/${userId}`, {
             params: { pageNum: pageNum },
         })
         .then((response) => {

@@ -77,6 +77,10 @@ export class PostingsService {
         perPage: number = 10
     ): Promise<{ postings: UserPostingsModel[], totalCount: number, perPage: number }> {
 
+        console.log("여기까지 실행 ㅇㅋ? pageNum : ", pageNum);
+        console.log("여기까지 실행 ㅇㅋ? userId : ", userId);
+        console.log("여기까지 실행 ㅇㅋ? perPage : ", perPage);
+
         const user = await this.usersRepository.findOne({ where: { id: userId } });
 
         if (!user) {
@@ -90,6 +94,9 @@ export class PostingsService {
             skip: (pageNum - 1) * perPage,
             take: perPage
         });
+
+        console.log("postings : ", postings);
+
 
         return {
             postings,
