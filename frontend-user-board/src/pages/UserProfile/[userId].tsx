@@ -5,6 +5,7 @@ import { AiFillHeart, AiFillStar, AiFillGithub, AiFillFileText } from "react-ico
 import { useRouter } from 'next/router';
 import CardForUserPostings from '@/components/Card/CardForUserPostings';
 import ModalButtonForCreatePosting from '@/components/Modal/ModalButtonForCreatePosting';
+import useUser from '@/hooks/useUser';
 
 
 interface IProps { }
@@ -16,6 +17,7 @@ const UserProfile = (props: IProps) => {
     const actualUserId = userId as string; // nullish coalescing operator를 사용하여 더 간단하게 처리 가능
     console.log("actualUserId : ", actualUserId);
     const { isLoading, error, dataForUserPosting } = useUserPostings(actualUserId, pageNum);
+    const { isLoggedIn, loginUser, logout } = useUser();
 
     console.log("dataForUserPosting : ", dataForUserPosting);
 
@@ -62,20 +64,35 @@ const UserProfile = (props: IProps) => {
                         }) : "no data"}
                 </Box>
 
-                <Box width={"25%"} display="flex" flexDirection="column" alignItems="center" border={"1px solid green"}>
-                    <Box>
-                        <Image
-                            mt={2}
-                            boxSize="200px"
-                            objectFit="cover"
-                            // src="https://wimg.mk.co.kr/news/cms/202306/12/news-p.v1.20230609.5101dc06d57b46f3bc552e95933d31c4_P1.jpg"
-                            src="https://www.seventoy.co.kr/data/item/1649909695/thumb-7ZGc7KeA1_800x800.jpg"
-                            alt="Sample Image"
-                        />
+                <Box
+                    width={"25%"}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    border={"1px solid green"}
+                    height={"70vh"}
+                >
+                    {/* {isLoggedIn ? "로그인 상태" : "비 로그인 상태"} */}
+                    <Box display="flex" flexDirection="column" width={"100%"}>
+                        <Box border={"1px solid black"} width={"100%"}>
+                            <Image
+                                width={"100%"}
+                                objectFit="contain"
+                                src="https://www.seventoy.co.kr/data/item/1649909695/thumb-7ZGc7KeA1_800x800.jpg"
+                                alt="Sample Image"
+                            />
+                        </Box>
+                        <Box display={"flex"} justifyContent="space-between" p={1}>
+                            <Button variant="outline" width="48%" size={"sm"}>
+                                Select Character
+                            </Button>
+                            <Button variant="outline" width="48%" size={"sm"}>
+                                Update Image
+                            </Button>
+                        </Box>
                     </Box>
 
-                    {/* 유저 정보 */}
-                    <Box marginTop="20px">
+                    <Box marginTop="2px">
                         <Text>Email: user@example.com</Text>
                         <Text>Nickname: User123</Text>
                         <Text>Gender: Male</Text>

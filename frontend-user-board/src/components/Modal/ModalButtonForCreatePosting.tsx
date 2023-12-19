@@ -15,7 +15,6 @@ import {
 
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { apiForAddUser } from '@/api/apiForUserBoard';
 import { UseMutationOptions, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiForCreatePost } from '@/api/apiForPosting';
 

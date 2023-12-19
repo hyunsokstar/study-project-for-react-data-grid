@@ -11,6 +11,7 @@ import { UserPostingsModel } from "./postings/entities/user_postings.entity";
 import { PostingsModule } from './postings/postings.module';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AuthMiddleware } from "./middlewares/AuthMiddleware";
+import { CloudflareModule } from './cloudflare/cloudflare.module';
 
 
 @Module({
@@ -31,6 +32,7 @@ import { AuthMiddleware } from "./middlewares/AuthMiddleware";
     }),
     UsersModule,
     PostingsModule,
+    CloudflareModule,
   ],
   controllers: [AppController],
   providers: [AppService,

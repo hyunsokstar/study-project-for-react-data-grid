@@ -4,11 +4,18 @@ import { Body, Controller, Get, Post, Delete, Param, Res, HttpStatus, Query, Not
 import { PostingsService } from './postings.service';
 import { CreatePostingDto } from './dtos/create-posting.dto';
 import { UserPostingsModel } from './entities/user_postings.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('postings')
 export class PostingsController {
 
-    constructor(private readonly postingsService: PostingsService) { }
+    constructor(
+        private readonly postingsService: PostingsService,
+        private readonly configService: ConfigService
+    ) { }
+
+    //1122
+
 
     @Get()
     async getAllPostings(
@@ -58,9 +65,7 @@ export class PostingsController {
         @Query('perPage') perPage = '10',
         @Req() req: Request, // 요청 객체 주입
     ) {
-
         console.log("req.user : ", req['user']);
-
 
         try {
             const userPostings = await this.postingsService.getUserPostings(
@@ -92,5 +97,12 @@ export class PostingsController {
         }
     }
 
+    // const accessTokenSecret = this.configService.get<string>('CF_ID');
+    // const accessTokenSecret = this.configService.get<string>('CF_TOKEN');
+    @Post()
+    async GetUploadURL() {
+        const cfId = this.configService.get<string>('CF_ID');
+        const accessTokenSecret = this.configService.get<string>('CF_TOKEN');
+    }
 
 }
