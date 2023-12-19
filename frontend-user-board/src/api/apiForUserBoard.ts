@@ -9,6 +9,19 @@ const instance = axios.create({
     withCredentials: true,
 });
 
+instance.interceptors.request.use(
+    (config) => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 // 1122
 export const apiForSaveOrUpdateUserInfoForChecked = async (data: IUser[]) => {
     try {
@@ -44,6 +57,8 @@ export const apiForLoginCheckWithAccessToken = async (accessToken: string) => {
     const headers = {
         Authorization: `Bearer ${accessToken}`
     };
+
+    console.log("로그인 요청 with token ", accessToken);
 
     try {
         const response = await instance.post("login-check-by-accessToken", {}, { headers });

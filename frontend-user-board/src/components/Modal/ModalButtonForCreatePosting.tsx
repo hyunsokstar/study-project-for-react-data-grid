@@ -11,20 +11,60 @@ import {
     FormControl,
     FormLabel,
     Input,
+    useToast,
+
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { apiForAddUser } from '@/api/apiForUserBoard';
+import { UseMutationOptions, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiForCreatePost } from '@/api/apiForPosting';
 
 interface ModalButtonProps {
     button_text: string;
+    userId: number;
 }
 
-const ModalButtonForCreatePosting: React.FC<ModalButtonProps> = ({ button_text }) => {
+interface FormData {
+    title: string;
+    content: string;
+}
+
+const ModalButtonForCreatePosting: React.FC<ModalButtonProps> = ({ button_text, userId }) => {
     const { register, handleSubmit } = useForm();
     const [isOpen, setIsOpen] = useState(false);
+    const queryClient = useQueryClient();
+    const toast = useToast();
 
-    const onSubmit = (data: any) => {
+
+    const mutationForCreatePost = useMutation({
+        mutationFn: apiForCreatePost,
+        onSuccess: (result: any) => {
+            console.log("result : ", result);
+            queryClient.refetchQueries({ queryKey: ['apiForGetUserPostings'] })
+
+            toast({
+                title: "Create Post Success",
+                description: result.message,
+                status: "success",
+                duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
+                isClosable: true,
+            });
+            setIsOpen(false);
+        },
+        onError: (error: Error) => {
+            // 에러 발생 시 처리할 내용
+            console.log("error at posting : ", error);
+
+        },
+    });
+
+    const onSubmit = (data: FormData) => {
         console.log('제출된 데이터:', data);
-        // 여기서 데이터를 사용하여 무언가를 할 수 있습니다.
+        mutationForCreatePost.mutate({
+            userId: userId,
+            title: data.title,
+            content: data.content
+        })
     };
 
     return (

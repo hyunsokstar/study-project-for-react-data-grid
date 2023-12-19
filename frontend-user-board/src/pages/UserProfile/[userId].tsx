@@ -37,7 +37,7 @@ const UserProfile = (props: IProps) => {
                     justifyContent={"flex-end"}
                     px={0}
                 >
-                    <ModalButtonForCreatePosting button_text={'Posting'} />
+                    <ModalButtonForCreatePosting button_text={'Posting'} userId={parseInt(actualUserId)} />
                 </Box>
             </Box>
             <Box width="80%" margin="auto" mt={2} display="flex">

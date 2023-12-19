@@ -18,9 +18,25 @@ export class PostingsController {
     }
 
     @Post()
-    async createPosting(@Body() createPostingDto: CreatePostingDto) {
+    async createPosting(
+        @Body() createPostingDto: CreatePostingDto,
+        @Req() req: Request
+    ) {
+        const user = req['user'];
+
+        if (!user) {
+            // 유저 정보가 없을 때 처리 로직
+            return { message: 'Unauthorized' };
+        } else {
+            console.log("유저 정보 ok posting go");
+
+        }
+
+        createPostingDto.userId = user.id;
+
         console.log("Controller - createPostingDto : ", createPostingDto);
         return this.postingsService.createPosting(createPostingDto);
+
     }
 
     @Delete(':id')
@@ -75,5 +91,6 @@ export class PostingsController {
             };
         }
     }
+
 
 }

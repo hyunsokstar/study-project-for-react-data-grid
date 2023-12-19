@@ -9,7 +9,7 @@ const useUserPostings = (userId: string, pageNum: number) => {
 
 
     const { isLoading, error, data: dataForUserPosting } = useQuery<any>({
-        queryKey: ['userPostings', userId, pageNum],
+        queryKey: ['apiForGetUserPostings', userId, pageNum],
         queryFn: apiForGetAllUserPostings,
     });
 

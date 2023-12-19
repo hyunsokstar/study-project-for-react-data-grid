@@ -88,7 +88,10 @@ export class PostingsService {
                 user
             },
             skip: (pageNum - 1) * perPage,
-            take: perPage
+            take: perPage,
+            order: {
+                id: 'DESC'
+            }
         });
 
 
