@@ -75,7 +75,7 @@ export class PostingsService {
         userId: number,
         pageNum: number = 1,
         perPage: number = 10
-    ): Promise<{ postings: UserPostingsModel[], totalCount: number, perPage: number }> {
+    ): Promise<{ user: UsersModel, postings: UserPostingsModel[], totalCount: number, perPage: number }> {
 
         const user = await this.usersRepository.findOne({ where: { id: userId } });
 
@@ -89,6 +89,7 @@ export class PostingsService {
             },
             skip: (pageNum - 1) * perPage,
             take: perPage,
+            relations: ['user'], // 이 부분이 추가된 부분입니다. User 정보를 가져오도록 설정합니다.
             order: {
                 id: 'DESC'
             }
@@ -96,6 +97,7 @@ export class PostingsService {
 
 
         return {
+            user,
             postings,
             totalCount,
             perPage

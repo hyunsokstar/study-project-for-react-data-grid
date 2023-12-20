@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import CardForUserPostings from '@/components/Card/CardForUserPostings';
 import ModalButtonForCreatePosting from '@/components/Modal/ModalButtonForCreatePosting';
 import useUser from '@/hooks/useUser';
+import UserProfileInfo from '@/components/UserProfileInfo';
 
 
 interface IProps { }
@@ -19,7 +20,7 @@ const UserProfile = (props: IProps) => {
     const { isLoading, error, dataForUserPosting } = useUserPostings(actualUserId, pageNum);
     const { isLoggedIn, loginUser, logout } = useUser();
 
-    console.log("dataForUserPosting : ", dataForUserPosting);
+    console.log("loginUser : ", loginUser);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -42,8 +43,7 @@ const UserProfile = (props: IProps) => {
                     <ModalButtonForCreatePosting button_text={'Posting'} userId={parseInt(actualUserId)} />
                 </Box>
             </Box>
-            <Box width="80%" margin="auto" mt={2} display="flex">
-
+            <Box width="80%" margin="auto" mt={2} display="flex" gap={2}>
                 {/* 왼쪽 영역 */}
                 <Box
                     width={"75%"}
@@ -57,6 +57,7 @@ const UserProfile = (props: IProps) => {
                     {dataForUserPosting && dataForUserPosting.data ?
                         dataForUserPosting.data.postings.map((row: any) => {
                             return (<CardForUserPostings
+                                key={row.id}
                                 title={row.title}
                                 content={row.content}
                                 createdAt={row.createdAt}
@@ -64,41 +65,8 @@ const UserProfile = (props: IProps) => {
                         }) : "no data"}
                 </Box>
 
-                <Box
-                    width={"25%"}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    border={"1px solid green"}
-                    height={"70vh"}
-                >
-                    {/* {isLoggedIn ? "로그인 상태" : "비 로그인 상태"} */}
-                    <Box display="flex" flexDirection="column" width={"100%"}>
-                        <Box border={"1px solid black"} width={"100%"}>
-                            <Image
-                                width={"100%"}
-                                objectFit="contain"
-                                src="https://www.seventoy.co.kr/data/item/1649909695/thumb-7ZGc7KeA1_800x800.jpg"
-                                alt="Sample Image"
-                            />
-                        </Box>
-                        <Box display={"flex"} justifyContent="space-between" p={1}>
-                            <Button variant="outline" width="48%" size={"sm"}>
-                                Select Character
-                            </Button>
-                            <Button variant="outline" width="48%" size={"sm"}>
-                                Update Image
-                            </Button>
-                        </Box>
-                    </Box>
+                <UserProfileInfo userInfo={dataForUserPosting.data.user} />
 
-                    <Box marginTop="2px">
-                        <Text>Email: user@example.com</Text>
-                        <Text>Nickname: User123</Text>
-                        <Text>Gender: Male</Text>
-                        <Text>Role: Admin</Text>
-                    </Box>
-                </Box>
             </Box>
 
         </>

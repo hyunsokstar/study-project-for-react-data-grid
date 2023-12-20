@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UserState {
     isLoggedIn: boolean;
     loginUser: {
+        id: number;
         email: string;
         nickname: string;
     };
@@ -12,6 +13,7 @@ interface UserState {
 const initialState: UserState = {
     isLoggedIn: false,
     loginUser: {
+        id: 0,
         email: '',
         nickname: '',
     },
@@ -21,9 +23,10 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setLoginUser: (state, action: PayloadAction<{ email: string; nickname: string }>) => {
-            const { email, nickname } = action.payload;
+        setLoginUser: (state, action: PayloadAction<{ id: number, email: string; nickname: string }>) => {
+            const { id, email, nickname } = action.payload;
             state.loginUser = {
+                id,
                 email,
                 nickname,
             };
@@ -32,6 +35,7 @@ export const userSlice = createSlice({
         logoutUser: (state) => {
             state.isLoggedIn = false; // 로그아웃 상태 변경
             state.loginUser = {
+                id: 0,
                 email: '',
                 nickname: '',
             }; // 로그아웃 시 유저 정보 초기화

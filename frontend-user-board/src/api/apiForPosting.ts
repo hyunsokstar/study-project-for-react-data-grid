@@ -8,7 +8,7 @@ const instance = axios.create({
     withCredentials: true,
 });
 
-// AccessToken이 있는 경우만 헤더에 포함하는 인터셉터 추가
+
 instance.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem('accessToken');

@@ -47,7 +47,9 @@ export class UsersModel {
     @Max(10)
     frontEndLevel: number | null;
 
+    @Column({ nullable: true })
+    profileImage: string; // 이미지 경로를 저장할 칼럼
+
     @OneToMany(() => UserPostingsModel, posting => posting.user)
     postings: UserPostingsModel[];
-
 }

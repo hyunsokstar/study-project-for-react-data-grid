@@ -77,6 +77,7 @@ export class PostingsController {
             return {
                 success: true,
                 data: {
+                    user: userPostings.user,
                     postings: userPostings.postings,
                     totalCount: userPostings.totalCount,
                     perPage: userPostings.perPage,

@@ -4,6 +4,7 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { DtoForUserList } from './dtos/dtoForUserList.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDTO } from './dtos/UpdateUserDTO';
+import { UpdateUserImageDto } from './dtos/UpdateUserImageDto';
 
 
 @Controller('users')
@@ -181,6 +182,34 @@ export class UsersController {
         success: false,
         message: 'No users updated.',
       });
+    }
+  }
+
+  @Put('update-image')
+  async updateUserProfileImage(@Body() updateUserImageDto: UpdateUserImageDto) {
+    try {
+      console.log("update 요청 확인 ");
+
+      console.log("updateUserImageDto : ", updateUserImageDto);
+
+      // 이메일로 사용자 찾기
+      const user = await this.usersService.getUserByEmail(updateUserImageDto.email);
+
+      // 사용자가 존재하지 않으면 에러 처리
+      if (!user) {
+        throw new HttpException('사용자를 찾을 수 없습니다.', HttpStatus.NOT_FOUND);
+      }
+
+      // 사용자의 이미지를 업데이트하는 서비스 메서드 호출
+      const updatedUser = await this.usersService.updateUserProfileImage(user, updateUserImageDto.image);
+
+      return {
+        success: true,
+        message: '프로필 이미지가 업데이트되었습니다.',
+        user: updatedUser,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

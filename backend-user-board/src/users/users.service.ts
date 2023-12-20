@@ -253,7 +253,15 @@ export class UsersService {
         return updatedCount;
     }
 
-
+    async updateUserProfileImage(user: UsersModel, image: string): Promise<UsersModel> {
+        try {
+            user.profileImage = image; // 사용자의 프로필 이미지 업데이트
+            return await this.usersRepository.save(user);
+        } catch (error) {
+            console.error('Error updating profile image:', error);
+            throw new InternalServerErrorException('프로필 이미지 업데이트 중 오류가 발생했습니다.');
+        }
+    }
 
 
 }

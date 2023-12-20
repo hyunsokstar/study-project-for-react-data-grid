@@ -15,7 +15,6 @@ export class CloudflareController {
         console.log("cfId : ", cfId);
         console.log("cfToken : ", cfToken);
 
-
         const url = `https://api.cloudflare.com/client/v4/accounts/${cfId}/images/v2/direct_upload`;
         const formData = new FormData();
 

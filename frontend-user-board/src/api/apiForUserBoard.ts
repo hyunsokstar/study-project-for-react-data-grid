@@ -137,4 +137,18 @@ export const apiForDeleteUsersForCheckedIds = (checkedIds: any[]): Promise<any> 
         });
 };
 
+export const apiForUpdateProfileImage = ({ email, profileImage }: any) => {
 
+    return instance.put(`update-image`, { email, image: profileImage })
+        .then((response) => {
+            // 성공 시 처리
+            return response.data;
+        })
+        .catch((error) => {
+            // 에러 처리
+            console.log("api error : ", error);
+
+            return error; // 에러를 그대로 던지기
+        });
+
+}

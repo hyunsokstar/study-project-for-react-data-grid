@@ -17,10 +17,16 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // DTO에 정의되지 않은 속성은 필터링합니다.
-    forbidNonWhitelisted: true, // DTO에 정의되지 않은 속성이 들어오면 요청을 막습니다.
-    transform: true, // 요청 데이터를 DTO 타입으로 자동 변환합니다.
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    validationError: {
+      target: true,
+      value: true,
+    },
   }));
+
+
 
   await app.listen(8080);
 }
