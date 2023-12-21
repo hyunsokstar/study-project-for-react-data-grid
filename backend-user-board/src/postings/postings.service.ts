@@ -85,7 +85,7 @@ export class PostingsService {
 
         const [postings, totalCount] = await this.postingsRepository.findAndCount({
             where: {
-                user
+                user: { id: userId }
             },
             skip: (pageNum - 1) * perPage,
             take: perPage,

@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import { UpdateUserDTO } from './dtos/UpdateUserDTO';
+import { FollowUserDto } from './dtos/FollowUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,43 @@ export class UsersService {
 
         private readonly configService: ConfigService
     ) { }
+
+
+    async followUser(data: FollowUserDto): Promise<void> {
+        const { userId, targetUserId } = data;
+        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['following'] });
+
+        console.log("user (1번 이어야 함): ", user);
+
+
+        const targetUser = await this.usersRepository.findOne({ where: { id: targetUserId }, relations: ['following'] });
+
+        if (!user || !targetUser) {
+            throw new NotFoundException('User or target user not found');
+        }
+
+        const isAlreadyFollowing = user.following.some(followedUser => followedUser.id === targetUserId);
+
+        if (isAlreadyFollowing) {
+            // 이미 팔로우한 경우, 사용자에게 알릴 수 있습니다.
+            throw new ConflictException('이미 해당 사용자를 팔로우하고 있습니다.');
+        }
+
+        user.following.push(targetUser);
+        await this.usersRepository.save(user);
+    }
+
+    async unfollowUser(data: FollowUserDto): Promise<void> {
+        const { userId, targetUserId } = data;
+        const user = await this.usersRepository.findOne({ where: { id: userId }, relations: ['following'] });
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        user.following = user.following.filter((following) => following.id !== targetUserId);
+        await this.usersRepository.save(user);
+    }
 
     issueTokens(user: UsersModel): { accessToken: string, refreshToken: string } {
         const accessTokenSecret = this.configService.get<string>('ACCESS_TOKEN_SECRET');
@@ -42,6 +80,15 @@ export class UsersService {
 
     async getUserByEmail(email: string): Promise<UsersModel> {
         return await this.usersRepository.findOne({ where: { email } });
+    }
+
+    async getUserByEmailWithEmailRelations(email: string): Promise<UsersModel | undefined> {
+        return await this.usersRepository
+            .createQueryBuilder('user')
+            .where('user.email = :email', { email })
+            .leftJoinAndSelect('user.followers', 'followers')
+            .leftJoinAndSelect('user.following', 'following')
+            .getOne();
     }
 
     async getAllUsers(pageNum, perPage: number = 5): Promise<{ users: DtoForUserList[], totalCount: number, perPage: number }> {
@@ -173,7 +220,11 @@ export class UsersService {
             const decodedToken = jwt.verify(accessToken, this.configService.get<string>('ACCESS_TOKEN_SECRET')) as jwt.JwtPayload;
             const userEmail = decodedToken.email; // 토큰에서 이메일 추출
 
-            const user = await this.getUserByEmail(userEmail); // 해당 이메일로 사용자 정보 가져오기
+            const user = await this.getUserByEmailWithEmailRelations(userEmail); // 해당 이메일로 사용자 정보 가져오기
+
+            console.log("user for login check: ", user);
+
+
             if (!user) {
                 throw new NotFoundException('User not found');
             }

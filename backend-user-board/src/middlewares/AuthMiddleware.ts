@@ -23,7 +23,7 @@ export class AuthMiddleware implements NestMiddleware {
 
         let token: string;
         token = authHeader && authHeader.split(' ')[1];
-        console.log("token 있나 ? : ", token);
+        // console.log("token 있나 ? : ", token);
 
         try {
             const decoded = jwt.verify(token, accessTokenSecret);

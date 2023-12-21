@@ -15,8 +15,6 @@ export class PostingsController {
     ) { }
 
     //1122
-
-
     @Get()
     async getAllPostings(
         @Query('pageNum') pageNum: number = 1,
@@ -65,7 +63,8 @@ export class PostingsController {
         @Query('perPage') perPage = '10',
         @Req() req: Request, // 요청 객체 주입
     ) {
-        console.log("req.user : ", req['user']);
+        // console.log("req.user : ", req['user']);
+        console.log("userId : ", userId);
 
         try {
             const userPostings = await this.postingsService.getUserPostings(

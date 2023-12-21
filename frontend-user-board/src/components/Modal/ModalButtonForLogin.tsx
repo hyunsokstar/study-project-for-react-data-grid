@@ -60,8 +60,11 @@ const ModalButtonForLogin: React.FC<ModalButtonForLoginProps> = ({ buttonText })
             if (result.success) {
                 dispatch(
                     setLoginUser({
+                        id: result.id,
                         email: result.email,
                         nickname: result.nickname,
+                        following: result.following,
+                        followers: result.followers
                     })
                 );
                 localStorage.setItem('accessToken', result.accessToken);

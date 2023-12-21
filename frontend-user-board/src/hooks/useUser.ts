@@ -32,7 +32,7 @@ const useUser = () => {
                 console.log("result for check login user : ", result);
 
                 if (result.success) {
-                    const { id, email, nickname } = result.user;
+                    const { id, email, nickname, following, followers } = result.user;
 
                     // 받아온 정보를 이용하여 로그인 상태 갱신
                     dispatch(
@@ -40,6 +40,8 @@ const useUser = () => {
                             id,
                             email,
                             nickname,
+                            following,
+                            followers
                         })
                     );
                 } else {
@@ -54,14 +56,17 @@ const useUser = () => {
 
                             if (result !== undefined && result.success) {
 
-                                const { email, nickname } = result.user;
+                                const { id, email, nickname, following, followers } = result.user;
 
                                 localStorage.setItem('accessToken', result.accessToken);
                                 // 받아온 정보를 이용하여 로그인 상태 갱신
                                 dispatch(
                                     setLoginUser({
+                                        id,
                                         email,
                                         nickname,
+                                        following,
+                                        followers
                                     })
                                 );
                             } else {

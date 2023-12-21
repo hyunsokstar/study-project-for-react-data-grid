@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
-import { Box, Image, Button, Text, useToast, Spinner } from '@chakra-ui/react'
+import { Box, Image, Button, Text, useToast, Spinner, Input, IconButton, Flex } from '@chakra-ui/react'
 import { apiForGetUrlForImageUpload, apiForUploadToCloudFlare } from '@/api/apiForCloudFlare';
 import { UseMutationOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiForUpdateProfileImage } from '@/api/apiForUserBoard';
+import { SlUserFollowing, SlUserUnfollow } from 'react-icons/sl';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 type Props = { userInfo: any }
 
@@ -13,6 +17,11 @@ const UserProfileInfo = ({ userInfo }: Props) => {
     const [isLoadingForImageUpload, setIsLoadingForImageUpload] = useState(false);
     const queryClient = useQueryClient();
     const toast = useToast();
+
+    const loginUser = useSelector((state: RootState) => state.user.loginUser);
+    console.log("userInfo : ", userInfo);
+    console.log("loginUser from profile component : ", loginUser);
+
 
     const mutationForUpdateUserProfileImage = useMutation({
         mutationFn: apiForUpdateProfileImage,
@@ -84,7 +93,7 @@ const UserProfileInfo = ({ userInfo }: Props) => {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            border={"2px solid green"}
+            border={"1px solid black"}
             height={"70vh"}
         >
             {/* {isLoggedIn ? "로그인 상태" : "비 로그인 상태"} */}
@@ -108,17 +117,17 @@ const UserProfileInfo = ({ userInfo }: Props) => {
                         />
                     )}
                 </Box>
-                <Box display={"flex"} justifyContent="space-between" border={"1px solid red"}>
-                    <Box border={"1px solid green"} width={"48%"} >
+                <Box display={"flex"} justifyContent="space-between" border={"0px solid red"} p={2}>
+                    <Box border={"0px solid green"} width={"48%"}>
                         <label htmlFor="fileSelect">
-                            <input
+                            <Input
                                 type="file"
                                 id="fileSelect"
                                 accept="image/*"
                                 style={{ display: 'none' }}
                                 onChange={handleFileChange}
                             />
-                            <Button variant="outline" size={'sm'} width={"100%"} as="span">
+                            <Button variant="outline" size={'md'} width={"100%"} as="span">
                                 Select
                             </Button>
                         </label>
@@ -126,7 +135,7 @@ const UserProfileInfo = ({ userInfo }: Props) => {
                     <Box width={"48%"} >
                         <Button
                             variant="outline"
-                            size={"sm"}
+                            size={"md"}
                             className="equal-width-button"
                             width={"100%"}
                             onClick={uploadImageToCloudFlare}
@@ -146,20 +155,49 @@ const UserProfileInfo = ({ userInfo }: Props) => {
 
 
             </Box>
-            <Box marginTop="2px" border={"2px solid green"} width={"100%"} p={2}>
-                <Text>Email: user@example.com</Text>
-                <Text>Nickname: User123</Text>
-                <Text>Gender: Male</Text>
-                <Text>Role: Admin</Text>
+            <Box marginTop="2px" border={"0px solid black"} width={"100%"} p={2}>
+                <Text>Email: {userInfo.email}</Text>
+                <Text>Nickname: {userInfo.nickname}</Text>
+                <Text>Gender: {userInfo.gender}</Text>
+                <Text>Role: {userInfo.role}</Text>
             </Box>
-            {selectedFile && (
-                <Box marginTop="2px">
-                    <Text>Selected File: {selectedFile.name}</Text>
-                    <Text>Size: {selectedFile.size} bytes</Text>
-                    <Text>Type: {selectedFile.type}</Text>
-                </Box>
-            )}
-            {urlToImageUpload ? urlToImageUpload : "no url"}
+
+            <Box>
+                {loginUser.email}
+                {loginUser.following.map((user) => <Box>{user.email}</Box>)}
+            </Box>
+
+
+            <Box mt={3}>
+                {loginUser.email === "" ? (
+                    ""
+                ) : (
+                    loginUser.email !== "" && (
+                        <Flex alignItems="center">
+                            {loginUser.following.map((row) => row.email).includes(userInfo.email) ? (
+                                <Button
+                                    leftIcon={<FaHeart />}
+                                    variant="outline"
+                                    colorScheme="red"
+                                // onClick={handleUnfollow}
+                                >
+                                    언팔로우
+                                </Button>
+                            ) : (
+                                <Button
+                                    leftIcon={<FaRegHeart />}
+                                    // variant="outline"
+                                    colorScheme='green'
+                                // onClick={handleFollow}
+                                >
+                                    팔로우
+                                </Button>
+                            )}
+                        </Flex>
+                    )
+                )}
+            </Box>
+
         </Box>
     )
 }

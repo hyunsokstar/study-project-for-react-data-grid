@@ -10,7 +10,17 @@ type Props = {
     createdAt: string;
 }
 
+const IconWithCounter = ({ ariaLabel, icon: Icon, onClick, count }: any) => {
+    return (
+        <Box p={1} width={"100%"} display={"flex"} gap={2}>
+            <IconButton aria-label={ariaLabel} icon={<Icon />} onClick={onClick} />
+            <Box>{count}</Box>
+        </Box>
+    );
+};
+
 const CardForUserPostings = ({ title, content, createdAt }: Props) => {
+
     return (
         <Box
             border={"1px solid blue"}
@@ -24,15 +34,17 @@ const CardForUserPostings = ({ title, content, createdAt }: Props) => {
                 <Image
                     src="https://via.placeholder.com/150"
                     width={"100%"}
+                    height={"100%"}
                 />
             </Box>
             <Box
                 width={"70%"}
                 display={"flex"}
                 flexDirection={"column"}
-                p={2}
+                justifyContent={"space-around"}
+            // gap={2}
             >
-                <Box>
+                <Box px={2}>
                     <Text fontWeight="bold">Title:</Text>
                     <Text fontSize="xl">{title}</Text>
 
@@ -42,41 +54,18 @@ const CardForUserPostings = ({ title, content, createdAt }: Props) => {
                     <Text fontWeight="bold" mt={3}>Created At:</Text>
                     <Text>{createdAt}</Text>
                 </Box>
-                <Spacer />
                 <Box
+                    mt={1}
+                    px={2}
                     width={"100%"}
                     display={"flex"}
-                    justifyContent={"space-around"}
-                    border={"0px solid red"}
+                    justifyContent={"space-between"}
+                // border={"1px solid black"}
                 >
-                    <IconButton
-                        aria-label="좋아요"
-                        icon={<AiFillHeart />}
-                        onClick={() => {
-                            // 좋아요 기능 구현
-                        }}
-                    />
-                    <IconButton
-                        aria-label="즐겨찾기"
-                        icon={<AiFillStar />}
-                        onClick={() => {
-                            // 즐겨찾기 기능 구현
-                        }}
-                    />
-                    <IconButton
-                        aria-label="GitHub"
-                        icon={<AiFillGithub />}
-                        onClick={() => {
-                            // GitHub 기능 구현
-                        }}
-                    />
-                    <IconButton
-                        aria-label="노트"
-                        icon={<AiFillFileText />}
-                        onClick={() => {
-                            // 노트 기능 구현
-                        }}
-                    />
+                    <IconWithCounter ariaLabel="좋아요" icon={AiFillHeart} count={1} />
+                    <IconWithCounter ariaLabel="즐겨찾기" icon={AiFillStar} count={1} />
+                    <IconWithCounter ariaLabel="GitHub" icon={AiFillGithub} count={2} />
+                    <IconWithCounter ariaLabel="노트" icon={AiFillFileText} count={1} />
                 </Box>
             </Box>
         </Box>

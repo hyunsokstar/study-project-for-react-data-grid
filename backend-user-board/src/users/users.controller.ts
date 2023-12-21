@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Post, Put, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { DtoForUserList } from './dtos/dtoForUserList.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDTO } from './dtos/UpdateUserDTO';
 import { UpdateUserImageDto } from './dtos/UpdateUserImageDto';
+import { FollowUserDto } from './dtos/FollowUser.dto';
 
 
 @Controller('users')
@@ -55,8 +56,8 @@ export class UsersController {
     const { email, password } = requestBody;
 
     // 이메일로 사용자 찾기
-    const user = await this.usersService.getUserByEmail(email);
-
+    const user = await this.usersService.getUserByEmailWithEmailRelations(email);
+    console.log("user : ", user);
     // 사용자가 존재하지 않으면 에러 처리
     if (!user) {
       return response.status(HttpStatus.UNAUTHORIZED).json({
@@ -82,8 +83,11 @@ export class UsersController {
     return response.status(HttpStatus.OK).json({
       success: true,
       message: '로그인 성공',
+      id: user.id,
       email: user.email,
       nickname: user.email,
+      following: user.following,
+      followers: user.followers,
       accessToken,
       refreshToken
     });
@@ -105,6 +109,9 @@ export class UsersController {
 
       const accessToken = authorizationHeader.replace('Bearer ', '');
       const userOrError = await this.usersService.loginCheck(accessToken);
+
+      console.log("userOrError.user : ", userOrError.user);
+
 
       if (!userOrError.success) {
         return response.status(HttpStatus.UNAUTHORIZED).json({
@@ -212,5 +219,68 @@ export class UsersController {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Post('follow')
+  async followUser(@Body('targetUserId') targetUserId: number, @Req() req: Request): Promise<any> {
+    // 로그인 여부 확인
+    if (!req['user']) {
+      throw new UnauthorizedException('로그인이 필요합니다.');
+    }
+
+    try {
+      // 현재 로그인된 사용자의 아이디를 가져옴
+      const userId = req['user'].id; // 이 부분은 실제 로그인 사용자의 아이디를 가져오는 방법에 따라 달라질 수 있습니다.
+
+      // followUser 함수에 직접 targetUserId와 userId를 전달하여 호출
+      await this.usersService.followUser({ userId, targetUserId });
+
+      return {
+        success: true,
+        message: '팔로우 성공',
+      };
+
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+      return {
+        success: false,
+        message: '팔로우 실패 : ' + error,
+      };
+    }
+  }
+
+  @Delete('unfollow')
+  async unfollowUser(@Body('targetUserId') targetUserId: number, @Req() req: Request): Promise<any> {
+    // 로그인 여부 확인
+    if (!req['user']) {
+      throw new UnauthorizedException('로그인이 필요합니다.');
+    }
+
+    try {
+      const userId = req['user'].id; // 현재 로그인된 사용자의 아이디
+
+      await this.usersService.unfollowUser({ userId, targetUserId });
+      return {
+        success: true,
+        message: '언팔로우 성공',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+      return {
+        success: false,
+        message: '언팔로우 실패 : ' + error,
+      };
+    }
+  }
+
 
 }

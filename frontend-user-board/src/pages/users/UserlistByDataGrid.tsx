@@ -14,11 +14,23 @@ import TextEditorForPhoneNumber from '@/components/GridEditor/TextEditor/TextEdi
 import { UseMutationOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useDeleteUsersMutation from '@/hooks/useDeleteUsersMutation';
 
-
 const columns = [
   SelectColumnForRdg,
   // { key: 'id', name: 'id' },
-  { key: 'email', name: 'Email', sortable: true, frozen: true },
+  {
+
+    key: 'email',
+    name: 'Email',
+    sortable: true,
+    frozen: true,
+    renderCell: ({ row, value }: { row: Row, value: any }) => {
+      console.log("value 2 : ", value);
+
+      return (
+        <a href={`/UserProfile/${row.id}`}>{row.email} </a>
+      );
+    }
+  },
   { key: 'nickname', name: 'Nickname' },
   {
     key: 'gender',
@@ -66,8 +78,7 @@ const UserlistByDataGrid = () => {
   const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
   const queryClient = useQueryClient();
 
-  console.log("rows : ", rows);
-
+  // console.log("rows : ", rows);
 
   const sortedRows = useMemo((): IUser[] => {
     if (sortColumns.length === 0) return rows;
@@ -106,9 +117,9 @@ const UserlistByDataGrid = () => {
         isClosable: true,
       });
     },
-    onError: (error: Error) => {
-      // 에러 발생 시 처리할 내용
-    },
+    // onError: (error: Error) => {
+    //   // 에러 발생 시 처리할 내용
+    // },
   });
 
   function handleSaveSelectedRows() {
@@ -142,7 +153,7 @@ const UserlistByDataGrid = () => {
     }
   }, [dataForUserBoard]);
 
-  if (isLoading) return <Box>Loading...</Box>;
+  // if (isLoading) return <Box>Loading...</Box>;
   if (error) return <Box>Error: {error.message}</Box>;
 
   return (
@@ -172,20 +183,22 @@ const UserlistByDataGrid = () => {
         </Button>
       </Box>
 
-      <DataGrid
-        columns={columns}
-        sortColumns={sortColumns}
-        onSortColumnsChange={setSortColumns}
-        rows={sortedRows}
-        rowKeyGetter={rowKeyGetter}
-        selectedRows={selectedRows}
-        onSelectedRowsChange={setSelectedRows}
-        onRowsChange={setRows}
-        direction={direction}
-        renderers={{ renderSortStatus, renderCheckbox }}
-        className="fill-grid"
-        style={{ maxWidth: '100%' }}
-      />
+      {dataForUserBoard ?
+        <DataGrid
+          columns={columns}
+          sortColumns={sortColumns}
+          onSortColumnsChange={setSortColumns}
+          rows={sortedRows}
+          rowKeyGetter={rowKeyGetter}
+          selectedRows={selectedRows}
+          onSelectedRowsChange={setSelectedRows}
+          onRowsChange={setRows}
+          direction={direction}
+          renderers={{ renderSortStatus, renderCheckbox }}
+          className="fill-grid"
+          style={{ maxWidth: '100%' }}
+        />
+        : "no data"}
     </Box>
   );
 };

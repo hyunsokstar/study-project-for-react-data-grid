@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Divider, Image, Spacer, Text, IconButton, VStack, Button } from '@chakra-ui/react';
 import useUserPostings from '@/hooks/useUserPostings';
 import { AiFillHeart, AiFillStar, AiFillGithub, AiFillFileText } from "react-icons/ai"; // 사용할 아이콘을 가져와야 합니다.
@@ -20,7 +20,8 @@ const UserProfile = (props: IProps) => {
     const { isLoading, error, dataForUserPosting } = useUserPostings(actualUserId, pageNum);
     const { isLoggedIn, loginUser, logout } = useUser();
 
-    console.log("loginUser : ", loginUser);
+    console.log("dataForUserPosting : ", dataForUserPosting);
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -54,18 +55,25 @@ const UserProfile = (props: IProps) => {
                     gap={2}
                 >
                     {/* 유저 포스팅 리스트 출력 for {userId} */}
-                    {dataForUserPosting && dataForUserPosting.data ?
-                        dataForUserPosting.data.postings.map((row: any) => {
-                            return (<CardForUserPostings
-                                key={row.id}
-                                title={row.title}
-                                content={row.content}
-                                createdAt={row.createdAt}
-                            />)
-                        }) : "no data"}
+                    {
+                        dataForUserPosting && dataForUserPosting.data ?
+                            dataForUserPosting.data.postings.map((row: any) => {
+                                return (<CardForUserPostings
+                                    key={row.id}
+                                    title={row.title}
+                                    content={row.content}
+                                    createdAt={row.createdAt}
+                                />)
+                            }) : "no data"
+                    }
                 </Box>
 
-                <UserProfileInfo userInfo={dataForUserPosting.data.user} />
+                {
+                    dataForUserPosting && dataForUserPosting.data
+                        && dataForUserPosting.data.user ?
+                        <UserProfileInfo userInfo={dataForUserPosting.data.user} />
+                        : ""
+                }
 
             </Box>
 

@@ -1,7 +1,7 @@
 // src\users\entities\users.entity.ts
 import { Max, Min } from "class-validator";
 import { GendersEnum, RolesEnum } from "../enums/roles.enum";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { UserPostingsModel } from "../../postings/entities/user_postings.entity";
 
 @Entity()
@@ -52,4 +52,33 @@ export class UsersModel {
 
     @OneToMany(() => UserPostingsModel, posting => posting.user)
     postings: UserPostingsModel[];
+
+    @ManyToMany(() => UsersModel, user => user.followers)
+    @JoinTable({
+        name: 'followers_following', // 중간 테이블의 이름 설정 (원하는 이름으로 변경 가능)
+        joinColumn: {
+            name: 'follower_id', // 팔로워의 ID가 들어갈 컬럼
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'following_id', // 팔로잉의 ID가 들어갈 컬럼
+            referencedColumnName: 'id',
+        },
+    })
+    followers: UsersModel[];
+
+    @ManyToMany(() => UsersModel, user => user.following)
+    @JoinTable({
+        name: 'followers_following', // 이미 정의된 중간 테이블과 동일한 이름 사용
+        joinColumn: {
+            name: 'following_id', // 팔로잉의 ID가 들어갈 컬럼
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'follower_id', // 팔로워의 ID가 들어갈 컬럼
+            referencedColumnName: 'id',
+        },
+    })
+    following: UsersModel[];
+
 }
