@@ -136,6 +136,14 @@ const columns = [
         header: 'Profile Progress',
         footer: info => info.column.id,
     }),
+    columnHelper.accessor('progress', {
+        header: 'Profile Progress',
+        footer: info => info.column.id,
+    }),
+    columnHelper.accessor('progress', {
+        header: 'Profile Progress',
+        footer: info => info.column.id,
+    }),
 ]
 
 function useSkipper() {
@@ -223,6 +231,7 @@ function ReactTable() {
                     onChange={handleChange}
                     onBlur={onBlur}
                     style={{ backgroundColor: "yellow" }}
+                // width={"100%"}
                 />
             )
         },
@@ -298,113 +307,112 @@ function ReactTable() {
     return (
         <Box width={"80%"} mx={"auto"} mt={3}>
             {checkedRowIds ? checkedRowIds.map((id) => <Box>{id}</Box>) : ""}
-            <table>
-                <thead>
-                    {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+            <Box className='table-container'>
+                <table>
+                    <thead>
+                        {table.getHeaderGroups().map(headerGroup => (
+                            <tr key={headerGroup.id}>
+                                {headerGroup.headers.map(header => (
+                                    <th key={header.id} style={{ width: "300px" }}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </th>
+                                ))}
+                                <th>
+                                    수정/삭제
                                 </th>
-                            ))}
-                            <th>
-                                수정/삭제
-                            </th>
-                        </tr>
-                    ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
-                                    {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
-                                    {
-                                        flexRender(
-                                            cell.column.id === 'select'
-                                                ? <IndeterminateCheckbox
-                                                    checked={checkedRowIds.includes(row.original.id)} // 체크된 행인지 확인하여 checked prop 설정
-                                                    onChange={() => handleToggleCheckbox(row.original.id)} // 행의 ID를 토글 함수로 전달
-                                                />
-                                                : isEditing
-                                                    ? cell.column.columnDef.cell
-                                                    : info => info.getValue()
-                                            , cell.getContext()
-                                        )
-                                    }
-                                </td>
-                            ))}
-                            <td>
-                                {!isEditing ?
-                                    (
-                                        <>
-                                            <Button
-                                                size={"sm"}
-                                                variant={"outline"}
-                                                ml={2}
-                                                onClick={() => {
-                                                    setIsEditing(true)
-                                                }}
-                                            >
-                                                수정
-                                            </Button>
-                                            {/* <Button size={"sm"} variant={"outline"} ml={2}
+                            </tr>
+                        ))}
+                    </thead>
+                    <tbody>
+                        {table.getRowModel().rows.map(row => (
+                            <tr key={row.id}>
+                                {row.getVisibleCells().map(cell => (
+                                    <td key={cell.id}>
+                                        {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
+                                        {
+                                            flexRender(
+                                                cell.column.id === 'select'
+                                                    ? <IndeterminateCheckbox
+                                                        checked={checkedRowIds.includes(row.original.id)} // 체크된 행인지 확인하여 checked prop 설정
+                                                        onChange={() => handleToggleCheckbox(row.original.id)} // 행의 ID를 토글 함수로 전달
+                                                    />
+                                                    : isEditing
+                                                        ? cell.column.columnDef.cell
+                                                        : info => info.getValue()
+                                                , cell.getContext()
+                                            )
+                                        }
+                                    </td>
+                                ))}
+                                <td>
+                                    {!isEditing ?
+                                        (
+                                            <Box display={"flex"} gap={2} width={"100%"}>
+                                                <Button
+                                                    size={"sm"}
+                                                    variant={"outline"}
+                                                    onClick={() => {
+                                                        setIsEditing(true)
+                                                    }}
+                                                >
+                                                    수정
+                                                </Button>
+                                                {/* <Button size={"sm"} variant={"outline"} ml={2}
                                                 onClick={() => {
                                                     setIsEditing(false)
                                                 }}
                                             >
                                                 취소
                                             </Button> */}
-                                        </>
-                                    )
-                                    :
-                                    (
-                                        <>
-                                            <Button
-                                                size={"sm"}
-                                                variant={"outline"}
-                                                ml={2}
-                                                onClick={saveModifiedRows}
-                                            >
-                                                저장
-                                            </Button>
-                                            <Button
-                                                size={"sm"}
-                                                variant={"outline"}
-                                                ml={2}
-                                                onClick={() => {
-                                                    setIsEditing(false)
-                                                }}
-                                            >취소</Button>
-                                        </>
-                                    )
-                                }
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-                <tfoot>
-                    {table.getFooterGroups().map(footerGroup => (
-                        <tr key={footerGroup.id}>
-                            {footerGroup.headers.map(header => (
-                                <th key={header.id}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.footer,
-                                            header.getContext()
-                                        )}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </tfoot>
-            </table>
+                                            </Box>
+                                        )
+                                        :
+                                        (
+                                            <Box display={"flex"} gap={2}>
+                                                <Button
+                                                    size={"sm"}
+                                                    variant={"outline"}
+                                                    onClick={saveModifiedRows}
+                                                >
+                                                    저장
+                                                </Button>
+                                                <Button
+                                                    size={"sm"}
+                                                    variant={"outline"}
+                                                    onClick={() => {
+                                                        setIsEditing(false)
+                                                    }}
+                                                >취소</Button>
+                                            </Box>
+                                        )
+                                    }
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                    <tfoot>
+                        {table.getFooterGroups().map(footerGroup => (
+                            <tr key={footerGroup.id}>
+                                {footerGroup.headers.map(header => (
+                                    <th key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.footer,
+                                                header.getContext()
+                                            )}
+                                    </th>
+                                ))}
+                            </tr>
+                        ))}
+                    </tfoot>
+                </table>
+            </Box>
             <div className="h-4" />
             <button onClick={() => rerender()} className="border p-2">
                 Rerender
