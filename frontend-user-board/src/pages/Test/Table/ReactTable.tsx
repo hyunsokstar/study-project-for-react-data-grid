@@ -19,6 +19,7 @@ declare module '@tanstack/react-table' {
 }
 
 type Person = {
+    select: boolean;
     firstName: string
     lastName: string
     age: number
@@ -29,6 +30,7 @@ type Person = {
 
 const defaultData: Person[] = [
     {
+        select: false,
         firstName: 'hyun',
         lastName: 'oh',
         age: 24,
@@ -37,6 +39,7 @@ const defaultData: Person[] = [
         progress: 50,
     },
     {
+        select: false,
         firstName: 'tandy',
         lastName: 'miller',
         age: 40,
@@ -45,6 +48,7 @@ const defaultData: Person[] = [
         progress: 80,
     },
     {
+        select: false,
         firstName: 'joe',
         lastName: 'dirte',
         age: 45,
@@ -57,10 +61,41 @@ const defaultData: Person[] = [
 const columnHelper = createColumnHelper<Person>()
 
 const columns = [
+
+    columnHelper.accessor('select', {
+        id: 'select',
+        header: ({ table }) => (
+            <>
+                <IndeterminateCheckbox
+                    {...{
+                        checked: table.getIsAllRowsSelected(),
+                        indeterminate: table.getIsSomeRowsSelected(),
+                        onChange: table.getToggleAllRowsSelectedHandler(),
+                    }}
+                />
+            </>
+        ),
+        cell: ({ row }) => (
+            <div className="px-1">
+                <IndeterminateCheckbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler(),
+                    }}
+                />
+            </div>
+        ),
+    }),
+
     columnHelper.accessor('firstName', {
         // cell: info => info.getValue(),
         footer: info => info.column.id,
     }),
+
+
+
     columnHelper.accessor(row => row.lastName, {
         id: 'lastName',
         cell: info => <i>{info.getValue()}</i>,
@@ -195,9 +230,11 @@ function ReactTable() {
                                 <td key={cell.id}>
                                     {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
                                     {flexRender(
-                                        isEditing // isEditing 상태에 따라 cell의 포맷을 변경
-                                            ? cell.column.columnDef.cell // 수정 가능한 포맷
-                                            : info => info.getValue() // 수정 불가능한 포맷
+                                        cell.column.id === 'select' // 체크박스인 경우
+                                            ? flexRender(cell.column.columnDef.cell, cell.getContext()) :
+                                            isEditing // isEditing 상태에 따라 cell의 포맷을 변경
+                                                ? cell.column.columnDef.cell // 수정 가능한 포맷
+                                                : info => info.getValue() // 수정 불가능한 포맷
                                         , cell.getContext())}
                                 </td>
                             ))}
@@ -232,6 +269,7 @@ function ReactTable() {
                                                 variant={"outline"}
                                                 ml={2}
                                                 onClick={() => {
+
                                                     setIsEditing(false)
                                                 }}
                                             >
@@ -274,6 +312,29 @@ function ReactTable() {
                 Rerender
             </button>
         </Box>
+    )
+}
+
+function IndeterminateCheckbox({
+    indeterminate,
+    className = '',
+    ...rest
+}: { indeterminate?: boolean } & React.HTMLProps<HTMLInputElement>) {
+    const ref = React.useRef<HTMLInputElement>(null!)
+
+    React.useEffect(() => {
+        if (typeof indeterminate === 'boolean') {
+            ref.current.indeterminate = !rest.checked && indeterminate
+        }
+    }, [ref, indeterminate])
+
+    return (
+        <input
+            type="checkbox"
+            ref={ref}
+            className={className + ' cursor-pointer'}
+            {...rest}
+        />
     )
 }
 
