@@ -284,11 +284,16 @@ function ReactTable() {
     console.log("table.getHeaderGroups()[0] : ", table.getHeaderGroups()[0]);
 
     const saveModifiedRows = () => {
-        const dataForUpdate = checkedRowIds.map((id) => data[id]); // 체크된 ID에 해당하는 데이터 가져오기
-        console.log('Data for update:', dataForUpdate);
-        // 이후에 업데이트할 데이터를 가지고 처리할 내용을 여기에 작성하세요.
-    };
+        const dataForUpdate = data.filter((row) => {
+            if (checkedRowIds.includes(row.id)) {
+                return row
+            } else {
 
+            }
+        })
+        console.log("dataForUpdate : ", dataForUpdate);
+
+    };
 
     return (
         <Box width={"80%"} mx={"auto"} mt={3}>
