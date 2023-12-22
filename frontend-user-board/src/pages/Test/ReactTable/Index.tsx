@@ -46,7 +46,7 @@ const defaultData: Person[] = [
     {
         id: 2,
         select: false,
-        firstName: 'tandy',
+        firstName: 'tandy123123sadfasdfsadfewrqe',
         lastName: 'miller',
         age: 40,
         visits: 40,
@@ -83,7 +83,6 @@ const columns = [
                 />
             </>
         ),
-
         cell: ({ table, row }) => {
             // console.log("table : ", table);
             // console.log("row : ", row);
@@ -107,8 +106,6 @@ const columns = [
         // cell: info => info.getValue(),
         footer: info => info.column.id,
     }),
-
-
 
     columnHelper.accessor(row => row.lastName, {
         id: 'lastName',
@@ -230,8 +227,7 @@ function ReactTable() {
                     value={value as string}
                     onChange={handleChange}
                     onBlur={onBlur}
-                    style={{ backgroundColor: "yellow" }}
-                // width={"100%"}
+                    style={{ border: "2px solid black", width: "200px", }}
                 />
             )
         },
@@ -313,7 +309,7 @@ function ReactTable() {
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
-                                    <th key={header.id} style={{ width: "300px" }}>
+                                    <th key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(

@@ -15,7 +15,7 @@ table {
     background-color: #fff;
     /* width: 100%; */
     /* 테이블의 가로 폭을 부모 요소의 전체 너비로 설정합니다. */
-    /* table-layout: fixed; */
+    /* table-layout: auto; */
 }
 
 tr {
