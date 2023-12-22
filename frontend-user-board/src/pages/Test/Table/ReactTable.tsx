@@ -10,11 +10,14 @@ import {
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Input } from '@chakra-ui/react'
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends RowData> {
         updateData: (rowIndex: number, columnId: string, value: unknown) => void
+        allToggle: (rowIndex: number, columnId: string, value: unknown) => void
+        checkRow: (rowIndex: number) => void
+        isChecked: (rowIndex: number) => boolean | undefined
     }
 }
 
@@ -70,27 +73,34 @@ const columns = [
         id: 'select',
         header: ({ table }) => (
             <>
-                <IndeterminateCheckbox
-                    {...{
-                        checked: table.getIsAllRowsSelected(),
-                        indeterminate: table.getIsSomeRowsSelected(),
-                        onChange: table.getToggleAllRowsSelectedHandler(),
+                {/* 헤더 체크 박스 */}
+                <Checkbox
+                    onChange={(e: any) => {
+                        // 전체 체크박스 토글 기능
+                        let allChecked = e.target.checked
+                        table.options.meta?.allToggle(-1, 'select', allChecked);
                     }}
                 />
             </>
         ),
-        cell: ({ row }) => (
-            <div className="px-1">
-                <IndeterminateCheckbox
-                    {...{
-                        checked: row.getIsSelected(),
-                        disabled: !row.getCanSelect(),
-                        indeterminate: row.getIsSomeSelected(),
-                        onChange: row.getToggleSelectedHandler(),
-                    }}
-                />
-            </div>
-        ),
+
+        cell: ({ table, row }) => {
+            // console.log("table : ", table);
+            // console.log("row : ", row);
+
+
+            return (
+                <>
+                    <Checkbox
+                        checked={table.options.meta?.isChecked(row.original.id)}
+                        onChange={(e: any) => {
+                            // 전체 체크박스 토글 기능
+                            table.options.meta?.checkRow(row.original.id);
+                        }}
+                    />
+                </>
+            )
+        },
     }),
 
     columnHelper.accessor('firstName', {
@@ -190,7 +200,7 @@ function ReactTable() {
             const onBlur = (e: any) => {
                 table.options.meta?.updateData(index, columnId, value)
                 if (initialValue !== e.target.value) {
-                    addCheckedIds(index); // 행의 ID를 등록
+                    addCheckedIds(parseInt(id)); // 행의 ID를 등록
                 }
             }
 
@@ -241,6 +251,35 @@ function ReactTable() {
                     })
                 )
             },
+            allToggle: (rowIndex, columnId, value) => {
+                // columns 의 헤더 체크 누르면 allToggle 이 실행 되도록
+                if (value) {
+                    const idsForUpdate = data.map(row => row.id)
+                    setCheckedRowIds(idsForUpdate)
+                } else {
+                    setCheckedRowIds([])
+                }
+            },
+            checkRow: (rowId) => {
+                // columns 의 헤더 체크 누르면 allToggle 이 실행 되도록
+                if (!checkedRowIds.includes(rowId)) {
+                    setCheckedRowIds((prev) => [...prev, rowId])
+                } else {
+                    setCheckedRowIds((prev) => prev.filter((id) => id !== rowId));
+                    // setCheckedRowIds([])
+                }
+            },
+            // isChecked: (rowId) => {
+            //     console.log("rowId ??? ", rowId);
+            //     if (
+            //         checkedRowIds.includes(rowId)
+            //     ) {
+            //         return true;
+            //     } else {
+            //         false
+            //     }
+            // }
+            isChecked: (rowId) => checkedRowIds.includes(rowId),
         },
     })
 
@@ -286,8 +325,8 @@ function ReactTable() {
                                         flexRender(
                                             cell.column.id === 'select'
                                                 ? <IndeterminateCheckbox
-                                                    checked={checkedRowIds.includes(parseInt(row.id))} // 체크된 행인지 확인하여 checked prop 설정
-                                                    onChange={() => handleToggleCheckbox(parseInt(row.id))} // 행의 ID를 토글 함수로 전달
+                                                    checked={checkedRowIds.includes(row.original.id)} // 체크된 행인지 확인하여 checked prop 설정
+                                                    onChange={() => handleToggleCheckbox(row.original.id)} // 행의 ID를 토글 함수로 전달
                                                 />
                                                 : isEditing
                                                     ? cell.column.columnDef.cell
