@@ -192,7 +192,7 @@ function ReactTable() {
     }
 
     const defaultColumn: Partial<ColumnDef<Person>> = {
-        cell: ({ getValue, row: { index, id }, column: { id: columnId }, table }) => {
+        cell: ({ getValue, row: { index, original, id }, column: { id: columnId }, table }) => {
             const initialValue = getValue()
             const [value, setValue] = React.useState(initialValue)
 
@@ -200,7 +200,7 @@ function ReactTable() {
             const onBlur = (e: any) => {
                 table.options.meta?.updateData(index, columnId, value)
                 if (initialValue !== e.target.value) {
-                    addCheckedIds(parseInt(id)); // 행의 ID를 등록
+                    addCheckedIds(original.id); // 행의 ID를 등록
                 }
             }
 
@@ -210,8 +210,6 @@ function ReactTable() {
                 // Update input value
                 setValue(inputValue);
 
-                // Check the row when value changes in edit mode
-                // handleToggleCheckbox(id); // 행의 ID를 등록
             };
 
             // If the initialValue is changed external, sync it up with our state
