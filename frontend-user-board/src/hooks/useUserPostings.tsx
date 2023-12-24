@@ -1,5 +1,4 @@
 import { apiForGetAllUserPostings } from "@/api/apiForPosting";
-import { IResponseTypeForUserPostings } from "@/types/typeForPostings";
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
 

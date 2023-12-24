@@ -12,6 +12,8 @@ import { PostingsModule } from './postings/postings.module';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AuthMiddleware } from "./middlewares/AuthMiddleware";
 import { CloudflareModule } from './cloudflare/cloudflare.module';
+import { TodosModule } from './todos/todos.module';
+import { TodosModel } from "./todos/entities/todos.entity";
 
 
 @Module({
@@ -23,7 +25,7 @@ import { CloudflareModule } from './cloudflare/cloudflare.module';
       username: "postgres",
       password: "postgres",
       database: "userAdminBoard",
-      entities: [UsersModel, UserPostingsModel],
+      entities: [UsersModel, UserPostingsModel, TodosModel],
       synchronize: true,
     }),
     ConfigModule.forRoot({
@@ -32,6 +34,7 @@ import { CloudflareModule } from './cloudflare/cloudflare.module';
     }),
     UsersModule,
     PostingsModule,
+    TodosModule,
     CloudflareModule,
   ],
   controllers: [AppController],
@@ -49,6 +52,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware) // 사용할 미들웨어
       // .forRoutes('/users/login-check-by-accessToken');
-      .forRoutes('*'); // 적용할 경로 설정
+      .forRoutes(
+        '/users/login-check-by-accessToken',
+        '/users/login-check-by-refreshToken'
+      ); // 적용할 경로 설정
   }
 }

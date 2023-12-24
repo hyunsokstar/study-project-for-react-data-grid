@@ -38,7 +38,8 @@ export class UsersController {
   async deleteUsersForCheckedIds(@Body('checkedIds') checkedIds: number[]) {
 
     try {
-      //
+      console.log("유저 삭제 요청 받음");
+
       const deletedCount = await this.usersService.deleteUsersForCheckedIds(checkedIds);
 
       return {

@@ -39,8 +39,13 @@ const GridExample = () => {
 
     // Container: Defines the grid's theme & dimensions.
     return (
-        <Box className={"ag-theme-quartz"} style={{ width: '100%', height: '100%' }}>
-            hi
+        <Box
+            className={"ag-theme-quartz"}
+            width={"80%"}
+            margin={"auto"}
+            mt={2}
+            height={"70vh"}
+        >
             <AgGridReact
                 rowData={rowData}
                 columnDefs={colDefs}

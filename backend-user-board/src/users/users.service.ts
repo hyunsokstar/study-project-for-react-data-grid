@@ -161,9 +161,15 @@ export class UsersService {
             // 삭제할 사용자들을 찾아서 삭제
             console.log("checkedIds : ", checkedIds);
 
-            const deletedUsers = await this.usersRepository.delete(checkedIds);
-            return deletedUsers.affected ?? 0;
+            const deleteResult = await this.usersRepository.delete(checkedIds);
+
+            console.log("deleteResult : ", deleteResult);
+
+            return deleteResult.affected ?? 0;
+
         } catch (error) {
+            console.log("error : ", error);
+
             throw new Error('삭제 중 오류가 발생했습니다.');
         }
     }

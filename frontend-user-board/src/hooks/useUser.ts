@@ -33,6 +33,7 @@ const useUser = () => {
 
                 if (result.success) {
                     const { id, email, nickname, following, followers } = result.user;
+                    console.log("login success by access token");
 
                     // 받아온 정보를 이용하여 로그인 상태 갱신
                     dispatch(
@@ -46,15 +47,17 @@ const useUser = () => {
                     );
                 } else {
                     console.log("error : ", result.response.data);
-                    const tokkenERROR = result.response.data.reason.name
-                    if (tokkenERROR === "TokenExpiredError") {
-                        console.log("토큰 기한이 지났습니다 refresh token 을 이용해 재발급 필요!");
+                    const tokkenERROR = result.response.data.reason
+
+                    if (tokkenERROR === "ExpiredToken") {
+                        console.log("토큰 기한이 지났습니다 refresh token 을 이용해 재발급을 시도 하겠습니다");
 
                         try {
                             const result = await apiForLoginCheckWithRefreshToken(refreshToken);
                             console.log("result : ", result);
 
                             if (result !== undefined && result.success) {
+                                console.log("login success by refresh token");
 
                                 const { id, email, nickname, following, followers } = result.user;
 

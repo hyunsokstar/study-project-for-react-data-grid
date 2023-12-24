@@ -65,6 +65,8 @@ export const apiForLoginCheckWithAccessToken = async (accessToken: string) => {
         console.log("response.data : ", response.data);
         return response.data;
     } catch (error) {
+        console.log("error : ", error);
+
         // throw new Error('Failed to perform login check');
         return error
     }
@@ -119,6 +121,13 @@ export const apiForGetAllUsers = ({
         .then((response) => {
 
             return response.data;
+        }).catch((error) => {
+            console.log("error : ", error);
+            if (error.response.data.reason === "ExpiredToken") {
+
+            } else {
+
+            }
         });
 };
 
