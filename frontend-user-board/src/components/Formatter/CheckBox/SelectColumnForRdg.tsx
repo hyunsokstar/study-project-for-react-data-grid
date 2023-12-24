@@ -2,7 +2,7 @@ import { Column } from "react-data-grid";
 import CheckBoxFormatterForHeader from "./CheckBoxFormatterForHeader";
 import CheckBoxFormatterForRow from "./CheckBoxFormatterForRow";
 
-export const SelectColumnForRdg: Column<any, any> = {
+export const SelectColumnForReactDataGrid: Column<any, any> = {
   key: "select-row",
   name: '',
   width: 35,

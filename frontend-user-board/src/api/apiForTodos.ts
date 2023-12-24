@@ -11,7 +11,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem('accessToken');
-        console.log("access token 유무 확인 : ", accessToken);
+        // console.log("access token 유무 확인 : ", accessToken);
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -27,7 +27,7 @@ instance.interceptors.request.use(
 export const apiForGetAllTodoList = ({ queryKey }: QueryFunctionContext) => {
     const [_, pageNum] = queryKey;
 
-    console.log("pageNum : ", pageNum);
+    // console.log("pageNum : ", pageNum);
 
     return instance
         .get('', {

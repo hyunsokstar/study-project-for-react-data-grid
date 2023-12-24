@@ -20,7 +20,6 @@ export class PostingsService {
     // async getAllPostings(pageNum: number = 1, perPage: number = 5): Promise<UserPostingsModel[]> {
     async getAllPostings(pageNum: number = 1, perPage: number = 5):
         Promise<{ postings: UserPostingsModel[], totalCount: number, perPage: number }> {
-        console.log("pageNum : ", pageNum);
 
         const skip = (pageNum - 1) * perPage;
         const [postings, totalCount] = await this.postingsRepository.findAndCount({

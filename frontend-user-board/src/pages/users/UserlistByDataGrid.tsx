@@ -5,7 +5,7 @@ import DataGrid, { Column, RenderCellProps, RenderCheckboxProps, RenderEditCellP
 import { apiForGetAllUsers, apiForSaveOrUpdateUserInfoForChecked } from '../../api/apiForUserBoard';
 import styles from './styles.module.scss';
 import { Direction, ITypeForResponseDataForGetAllUsers, IUser, Row } from '@/types/typeForUserBoard';
-import { SelectColumnForRdg } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
+import { SelectColumnForReactDataGrid } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
 import TextEditorForDevLevel from '@/components/GridEditor/TextEditor/TextEditorForDevLevel';
 import { ArrowForwardIcon, DeleteIcon, EmailIcon } from '@chakra-ui/icons';
 import SelectBoxForGender from '@/components/GridEditor/SelectBox/SelectBoxForGender';
@@ -15,7 +15,7 @@ import { UseMutationOptions, useMutation, useQuery, useQueryClient } from '@tans
 import useDeleteUsersMutation from '@/hooks/useDeleteUsersMutation';
 
 const columns = [
-  SelectColumnForRdg,
+  SelectColumnForReactDataGrid,
   // { key: 'id', name: 'id' },
   {
 
@@ -129,7 +129,6 @@ const UserlistByDataGrid = () => {
 
   function handleDeleteSelectedRows() {
     const checkedIds = Array.from(selectedRows).map((selectedId: number) => selectedId)
-
     deleteUsersMutation.mutate(checkedIds);
   }
 
