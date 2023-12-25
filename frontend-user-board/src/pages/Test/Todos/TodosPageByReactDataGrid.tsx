@@ -52,7 +52,7 @@ function getColumns(
             key: 'startTime',
             name: 'startTime',
             renderCell(props: any) {
-                const value = props.row.startTime;
+                const value = formatDateTime(props.row.startTime);
                 return (
                     <>
                         {value}
