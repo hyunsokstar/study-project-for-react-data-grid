@@ -19,7 +19,7 @@ const SelectBoxForGender = <TRow, TSummaryRow>({
     onClose,
 }: SelectBoxForGenderProps<TRow, TSummaryRow>) => {
     const [isRowSelected, onRowSelectionChange] = useRowSelection();
-    const [previousValue, setPreviousValue] = useState(row[column.key as keyof TRow] as unknown as string);
+    const [initialValue, setInitialValue] = useState(row[column.key as keyof TRow] as unknown as string);
 
     const handleSelectChange = (value: Gender) => {
         onRowChange({ ...row, [column.key]: value });
@@ -31,7 +31,7 @@ const SelectBoxForGender = <TRow, TSummaryRow>({
 
             const currentValue = event.target.value || "";
 
-            if (previousValue !== currentValue) {
+            if (initialValue !== currentValue) {
                 onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: false });
             }
             onClose(true, false);
@@ -44,7 +44,7 @@ const SelectBoxForGender = <TRow, TSummaryRow>({
 
         const currentValue = e.target.value || "";
 
-        if (previousValue !== currentValue) {
+        if (initialValue !== currentValue) {
             onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: false });
         }
         onClose(true, false)

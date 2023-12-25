@@ -17,7 +17,8 @@ export class TodosController {
     async getTodosWithManagers(
         @Query('pageNum') pageNum = 1,
         @Query('perPage') perPage = 10,
-    ): Promise<{ todoList: TodosModel[], totalCount: number, perPage: number }> {
+    ): Promise<{ usersEmailInfo: string[], todoList: TodosModel[], totalCount: number, perPage: number }> {
+
         return this.todosService.getTodosList(pageNum, perPage);
     }
 

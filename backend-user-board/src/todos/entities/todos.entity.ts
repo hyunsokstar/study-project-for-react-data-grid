@@ -19,7 +19,7 @@ export class TodosModel {
     @Column({ nullable: true })
     details: string;
 
-    @Column({ type: 'enum', enum: TodoStatus, default: TodoStatus.READY })
+    @Column({ type: 'enum', enum: TodoStatus, default: TodoStatus.READY, nullable: true })
     status: TodoStatus;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -28,12 +28,12 @@ export class TodosModel {
     @Column({ type: 'timestamp', nullable: true })
     deadline: Date;
 
-    @Column({ type: 'int', default: 1 })
+    @Column({ type: 'int', default: 1, nullable: true })
     priority: number;
 
-    @ManyToOne(() => UsersModel, { onDelete: 'CASCADE' })
+    @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     manager: UsersModel;
 
-    @ManyToOne(() => UsersModel, { onDelete: 'CASCADE' })
+    @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     supervisor: UsersModel;
 }

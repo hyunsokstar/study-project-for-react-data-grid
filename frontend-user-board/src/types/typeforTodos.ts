@@ -24,6 +24,7 @@ export interface ITypeForTodoRow {
 }
 
 export interface ITypeForToDosList {
+    usersEmailInfo: string[];
     todoList: ITypeForTodoRow[];
     totalCount: number;
     perPage: number;

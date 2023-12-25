@@ -49,7 +49,17 @@ export class TodosService {
     async getTodosList(
         pageNum: number = 1,
         perPage: number = 10
-    ): Promise<{ todoList: TodosModel[], totalCount: number, perPage: number }> {
+    ): Promise<
+        { todoList: TodosModel[], totalCount: number, perPage: number, usersEmailInfo: string[] }
+    > {
+
+        const userEmailList = await this.usersRepository
+            .createQueryBuilder('user')
+            .select('user.email AS user_email')
+            .getRawMany();
+
+        const usersEmailInfo = userEmailList.map(item => item.user_email);
+        console.log("usersEmailInfo : ", usersEmailInfo);
 
         const [todoList, totalCount] = await this.todosRepository.findAndCount({
             skip: (pageNum - 1) * perPage,
@@ -61,6 +71,7 @@ export class TodosService {
         });
 
         return {
+            usersEmailInfo,
             todoList,
             totalCount,
             perPage
