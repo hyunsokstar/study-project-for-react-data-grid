@@ -26,7 +26,18 @@ function getColumns(
         {
             key: 'email',
             name: 'Email',
-            renderEditCell: textEditor
+            // renderEditCell: CommonSelectBoxEdtior(usersEmailInfo)
+            renderEditCell: (props: {
+                row: any;
+                column: { key: keyof any };
+                onRowChange: (updatedRow: any) => void;
+                onClose: (commitChanges?: boolean, shouldFocusCell?: boolean) => void;
+            }) => (
+                <CommonSelectBoxEdtior
+                    {...props}
+                    arrayForSelectOption={usersEmailInfo}
+                />
+            )
         },
         {
             key: 'todo',
@@ -52,24 +63,32 @@ function getColumns(
             key: 'startTime',
             name: 'startTime',
             renderCell(props: any) {
-                const value = formatDateTime(props.row.startTime);
-                return (
-                    <>
-                        {value}
-                    </>
-                );
+                if (props.row.startTime !== "") {
+                    const value = formatDateTime(props.row.startTime);
+                    return (
+                        <>
+                            {value}
+                        </>
+                    );
+                } else {
+                    return ""
+                }
             },
         },
         {
             key: 'deadline',
             name: 'deadline',
             renderCell(props: any) {
-                const value = props.row.deadline;
-                return (
-                    <>
-                        {formatDateTime(value)}
-                    </>
-                );
+                if (props.row.startTime != "") {
+                    const value = formatDateTime(props.row.deadline);
+                    return (
+                        <>
+                            {value}
+                        </>
+                    );
+                } else {
+                    return ""
+                }
             },
 
         }
@@ -105,7 +124,9 @@ const TodosPageByReactDataGrid = (props: Props) => {
                 id: newId,
                 email: '',
                 todo: 'todo for sample',
-                status: 'ready'
+                status: 'ready',
+                startTime: '',
+                deadline: ''
             }
         ]);
     };
@@ -115,7 +136,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
         const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
         console.log('todoRowsForSave : ', todoRowsForSave);
         mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
-
+        setSelectedRows(new Set())
     };
 
 

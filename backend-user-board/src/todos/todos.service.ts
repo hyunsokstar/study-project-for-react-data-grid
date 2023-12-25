@@ -19,28 +19,32 @@ export class TodosService {
 
     async saveTodos(todoRowsForSave: any[]): Promise<any> {
         for (const todo of todoRowsForSave) {
-            // const { id, ...data } = todo;
-            const { id, email, nickname, ...data } = todo; // 이메일과 닉네임 필드 제거
+            const { id, email, nickname, ...data } = todo;
 
-            if (id) {
-                console.log("here ?? ", todo);
+            // 이메일로 해당하는 유저를 찾음
+            const manager = await this.usersRepository.findOne({ where: { email: todo.email } });
 
-                await this.todosRepository.update(id,
-                    {
-                        task: todo.todo,
+            if (manager) {
+                if (id) {
+                    await this.todosRepository.update(id, {
+                        manager: manager, // 찾은 유저 객체를 할당
+                        task: todo.task,
                         status: todo.status,
-                        startTime: todo.startTime,
-                        deadline: todo.deadline
-                    }
-                ); // 해당 ID가 있는 경우 업데이트
+                        // startTime: todo.startTime,
+                        // deadline: todo.deadline
+                    });
+                } else {
+                    // id가 없으면 새로운 데이터 생성
+                    await this.todosRepository.save({ ...data, manager: manager });
+                }
             } else {
-                // id가 없으면 새로운 데이터 생성
-                await this.todosRepository.save(data);
+                console.log(`유저 이메일 '${todo.email}'을(를) 찾을 수 없습니다.`);
             }
         }
 
         return { message: 'Todos saved successfully' };
     }
+
 
     async create(createTodoDto: DtoForCreateTodo): Promise<TodosModel> {
         const { task, details, status, startTime, deadline, priority, supervisorId, managerId } = createTodoDto;
