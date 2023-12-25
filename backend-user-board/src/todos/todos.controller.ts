@@ -22,4 +22,10 @@ export class TodosController {
         return this.todosService.getTodosList(pageNum, perPage);
     }
 
+    @Post('saveTodos') // API 엔드포인트 추가
+    async saveTodos(@Body() todoRowsForSave: any) {
+        console.log("todoRowsForSave at controller : ", todoRowsForSave);
+        return this.todosService.saveTodos(todoRowsForSave);
+    }
+
 }

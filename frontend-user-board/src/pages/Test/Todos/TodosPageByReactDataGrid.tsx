@@ -6,8 +6,15 @@ import useGetAllTodos from '@/hooks/useGetAllTodos';
 import { ITypeForTodoRow } from '@/types/typeforTodos';
 import { SelectColumnForReactDataGrid } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
 import CommonSelectBoxEdtior from '@/components/GridEditor/SelectBox/CommonSelectBoxEdtior';
+import { format } from 'date-fns';
+import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
+import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
 
 type Props = {};
+
+const formatDateTime = (dateTime: string) => {
+    return format(new Date(dateTime), "yy-MM-dd HH:mm");
+};
 
 // 다음과 같이 에디터 설정 (with 공통 셀렉트 박스 에디터 만들기 )
 function getColumns(
@@ -19,6 +26,16 @@ function getColumns(
         {
             key: 'email',
             name: 'Email',
+            renderEditCell: textEditor
+        },
+        {
+            key: 'todo',
+            name: 'ToDo',
+            renderEditCell: CommonTextEditor
+        },
+        {
+            key: 'status',
+            name: "Status",
             renderEditCell: (props: {
                 row: any;
                 column: { key: keyof any };
@@ -27,14 +44,34 @@ function getColumns(
             }) => (
                 <CommonSelectBoxEdtior
                     {...props}
-                    arrayForSelectOption={usersEmailInfo}
+                    arrayForSelectOption={["ready", "progress", "testing", "complete"]}
                 />
             )
         },
         {
-            key: 'todo',
-            name: 'ToDo',
-            renderEditCell: textEditor
+            key: 'startTime',
+            name: 'startTime',
+            renderCell(props: any) {
+                const value = props.row.startTime;
+                return (
+                    <>
+                        {value}
+                    </>
+                );
+            },
+        },
+        {
+            key: 'deadline',
+            name: 'deadline',
+            renderCell(props: any) {
+                const value = props.row.deadline;
+                return (
+                    <>
+                        {formatDateTime(value)}
+                    </>
+                );
+            },
+
         }
     ];
 }
@@ -43,18 +80,22 @@ interface ITypeForGridRows {
     id: any,
     email: string;
     todo: string;
+    status: string;
+    startTime: string;
+    deadline: string;
 }
 
+// 1122
 const TodosPageByReactDataGrid = (props: Props) => {
     const [pageNum, setPageNum] = useState(1);
     const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
     const [todoRows, setTodoRows] = useState<ITypeForGridRows[]>();
-    // 2244 유저 정보를 담을 state 변수 선언 (for select box option)
     const [usersEmailInfo, setUsersEmailInfo] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
-
-    // 2244 column 를 함수로 설정 , 단 usersEmailInfo 가 바뀌지 않는한 다시 계산할 필요는 없으므로 useMemo를 적용
     const columns = useMemo(() => getColumns(usersEmailInfo), [usersEmailInfo]);
+
+    // mutation
+    const mutationForSaveTodoRows = useSaveTodoRowsMutation();
 
     const handleAddRow = () => {
         const newId = todoRows?.length ? Math.max(...todoRows.map(row => row.id)) + 1 : 1;
@@ -63,15 +104,18 @@ const TodosPageByReactDataGrid = (props: Props) => {
             {
                 id: newId,
                 email: '',
-                todo: 'todo for sample'
+                todo: 'todo for sample',
+                status: 'ready'
             }
         ]);
     };
 
     // 2244 save 함수에서 체크한 row 정보 출력 해보기
     const handleSave = () => {
-        const selectedTodoRows = todoRows?.filter(row => selectedRows.has(row.id)) || [];
-        console.log('Selected Todo Rows:', selectedTodoRows);
+        const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
+        console.log('todoRowsForSave : ', todoRowsForSave);
+        mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
+
     };
 
 
@@ -83,7 +127,10 @@ const TodosPageByReactDataGrid = (props: Props) => {
                 return {
                     id: row.id,
                     email: row.manager.email,
-                    todo: row.task
+                    todo: row.task,
+                    status: row.status,
+                    startTime: row.startTime, // 변환된 형태로 저장
+                    deadline: row.deadline
                 }
             })
             setUsersEmailInfo(dataForTodos.usersEmailInfo)

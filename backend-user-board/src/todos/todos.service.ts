@@ -17,6 +17,31 @@ export class TodosService {
 
     ) { }
 
+    async saveTodos(todoRowsForSave: any[]): Promise<any> {
+        for (const todo of todoRowsForSave) {
+            // const { id, ...data } = todo;
+            const { id, email, nickname, ...data } = todo; // 이메일과 닉네임 필드 제거
+
+            if (id) {
+                console.log("here ?? ", todo);
+
+                await this.todosRepository.update(id,
+                    {
+                        task: todo.todo,
+                        status: todo.status,
+                        startTime: todo.startTime,
+                        deadline: todo.deadline
+                    }
+                ); // 해당 ID가 있는 경우 업데이트
+            } else {
+                // id가 없으면 새로운 데이터 생성
+                await this.todosRepository.save(data);
+            }
+        }
+
+        return { message: 'Todos saved successfully' };
+    }
+
     async create(createTodoDto: DtoForCreateTodo): Promise<TodosModel> {
         const { task, details, status, startTime, deadline, priority, supervisorId, managerId } = createTodoDto;
 

@@ -49,7 +49,7 @@ const CommonSelectBoxEdtior = ({
     return (
         <Select
             autoFocus
-            value={row.email}
+            value={row[column.key]}
             onChange={(e) => onRowChange({ ...row, [column.key]: e.target.value })}
             onBlur={onBlurHandler} // 변경된 onBlur 함수
             onKeyDown={handleKeyPress}

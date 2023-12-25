@@ -22,7 +22,7 @@ export class TodosModel {
     @Column({ type: 'enum', enum: TodoStatus, default: TodoStatus.READY, nullable: true })
     status: TodoStatus;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @Column({ type: 'timestamp', nullable: true })
     startTime: Date;
 
     @Column({ type: 'timestamp', nullable: true })
