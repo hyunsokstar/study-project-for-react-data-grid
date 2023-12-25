@@ -9,6 +9,7 @@ import CommonSelectBoxEdtior from '@/components/GridEditor/SelectBox/CommonSelec
 import { format } from 'date-fns';
 import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
 import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
+import CommonDateTimePicker from '@/components/GridEditor/DateTimePicker/CommonDateTimePicker';
 
 type Props = {};
 
@@ -78,6 +79,7 @@ function getColumns(
         {
             key: 'deadline',
             name: 'deadline',
+            width: 200,
             renderCell(props: any) {
                 if (props.row.startTime != "") {
                     const value = formatDateTime(props.row.deadline);
@@ -90,7 +92,7 @@ function getColumns(
                     return ""
                 }
             },
-
+            renderEditCell: CommonDateTimePicker
         }
     ];
 }
@@ -136,9 +138,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
         const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
         console.log('todoRowsForSave : ', todoRowsForSave);
         mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
-        setSelectedRows(new Set())
     };
-
 
     // 2244 유저 정보를 가져와서 set state
     useEffect(() => {
@@ -171,7 +171,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
                 <Box width={"100%"}>
 
-                    {usersEmailInfo ? usersEmailInfo.map((row) => row) : "no users"}
+                    {/* {usersEmailInfo ? usersEmailInfo.map((row) => row) : "no users"} */}
 
                     <DataGrid
                         rowKeyGetter={(row) => row.id}
