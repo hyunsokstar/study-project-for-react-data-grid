@@ -8,6 +8,7 @@ interface SelectBoxProps {
     onRowChange: (updatedRow: any) => void;
     onClose: (commitChanges?: boolean, shouldFocusCell?: boolean) => void;
     arrayForSelectOption: any[]
+    defaultUserEmail: string
 }
 
 // 2244 에디터 컴퍼넌트 만들기

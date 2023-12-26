@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Box, Button } from '@chakra-ui/react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { Box, Button, Select } from '@chakra-ui/react';
 import DataGrid, { Column, RenderCheckboxProps, RenderEditCellProps, RenderSortStatusProps, textEditor, useRowSelection } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import useGetAllTodos from '@/hooks/useGetAllTodos';
@@ -43,6 +43,7 @@ function getColumns(
         {
             key: 'task',
             name: 'Task',
+            width: 300,
             renderEditCell: CommonTextEditor
         },
         {
@@ -115,7 +116,10 @@ const TodosPageByReactDataGrid = (props: Props) => {
     const [todoRows, setTodoRows] = useState<ITypeForGridRows[]>();
     const [usersEmailInfo, setUsersEmailInfo] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
+    const [defaultUserEmail, setDefaultUserEmail] = useState(''); // 기본 사용자 이메일 상태 설정
     const columns = useMemo(() => getColumns(usersEmailInfo), [usersEmailInfo]);
+
+
 
     // mutation
     const mutationForSaveTodoRows = useSaveTodoRowsMutation();
@@ -128,7 +132,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                 return [
                     {
                         id: newId,
-                        email: '',
+                        email: defaultUserEmail || '', // defaultUserEmail이 존재하면 해당 이메일, 없으면 빈 문자열
                         todo: 'todo for sample',
                         status: 'ready',
                         startTime: '',
@@ -140,7 +144,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     ...prevRows,
                     {
                         id: newId,
-                        email: '',
+                        email: defaultUserEmail || '', // defaultUserEmail이 존재하면 해당 이메일, 없으면 빈 문자열
                         todo: 'todo for sample',
                         status: 'ready',
                         startTime: '',
@@ -152,7 +156,10 @@ const TodosPageByReactDataGrid = (props: Props) => {
         });
     };
 
-    // 2244 save 함수에서 체크한 row 정보 출력 해보기
+    const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setDefaultUserEmail(event.target.value); // 선택한 이메일로 defaultUserEmail 상태 업데이트
+    };
+
     const handleSave = () => {
         const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
         console.log('todoRowsForSave : ', todoRowsForSave);
@@ -160,7 +167,6 @@ const TodosPageByReactDataGrid = (props: Props) => {
         setSelectedRows(new Set())
     };
 
-    // 2244 유저 정보를 가져와서 set state
     useEffect(() => {
         let todoRowsToShow;
 
@@ -194,11 +200,29 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     <Button variant={"outline"} onClick={handleSave}>Save</Button>
                 </Box>
 
-                <Box width={"100%"}>
+                {/* {defaultUserEmail} */}
+                <Box width={"20%"}>
+                    {usersEmailInfo.length ? (
+                        <Select
+                            placeholder="Select default user"
+                            value={defaultUserEmail} // 현재 defaultUserEmail 상태값으로 선택
+                            onChange={handleSelectChange} // 선택 시 상태 업데이트
+                        >
+                            {usersEmailInfo.map((email, index) => (
+                                <option key={index} value={email}>
+                                    {email}
+                                </option>
+                            ))}
+                        </Select>
+                    ) : (
+                        "No users"
+                    )}
+                </Box>
 
-                    {usersEmailInfo.length ? usersEmailInfo.map((row) => {
+                <Box width={"100%"}>
+                    {/* {usersEmailInfo.length ? usersEmailInfo.map((row) => {
                         return "hi"
-                    }) : "no users"}
+                    }) : "no users"} */}
 
                     <DataGrid
                         rowKeyGetter={(row) => row.id}
