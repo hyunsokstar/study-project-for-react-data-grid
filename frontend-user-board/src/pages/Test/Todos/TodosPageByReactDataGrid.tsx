@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
 import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
 import CommonDateTimePicker from '@/components/GridEditor/DateTimePicker/CommonDateTimePicker';
+import SelectBoxForNumberToAddRow from '@/components/Select/SelectBoxForNumberToAddRow';
 
 type Props = {};
 
@@ -115,45 +116,33 @@ const TodosPageByReactDataGrid = (props: Props) => {
     const [todoRows, setTodoRows] = useState<ITypeForGridRows[]>();
     const [usersEmailInfo, setUsersEmailInfo] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
-    const [defaultUserEmail, setDefaultUserEmail] = useState(''); // 기본 사용자 이메일 상태 설정
+
+    const [defaultUserEmail, setDefaultUserEmail] = useState('');
+    const [rowNumToAdd, setRowNumToAdd] = useState<number>(1);
+
     const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
     const columns = useMemo(() => getColumns(usersEmailInfo), [usersEmailInfo]);
-
 
 
     // mutation
     const mutationForSaveTodoRows = useSaveTodoRowsMutation();
 
     const handleAddRow = () => {
-        const newId = todoRows?.length ? Math.max(...todoRows.map(row => row.id)) + 1 : 1;
-        setTodoRows((prevRows: any) => {
+        if (!todoRows) return;
 
-            if (!prevRows) {
-                return [
-                    {
-                        id: newId,
-                        email: defaultUserEmail || '',
-                        todo: 'todo for sample',
-                        status: 'ready',
-                        startTime: '',
-                        deadline: ''
-                    }
-                ]
-            } else {
-                return [
-                    ...prevRows,
-                    {
-                        id: newId,
-                        email: defaultUserEmail || '',
-                        todo: 'todo for sample',
-                        status: 'ready',
-                        startTime: '',
-                        deadline: ''
-                    }
-                ]
-            }
-
+        const newRows = Array.from({ length: rowNumToAdd }, (_, index) => {
+            const newId = todoRows.length ? Math.max(...todoRows.map(row => row.id)) + index + 1 : index + 1;
+            return {
+                id: newId,
+                email: defaultUserEmail || '',
+                task: 'todo for sample',
+                status: 'ready',
+                startTime: '',
+                deadline: ''
+            };
         });
+
+        setTodoRows(prevRows => (prevRows ? [...prevRows, ...newRows] : newRows));
     };
 
     const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -212,6 +201,13 @@ const TodosPageByReactDataGrid = (props: Props) => {
                             "No users"
                         )}
                     </Box>
+
+                    <Box>
+                        {/* {rowNumToAdd} */}
+                        <SelectBoxForNumberToAddRow rowNumToAdd={rowNumToAdd} setRowNumToAdd={setRowNumToAdd} />
+                    </Box>
+
+
                     <Button variant={"outline"} onClick={handleAddRow}>Add Row</Button>
                     {/* 2244 save 함수 구현 */}
                     <Button variant={"outline"} onClick={handleSave}>Save</Button>
