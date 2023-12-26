@@ -5,7 +5,7 @@ export enum TodoStatus {
     READY = 'ready',
     PROGRESS = 'progress',
     TESTING = 'testing',
-    COMPLETED = 'completed',
+    COMPLETED = 'complete',
 }
 
 @Entity()

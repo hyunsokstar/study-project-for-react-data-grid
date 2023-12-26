@@ -29,17 +29,11 @@ const Home = () => {
         { href: '/Test/CardList/PostingList', text: 'react-data-grid basic(2)', visible: true },
     ];
 
+    // todo list by react data grid 1227
     const links5 = [
         { href: '/Test/CardList/PostingList', text: 'react-data-grid 로 todo list 구현 하기', visible: true },
-        { href: '/Test/CardList/PostingList', text: 'idea list, todo list, 완료 리스트 3개의 table 로 관리', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건1: 노트 정리: ', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건2: 칼럼별 정렬, 에디터 딱 맞게 설정, 타입 설정 주의: ', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건3: group by 활용: ', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건4: column 디비 데이터 활용: ', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건5: 다양한 헤더 필터', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건6: rows reordering', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건7: column grouping', visible: true },
-        { href: '/Test/CardList/PostingList', text: '조건8: 행 추가 animate', visible: true },
+        { href: '/Test/ReactDataGrid/BasicDataGrid', text: 'Basic React Data Grid Component', visible: true },
+        { href: '/Test/ReactDataGrid/GroupBy', text: 'Group By Sample Page', visible: true },
     ];
 
     const links6 = [
