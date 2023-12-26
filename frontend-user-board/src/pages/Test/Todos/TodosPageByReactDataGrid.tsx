@@ -41,8 +41,8 @@ function getColumns(
             )
         },
         {
-            key: 'todo',
-            name: 'ToDo',
+            key: 'task',
+            name: 'Task',
             renderEditCell: CommonTextEditor
         },
         {
@@ -64,7 +64,9 @@ function getColumns(
             key: 'startTime',
             name: 'startTime',
             renderCell(props: any) {
-                if (props.row.startTime !== "") {
+                console.log("props.row.startTime : ", props.row.startTime);
+
+                if (props.row.startTime !== null && props.row.startTime !== "") {
                     const value = formatDateTime(props.row.startTime);
                     return (
                         <>
@@ -81,7 +83,7 @@ function getColumns(
             name: 'deadline',
             width: 200,
             renderCell(props: any) {
-                if (props.row.startTime != "") {
+                if (props.row.deadline !== null && props.row.deadline !== "") {
                     const value = formatDateTime(props.row.deadline);
                     return (
                         <>
@@ -100,7 +102,7 @@ function getColumns(
 interface ITypeForGridRows {
     id: any,
     email: string;
-    todo: string;
+    task: string;
     status: string;
     startTime: string;
     deadline: string;
@@ -120,17 +122,34 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
     const handleAddRow = () => {
         const newId = todoRows?.length ? Math.max(...todoRows.map(row => row.id)) + 1 : 1;
-        setTodoRows((prevRows: any) => [
-            ...prevRows,
-            {
-                id: newId,
-                email: '',
-                todo: 'todo for sample',
-                status: 'ready',
-                startTime: '',
-                deadline: ''
+        setTodoRows((prevRows: any) => {
+
+            if (!prevRows) {
+                return [
+                    {
+                        id: newId,
+                        email: '',
+                        todo: 'todo for sample',
+                        status: 'ready',
+                        startTime: '',
+                        deadline: ''
+                    }
+                ]
+            } else {
+                return [
+                    ...prevRows,
+                    {
+                        id: newId,
+                        email: '',
+                        todo: 'todo for sample',
+                        status: 'ready',
+                        startTime: '',
+                        deadline: ''
+                    }
+                ]
             }
-        ]);
+
+        });
     };
 
     // 2244 save 함수에서 체크한 row 정보 출력 해보기
@@ -138,23 +157,29 @@ const TodosPageByReactDataGrid = (props: Props) => {
         const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
         console.log('todoRowsForSave : ', todoRowsForSave);
         mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
+        setSelectedRows(new Set())
     };
 
     // 2244 유저 정보를 가져와서 set state
     useEffect(() => {
         let todoRowsToShow;
+
+        if (dataForTodos) {
+            setUsersEmailInfo(dataForTodos.usersEmailInfo)
+        }
+
+
         if (dataForTodos && dataForTodos.todoList.length > 0) {
             todoRowsToShow = dataForTodos.todoList.map((row: ITypeForTodoRow) => {
                 return {
                     id: row.id,
                     email: row.manager.email,
-                    todo: row.task,
+                    task: row.task,
                     status: row.status,
                     startTime: row.startTime, // 변환된 형태로 저장
                     deadline: row.deadline
                 }
             })
-            setUsersEmailInfo(dataForTodos.usersEmailInfo)
             setTodoRows(todoRowsToShow)
         }
     }, [dataForTodos])
@@ -171,7 +196,9 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
                 <Box width={"100%"}>
 
-                    {/* {usersEmailInfo ? usersEmailInfo.map((row) => row) : "no users"} */}
+                    {usersEmailInfo.length ? usersEmailInfo.map((row) => {
+                        return "hi"
+                    }) : "no users"}
 
                     <DataGrid
                         rowKeyGetter={(row) => row.id}
