@@ -40,9 +40,9 @@ interface EditorProps {
     onClose: any;
 }
 
-const formatDateTime = (dateTime: string) => {
-    return format(new Date(dateTime), "yy-MM-dd HH:mm");
-};
+// const formatDateTime = (dateTime: string) => {
+//     return format(new Date(dateTime), "yy-MM-dd HH:mm");
+// };
 
 function CommonDateTimePicker({
     row,
@@ -52,12 +52,12 @@ function CommonDateTimePicker({
 }: EditorProps) {
 
 
-    const [initialValue, setInitialValue] = useState(formatDateTime(row[column.key]));
+    const [initialValue, setInitialValue] = useState(new Date());
     const [isRowSelected, onRowSelectionChange] = useRowSelection();
 
     const onChangeHandler = (e: any) => {
         console.log("e : ", e);
-        onRowChange({ ...row, [column.key]: e })
+        onRowChange({ ...row, [column.key]: e.target.value })
     }
 
     const onBlurHandler = (e: any) => {
@@ -73,7 +73,7 @@ function CommonDateTimePicker({
 
     return (
         <Box zIndex={100}>
-            <InputGroup size='md'>
+            {/* <InputGroup size='md'>
                 <Input
                     pr='4.5rem'
                     placeholder='Enter password'
@@ -87,9 +87,16 @@ function CommonDateTimePicker({
                         column={column}
                         onClose={onclose}
                     />
-                </InputRightElement>
-            </InputGroup>
-
+                </InputRightElement> */}
+            {/* </InputGroup> */}
+            <Input
+                placeholder="Select Date and Time"
+                size="md"
+                type="datetime-local"
+                value={row[column.key]}
+                onBlur={onBlurHandler}
+                onChange={onChangeHandler}
+            />
         </Box>
     );
 }

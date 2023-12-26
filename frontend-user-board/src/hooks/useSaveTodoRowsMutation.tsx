@@ -13,7 +13,7 @@ const useSaveTodoRowsMutation = () => {
             console.log("result : ", result);
 
             queryClient.refetchQueries({
-                queryKey: ['apiForGetAllUsers']
+                queryKey: ['apiForGetAllTodoList']
             });
 
             toast({

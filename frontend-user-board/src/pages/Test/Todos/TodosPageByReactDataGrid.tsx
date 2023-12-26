@@ -112,11 +112,11 @@ interface ITypeForGridRows {
 // 1122
 const TodosPageByReactDataGrid = (props: Props) => {
     const [pageNum, setPageNum] = useState(1);
-    const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
     const [todoRows, setTodoRows] = useState<ITypeForGridRows[]>();
     const [usersEmailInfo, setUsersEmailInfo] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
     const [defaultUserEmail, setDefaultUserEmail] = useState(''); // 기본 사용자 이메일 상태 설정
+    const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
     const columns = useMemo(() => getColumns(usersEmailInfo), [usersEmailInfo]);
 
 
@@ -132,7 +132,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                 return [
                     {
                         id: newId,
-                        email: defaultUserEmail || '', // defaultUserEmail이 존재하면 해당 이메일, 없으면 빈 문자열
+                        email: defaultUserEmail || '',
                         todo: 'todo for sample',
                         status: 'ready',
                         startTime: '',
@@ -144,7 +144,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     ...prevRows,
                     {
                         id: newId,
-                        email: defaultUserEmail || '', // defaultUserEmail이 존재하면 해당 이메일, 없으면 빈 문자열
+                        email: defaultUserEmail || '',
                         todo: 'todo for sample',
                         status: 'ready',
                         startTime: '',
@@ -195,13 +195,30 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
             <Box display={"flex"} flexDirection={"column"} gap={2}>
                 <Box display={"flex"} justifyContent={"flex-end"} gap={2} pr={2}>
+                    <Box width={"20%"}>
+                        {usersEmailInfo.length ? (
+                            <Select
+                                placeholder="Select default user"
+                                value={defaultUserEmail} // 현재 defaultUserEmail 상태값으로 선택
+                                onChange={handleSelectChange} // 선택 시 상태 업데이트
+                            >
+                                {usersEmailInfo.map((email, index) => (
+                                    <option key={index} value={email}>
+                                        {email}
+                                    </option>
+                                ))}
+                            </Select>
+                        ) : (
+                            "No users"
+                        )}
+                    </Box>
                     <Button variant={"outline"} onClick={handleAddRow}>Add Row</Button>
                     {/* 2244 save 함수 구현 */}
                     <Button variant={"outline"} onClick={handleSave}>Save</Button>
                 </Box>
 
                 {/* {defaultUserEmail} */}
-                <Box width={"20%"}>
+                {/* <Box width={"20%"}>
                     {usersEmailInfo.length ? (
                         <Select
                             placeholder="Select default user"
@@ -217,7 +234,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     ) : (
                         "No users"
                     )}
-                </Box>
+                </Box> */}
 
                 <Box width={"100%"}>
                     {/* {usersEmailInfo.length ? usersEmailInfo.map((row) => {
