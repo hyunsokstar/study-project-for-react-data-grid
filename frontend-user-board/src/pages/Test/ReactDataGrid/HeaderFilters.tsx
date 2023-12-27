@@ -112,8 +112,7 @@ const HeaderFilters = () => {
             key: 'gender',
             name: 'Gender',
             width: 150,
-
-        }, // Gender 열의 너비를 150으로 설정
+        },
     ];
 
     // function clearFilters() {
@@ -142,7 +141,7 @@ const HeaderFilters = () => {
                     className={filters.enabled ? styles.filterClassname : undefined}
                     columns={columns}
                     rows={filteredRows}
-                    headerRowHeight={filters.enabled ? 100 : undefined}
+                    headerRowHeight={filters.enabled ? 30 : undefined}
                 />
             </FilterContext.Provider>
         </Box>

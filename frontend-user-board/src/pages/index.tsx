@@ -36,6 +36,8 @@ const Home = () => {
         { href: '/Test/ReactDataGrid/Basic/DataGridWithSampleData', text: 'Basic Grid With Sample Data', visible: true },
         { href: '/Test/ReactDataGrid/GroupBy', text: 'Group By Sample Page', visible: true },
         { href: '/Test/ReactDataGrid/HeaderFilters', text: 'Header Filter Sample Page', visible: true },
+        { href: '/Test/ReactDataGrid/TotalCount', text: 'TotalCount Sample Page', visible: true },
+        { href: '/Test/ReactDataGrid/MasterDetail', text: 'MasterDetail Sample Page', visible: true },
     ];
 
     const links6 = [

@@ -15,3 +15,7 @@
     gap: 8px;
     text-transform: capitalize;
 }
+
+.expanded_row {
+    padding: 24px;
+}
