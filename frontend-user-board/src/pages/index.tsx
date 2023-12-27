@@ -32,8 +32,10 @@ const Home = () => {
     // todo list by react data grid 1227
     const links5 = [
         { href: '/Test/CardList/PostingList', text: 'react-data-grid 로 todo list 구현 하기', visible: true },
-        { href: '/Test/ReactDataGrid/BasicDataGrid', text: 'Basic React Data Grid Component', visible: true },
+        { href: '/Test/ReactDataGrid/Basic/BasicDataGrid', text: 'Basic React Data Grid Component', visible: true },
+        { href: '/Test/ReactDataGrid/Basic/DataGridWithSampleData', text: 'Basic Grid With Sample Data', visible: true },
         { href: '/Test/ReactDataGrid/GroupBy', text: 'Group By Sample Page', visible: true },
+        { href: '/Test/ReactDataGrid/HeaderFilters', text: 'Header Filter Sample Page', visible: true },
     ];
 
     const links6 = [

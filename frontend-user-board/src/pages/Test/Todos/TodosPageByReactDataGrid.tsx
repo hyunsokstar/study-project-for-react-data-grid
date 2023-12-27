@@ -25,10 +25,15 @@ function getColumns(
 ) {
     return [
         SelectColumnForReactDataGrid,
-        { key: 'id', name: 'ID' },
+        {
+            key: 'id',
+            name: 'ID',
+            width: 50
+        },
         {
             key: 'email',
             name: 'Email',
+            // width: 200,
             // renderEditCell: CommonSelectBoxEdtior(usersEmailInfo)
             renderEditCell: (props: {
                 row: any;
