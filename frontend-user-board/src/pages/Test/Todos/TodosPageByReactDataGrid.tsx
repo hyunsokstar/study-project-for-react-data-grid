@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Box, Button, Select } from '@chakra-ui/react';
-import DataGrid, { Column, RenderCheckboxProps, RenderEditCellProps, RenderSortStatusProps, textEditor, useRowSelection } from 'react-data-grid';
+import DataGrid, { Column, RenderCheckboxProps, RenderEditCellProps, RenderSortStatusProps, TreeDataGrid, textEditor, useRowSelection } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import useGetAllTodos from '@/hooks/useGetAllTodos';
 import { ITypeForTodoRow } from '@/types/typeforTodos';
@@ -11,6 +11,7 @@ import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
 import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
 import CommonDateTimePicker from '@/components/GridEditor/DateTimePicker/CommonDateTimePicker';
 import SelectBoxForNumberToAddRow from '@/components/Select/SelectBoxForNumberToAddRow';
+import { groupBy as rowGrouper } from 'lodash-es';
 
 type Props = {};
 
@@ -110,6 +111,12 @@ interface ITypeForGridRows {
     deadline: string;
 }
 
+// step5 옵션 추가
+const options = [
+    'email',
+    'status',
+] as const;
+
 // 1122
 const TodosPageByReactDataGrid = (props: Props) => {
     const [pageNum, setPageNum] = useState(1);
@@ -122,6 +129,17 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
     const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
     const columns = useMemo(() => getColumns(usersEmailInfo), [usersEmailInfo]);
+
+    // step1 group by 관련 state 선언 1
+    const [selectedOptions, setSelectedOptions] = useState<readonly string[]>([
+        // options[0],
+        // options[1]
+    ]);
+    // step2 group by 관련 state 선언 2
+    const [expandedGroupIds, setExpandedGroupIds] = useState(
+        (): ReadonlySet<unknown> =>
+            new Set<unknown>(['United States of America', 'United States of America__2015'])
+    );
 
 
     // mutation
@@ -155,6 +173,23 @@ const TodosPageByReactDataGrid = (props: Props) => {
         mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
         setSelectedRows(new Set())
     };
+
+    // step6
+    function toggleOption(option: string, enabled: boolean) {
+        const index = selectedOptions.indexOf(option);
+        if (enabled) {
+            if (index === -1) {
+                setSelectedOptions((options) => [...options, option]);
+            }
+        } else if (index !== -1) {
+            setSelectedOptions((options) => {
+                const newOptions = [...options];
+                newOptions.splice(index, 1);
+                return newOptions;
+            });
+        }
+        setExpandedGroupIds(new Set());
+    }
 
     useEffect(() => {
         let todoRowsToShow;
@@ -209,35 +244,27 @@ const TodosPageByReactDataGrid = (props: Props) => {
 
 
                     <Button variant={"outline"} onClick={handleAddRow}>Add Row</Button>
-                    {/* 2244 save 함수 구현 */}
                     <Button variant={"outline"} onClick={handleSave}>Save</Button>
                 </Box>
 
-                {/* {defaultUserEmail} */}
-                {/* <Box width={"20%"}>
-                    {usersEmailInfo.length ? (
-                        <Select
-                            placeholder="Select default user"
-                            value={defaultUserEmail} // 현재 defaultUserEmail 상태값으로 선택
-                            onChange={handleSelectChange} // 선택 시 상태 업데이트
-                        >
-                            {usersEmailInfo.map((email, index) => (
-                                <option key={index} value={email}>
-                                    {email}
-                                </option>
-                            ))}
-                        </Select>
-                    ) : (
-                        "No users"
-                    )}
-                </Box> */}
-
                 <Box width={"100%"}>
-                    {/* {usersEmailInfo.length ? usersEmailInfo.map((row) => {
-                        return "hi"
-                    }) : "no users"} */}
 
-                    <DataGrid
+                    {/* step4 group by 옵션 템플릿 추가 */}
+                    <Box display={"flex"} gap="2" my={1} mt={2}>
+                        <b>Group by:</b>
+                        {options.map((option) => (
+                            <label key={option}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedOptions.includes(option)}
+                                    onChange={(event) => toggleOption(option, event.target.checked)}
+                                />{' '}
+                                {option}
+                            </label>
+                        ))}
+                    </Box>
+
+                    <TreeDataGrid
                         rowKeyGetter={(row) => row.id}
                         columns={columns}
                         rows={todoRows || []}
@@ -248,8 +275,17 @@ const TodosPageByReactDataGrid = (props: Props) => {
                             setSelectedRows(selected);
                         }}
                         renderers={{ renderSortStatus, renderCheckbox }}
-                        // 2244 셀 수정후 실행될 함수 설정
                         onRowsChange={setTodoRows}
+                        // step3 group by 속성 추가 
+                        // groupBy
+                        // rowGrouper
+                        // expandedGroupIds
+                        // onExpandedGroupIdsChange
+                        groupBy={selectedOptions}
+                        rowGrouper={rowGrouper}
+                        expandedGroupIds={expandedGroupIds}
+                        onExpandedGroupIdsChange={setExpandedGroupIds}
+
                     />;
                 </Box>
             </Box>
@@ -258,7 +294,6 @@ const TodosPageByReactDataGrid = (props: Props) => {
     );
 };
 
-// step4 관련 코드
 function renderCheckbox({ onChange, ...props }: RenderCheckboxProps) {
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         onChange(e.target.checked, (e.nativeEvent as MouseEvent).shiftKey);

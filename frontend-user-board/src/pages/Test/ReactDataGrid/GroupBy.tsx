@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import DataGrid, { Column, TreeDataGrid } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import { groupBy as rowGrouper } from 'lodash-es';
+import styles from './groupby.module.css';
 
 
 type Row = {
@@ -68,10 +69,13 @@ const options = ['email',
 // 1122
 const GroupBy = () => {
     const rows = generateRows();
+
+    // step1 group by 관련 state 선언 1
     const [selectedOptions, setSelectedOptions] = useState<readonly string[]>([
-        options[0],
-        options[1]
+        // options[0],
+        // options[1]
     ]);
+    // step2 group by 관련 state 선언 2
     const [expandedGroupIds, setExpandedGroupIds] = useState(
         (): ReadonlySet<unknown> =>
             new Set<unknown>(['United States of America', 'United States of America__2015'])
@@ -103,7 +107,8 @@ const GroupBy = () => {
     return (
         <Box width={"80%"} m={"auto"}>
 
-            <div >
+            <Box display={"flex"} gap="2" my={1} mt={2}>
+                <b>Group by:</b>
                 {options.map((option) => (
                     <label key={option}>
                         <input
@@ -114,17 +119,23 @@ const GroupBy = () => {
                         {option}
                     </label>
                 ))}
-            </div>
+            </Box>
 
             <TreeDataGrid
                 columns={columns}
                 rows={rows}
-                style={{ height: "60vh" }}
+
                 rowKeyGetter={rowKeyGetter}
+                style={{ height: "60vh" }}
+
                 groupBy={selectedOptions}
                 rowGrouper={rowGrouper}
                 expandedGroupIds={expandedGroupIds}
                 onExpandedGroupIdsChange={setExpandedGroupIds}
+
+                defaultColumnOptions={{ resizable: true }}
+                direction={'ltr'}
+
             />
         </Box>
     );

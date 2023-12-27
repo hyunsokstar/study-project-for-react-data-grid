@@ -1,6 +1,5 @@
 import React from 'react'
 import 'react-data-grid/lib/styles.css';
-
 import { Box } from '@chakra-ui/react'
 import DataGrid from 'react-data-grid';
 
@@ -19,7 +18,7 @@ type Props = {}
 const BasicDataGrid = (props: Props) => {
     return (
         <Box width={"80%"} m={"auto"}>
-            BasicDataGrid
+            <DataGrid columns={columns} rows={rows} />;
         </Box>
     )
 }
