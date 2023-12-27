@@ -18,6 +18,7 @@ interface Filter extends Omit<Row, 'id'> {
     enabled: boolean;
 }
 
+// step3-1
 const FilterContext = createContext<Filter | undefined>(undefined);
 
 
@@ -135,7 +136,7 @@ const HeaderFilters = () => {
 
     return (
         <Box width="80%" m="auto" mt={5} px={5}>
-            {/* step3 filters 를 컴퍼넌트 내부 어디에서든 사용할수 있게 아래와 같이 FilterContext 설정 */}
+            {/* step3-2 filters 를 컴퍼넌트 내부 어디에서든 사용할수 있게 아래와 같이 FilterContext 설정 */}
             <FilterContext.Provider value={filters}>
                 <DataGrid
                     className={filters.enabled ? styles.filterClassname : undefined}
