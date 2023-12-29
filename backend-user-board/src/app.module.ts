@@ -14,6 +14,8 @@ import { AuthMiddleware } from "./middlewares/AuthMiddleware";
 import { CloudflareModule } from './cloudflare/cloudflare.module';
 import { TodosModule } from './todos/todos.module';
 import { TodosModel } from "./todos/entities/todos.entity";
+import { TechnotesModule } from './technotes/technotes.module';
+import { TechNotesModel } from "./technotes/entities/technotes.entity";
 
 
 @Module({
@@ -25,7 +27,7 @@ import { TodosModel } from "./todos/entities/todos.entity";
       username: "postgres",
       password: "postgres",
       database: "userAdminBoard",
-      entities: [UsersModel, UserPostingsModel, TodosModel],
+      entities: [UsersModel, UserPostingsModel, TodosModel, TechNotesModel],
       synchronize: true,
     }),
     ConfigModule.forRoot({
@@ -36,6 +38,7 @@ import { TodosModel } from "./todos/entities/todos.entity";
     PostingsModule,
     TodosModule,
     CloudflareModule,
+    TechnotesModule,
   ],
   controllers: [AppController],
   providers: [AppService,
