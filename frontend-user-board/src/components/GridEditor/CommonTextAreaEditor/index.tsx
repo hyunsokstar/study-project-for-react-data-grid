@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import gridStyles from './styles.module.scss';
 import { useRowSelection } from 'react-data-grid';
+import { Input, Textarea } from '@chakra-ui/react';
 
 interface TextEditorProps {
     row: any;
@@ -10,7 +11,7 @@ interface TextEditorProps {
     onClose: (commit: boolean, keepEditing: boolean) => void;
 }
 
-const CommonTextEditor = <TRow, TSummaryRow>({
+const CommonTextAreaEditor = <TRow, TSummaryRow>({
     row,
     column,
     onRowChange,
@@ -19,11 +20,10 @@ const CommonTextEditor = <TRow, TSummaryRow>({
     const [isRowSelected, onRowSelectionChange] = useRowSelection();
     const [initialValue, setInitialValue] = useState(row[column.key] as string);
 
-    const handleKeyPress = (e: any) => {
-
-        if (e.key === 'Enter') {
+    const handleKeyPress = (event: any) => {
+        if (event.key === 'Enter') {
             console.log('엔터 눌렀습니다');
-            const currentValue = e.target.value || "";
+            const currentValue = event.target.value || "";
 
             if (initialValue !== currentValue) {
                 onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: false });
@@ -32,21 +32,24 @@ const CommonTextEditor = <TRow, TSummaryRow>({
         }
     };
 
+
     return (
-        <input
+        <Input
+            height={"100%"}
             value={row[column.key]}
+            // ref={_removeLineBreak}
             onChange={(event) => onRowChange({ ...row, [column.key]: event.target.value })}
             onKeyDown={handleKeyPress}
             onBlur={(e) => {
                 const currentValue = e.target.value || "";
                 if (initialValue !== currentValue) {
-                    onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: true });
+                    onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: false });
                 }
-                // onClose(true, false)
+                onClose(true, false)
             }}
         // className={gridStyles.inputStyle} // styles 객체에서 해당 클래스를 가져와서 적용
         />
     );
 };
 
-export default CommonTextEditor;
+export default CommonTextAreaEditor;

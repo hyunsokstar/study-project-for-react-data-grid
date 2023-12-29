@@ -78,7 +78,7 @@ const HeaderFilters = () => {
         {
             key: 'task',
             name: 'Task',
-            width: 200,
+            width: 600,
             // step5 필터 컴퍼넌트를 다음과 같이 설정
             renderHeaderCell: (p: any) => {
                 console.log("p : ", p);
@@ -141,7 +141,7 @@ const HeaderFilters = () => {
                     className={filters.enabled ? styles.filterClassname : undefined}
                     columns={columns}
                     rows={filteredRows}
-                    headerRowHeight={filters.enabled ? 30 : undefined}
+                    headerRowHeight={filters.enabled ? 80 : undefined}
                 />
             </FilterContext.Provider>
         </Box>
@@ -163,10 +163,18 @@ function FilterRenderer<R>({
 }) {
     const filters = useContext(FilterContext)!;
     return (
-        <>
-            {/* <div>{column.name}</div> */}
-            {filters.enabled && <div>{children({ tabIndex, filters })}</div>}
-        </>
+        <Box
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"flex-start"}
+            alignItems={"flex-start"}
+            lineHeight={"100%"}
+            my={1}
+            py={2}
+        >
+            <Box fontSize={"15px"}>{column.name} </Box> <br />
+            {filters.enabled && <Box width={"100%"}>{children({ tabIndex, filters })}</Box>}
+        </Box>
     );
 }
 
