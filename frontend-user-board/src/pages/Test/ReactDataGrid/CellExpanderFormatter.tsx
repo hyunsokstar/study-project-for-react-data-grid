@@ -32,6 +32,9 @@ export function CellExpanderFormatter({
         }
     }
 
+    console.log("expanded : ", expanded);
+
+
     return (
         <div>
             <span onClick={onCellExpand} onKeyDown={handleKeyDown}>

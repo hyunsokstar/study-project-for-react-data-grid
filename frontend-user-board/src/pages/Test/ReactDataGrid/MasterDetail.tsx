@@ -203,7 +203,7 @@ const MasterDetail = (props: Props) => {
                 //     return 2;
                 // },
                 renderCell(props: any) {
-                    if (props.row.type !== "DETAIL") {
+                    if (props.row.type === "MASTER") {
                         return (
                             <SimpleGrid columns={2} spacing={1} width={"50%"}>
                                 <Button borderRadius={100}>r</Button>
@@ -220,7 +220,7 @@ const MasterDetail = (props: Props) => {
                 name: "Period",
                 width: 200,
                 renderCell: ((props) => {
-                    if (props.row.type !== "DETAIL") {
+                    if (props.row.type === "MASTER") {
                         return (
                             <Box lineHeight={"20px"} px={2} display={"flex"} flexDirection={"column"} justifyContent={"center"} mt={5}>
                                 <Box>{props.row.period.start}</Box>
@@ -243,13 +243,13 @@ const MasterDetail = (props: Props) => {
                                     <Image objectFit="contain" width={100} height={100} src={props.row.planNote} border={"1px solid black"} />
                                 </Link>
 
-                                {/* <Box display={"flex"} flexDirection={"column"} gap={2}>
-                                    <Button borderRadius={100}>open</Button>
-                                    <HStack gap={2}>
+                                <Box display={"flex"} flexDirection={"column"} gap={2}>
+                                    <Button borderRadius={100}>r</Button>
+                                    {/* <HStack gap={2}>
                                         <Button borderRadius={100}>left</Button>
                                         <Button borderRadius={100}>right</Button>
-                                    </HStack>
-                                </Box> */}
+                                    </HStack> */}
+                                </Box>
                             </HStack>
                         )
                     }
@@ -422,13 +422,13 @@ function ProductGrid({ parentId }: { parentId: number; }) {
                                     <Image objectFit="contain" width={100} height={100} src={props.row.planNote} border={"1px solid black"} />
                                 </Link>
 
-                                {/* <Box display={"flex"} flexDirection={"column"} gap={2}>
-                                    <Button borderRadius={100}>o</Button>
-                                    <HStack gap={2}>
+                                <Box display={"flex"} flexDirection={"column"} gap={2}>
+                                    <Button borderRadius={100}>r</Button>
+                                    {/* <HStack gap={2}>
                                         <Button borderRadius={100}>l</Button>
                                         <Button borderRadius={100}>r</Button>
-                                    </HStack>
-                                </Box> */}
+                                    </HStack> */}
+                                </Box>
                             </HStack>
                         )
                     }
@@ -448,10 +448,13 @@ function ProductGrid({ parentId }: { parentId: number; }) {
                                     <Image objectFit="contain" width={100} height={100} src={props.row.planNote} border={"1px solid black"} />
                                 </Link>
 
-                                {/* <Box display={"flex"} flexDirection={"column"} gap={2}>
-                                    <Button borderRadius={100}>open</Button>
-                                    <Button borderRadius={100}>link</Button>
-                                </Box> */}
+                                <Box display={"flex"} flexDirection={"column"} gap={2}>
+                                    <Button borderRadius={100}>r</Button>
+                                    {/* <HStack gap={2}>
+                                        <Button borderRadius={100}>l</Button>
+                                        <Button borderRadius={100}>r</Button>
+                                    </HStack> */}
+                                </Box>
                             </HStack>
                         )
                     }
@@ -498,7 +501,6 @@ function ProductGrid({ parentId }: { parentId: number; }) {
                 rows={rows}
                 onRowsChange={onRowsChange}
                 headerRowHeight={45}
-                rowHeight={(row) => (row.type === 'DETAIL' ? 500 : 100)}
                 className="fill-grid"
                 enableVirtualization={false}
                 direction={"ltr"}
@@ -515,6 +517,7 @@ function ProductGrid({ parentId }: { parentId: number; }) {
                     setSelectedRows(selected);
                 }}
                 renderers={{ renderSortStatus, renderCheckbox }}
+                rowHeight={(row) => (row.type === 'DETAIL' ? 500 : 100)}
             />
         </Box>
     )
