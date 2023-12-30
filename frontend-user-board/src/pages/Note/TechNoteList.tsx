@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'react-data-grid/lib/styles.css';
-import { Box } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import DataGrid, { RenderCheckboxProps, RowsChangeData, SelectColumn, textEditor } from 'react-data-grid';
 import { CellExpanderFormatter } from '../Test/ReactDataGrid/CellExpanderFormatter';
 import useGetAllTechNoteList from '@/hooks/useGetAllTechNoteList';
 import { SelectColumnForReactDataGrid } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
 import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
+import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
 
 const PlanNoteList = () => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
@@ -35,10 +36,8 @@ const PlanNoteList = () => {
                         }}
                     />
                 );
-                // return CellExpanderFormatter;
             }
         },
-        // step1 열리고 닫게만 해보자
         { key: 'id', name: 'ID' }, // Column에 id 추가
         {
             key: 'writer',
@@ -61,9 +60,12 @@ const PlanNoteList = () => {
     ];
     const [pageNum, setPageNum] = useState(1);
 
+    // useQuery
     const { isLoading, error, data: dataForTechNoteList } = useGetAllTechNoteList(pageNum);
     console.log("dataForTechNoteList : ", dataForTechNoteList);
 
+    // mutation
+    const mutationForSaveTodoRows = useSaveTodoRowsMutation();
 
     function onRowsChange(rows: TechNote[], { indexes, column }: any) {
         // console.log("indexes : ", indexes);
@@ -89,13 +91,6 @@ const PlanNoteList = () => {
         setNoteRows(rows);
     }
 
-    // { key: 'id', name: 'ID' }, // Column에 id 추가
-    // { key: 'writer', name: 'Writer' },
-    // { key: 'title', name: 'Title' },
-    // { key: 'description', name: 'Description' },
-    // { key: 'category', name: 'Category' },
-    // { key: 'createdAt', name: 'Created At' },
-
     useEffect(() => {
         if (!isLoading) {
             const rowsToUpdate = dataForTechNoteList?.techNoteList.map((row: any) => {
@@ -114,8 +109,26 @@ const PlanNoteList = () => {
         }
     }, [dataForTechNoteList])
 
+    const saveHandler = () => {
+        if (selectedRows.size === 0 || !noteRows) {
+            return;
+        }
+
+        const selectedNotes = Array.from(selectedRows).map((selectedId) =>
+            noteRows.find((note: TechNote) => note.id === selectedId)
+        );
+
+        console.log('Selected Notes:', selectedNotes);
+        mutationForSaveTodoRows.mutate(selectedNotes);
+    };
+
+    // 2244
     return (
         <Box width={"98%"} m={"auto"}>
+            <Box display={"flex"} justifyContent={"flex-end"} my={2}>
+                <Button onClick={saveHandler} variant={"outline"}>save</Button>
+            </Box>
+
             <DataGrid
                 rowKeyGetter={(row) => row.id}
                 columns={columns}

@@ -158,12 +158,14 @@ export class TodosService {
     async getTodosList(
         pageNum: number = 1,
         perPage: number = 10
-    ): Promise<{
-        todoList: TodosModel[],
-        totalCount: number,
-        perPage: number,
-        usersEmailInfo: string[]
-    }> {
+    ): Promise<
+        {
+            todoList: TodosModel[],
+            totalCount: number,
+            perPage: number, usersEmailInfo: string[]
+        }
+    > {
+
         const userEmailList = await this.usersRepository
             .createQueryBuilder('user')
             .select('user.email AS user_email')

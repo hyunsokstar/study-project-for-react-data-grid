@@ -8,6 +8,14 @@ const instance = axios.create({
     withCredentials: true,
 });
 
+export const apiForSaveTechNotes = (techNotesToSave: TechNote[]) => {
+    console.log("techNotesToSave at api : ", techNotesToSave);
+    return instance.post(
+        'saveTechNotes', techNotesToSave
+    ).then((response: any) => response.data)
+}
+
+
 export const apiForGetAllTechNoteList = ({ queryKey }: QueryFunctionContext) => {
     const [_, pageNum] = queryKey;
 

@@ -1,28 +1,26 @@
 import React from 'react';
-import { apiForSaveTodoRows } from '@/api/apiForTodos';
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiForSaveTechNotes } from '@/api/apiForTechNotes';
 
-const useSaveTodoRowsMutation = () => {
+const useSaveTechNotesMutation = () => {
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용
 
     const mutationForSaveTodoRows = useMutation({
         mutationFn: apiForSaveTechNotes,
         onSuccess: (result) => {
-            console.log("result : ", result);
 
             queryClient.refetchQueries({
-                queryKey: ['apiForGetAllTodoList']
+                queryKey: ['apiForGetAllTechNoteList']
             });
 
             toast({
-                title: "save todo rows success",
+                title: "save tech note success",
                 description: result.message,
                 status: "success",
-                duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
-                isClosable: true, // 닫기 버튼 표시
+                duration: 2000,
+                isClosable: true,
             });
         },
     });
@@ -30,4 +28,4 @@ const useSaveTodoRowsMutation = () => {
     return mutationForSaveTodoRows;
 };
 
-export default useSaveTodoRowsMutation
+export default useSaveTechNotesMutation

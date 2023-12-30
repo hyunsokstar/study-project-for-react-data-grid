@@ -64,4 +64,50 @@ export class TechnotesService {
 
     }
 
+
+    // saveTechNotes
+    async saveTechNotes(techNotesToSave: any[], loginUser: UsersModel): Promise<any> {
+
+        console.log("techNotesToSave : ", techNotesToSave);
+        console.log("todoRowsForSave.length : ", techNotesToSave.length);
+
+        let count = 0;
+
+        for (const note of techNotesToSave) {
+            const { id, title, description, category, writer, ...data } = note;
+
+            if (id) {
+                console.log("id : ", id);
+
+                const existingNote = await this.techNotesRepo.findOne({ where: { id: id } }); // 변경된 부분
+
+                if (existingNote) {
+                    count++;
+                    console.log("update here");
+                    await this.techNotesRepo.update(id, {
+                        title: title,
+                        description: description,
+                        category: category,
+                        updatedAt: new Date(),
+                        writer: writer
+                    });
+                } else {
+                    console.log("save here");
+                    count++;
+
+                    await this.techNotesRepo.save({
+                        title: title,
+                        description: description,
+                        category: category,
+                        createdAt: new Date(),
+                        writer: loginUser
+                    });
+                }
+
+
+            }
+        }
+        return { message: `Todos updated successfully ${count}` };
+    }
+
 }
