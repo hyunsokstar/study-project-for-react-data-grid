@@ -15,6 +15,8 @@ export const SelectColumnForReactDataGrid: Column<any, any> = {
     return <CheckBoxFormatterForHeader {...props} />;
   },
   renderCell(props) {
-    return <CheckBoxFormatterForRow {...props} />;
+    if (props.row.type !== "DETAIL") {
+      return <CheckBoxFormatterForRow {...props} />;
+    }
   },
 };

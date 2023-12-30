@@ -42,7 +42,7 @@ const CommonTextEditor = <TRow, TSummaryRow>({
                 if (initialValue !== currentValue) {
                     onRowSelectionChange({ type: "ROW", row: row, checked: true, isShiftClick: true });
                 }
-                // onClose(true, false)
+                onClose(true, false)
             }}
         // className={gridStyles.inputStyle} // styles 객체에서 해당 클래스를 가져와서 적용
         />

@@ -1,85 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import 'react-data-grid/lib/styles.css';
 import { Box } from '@chakra-ui/react';
-import DataGrid, { RenderCheckboxProps, RowsChangeData, SelectColumn } from 'react-data-grid';
+import DataGrid, { RenderCheckboxProps, RowsChangeData, SelectColumn, textEditor } from 'react-data-grid';
 import { CellExpanderFormatter } from '../Test/ReactDataGrid/CellExpanderFormatter';
 import useGetAllTechNoteList from '@/hooks/useGetAllTechNoteList';
-
-// type Note = {
-//     type: 'MASTER'
-//     id: number; // id 추가
-//     writer: string;
-//     title: string;
-//     description: string;
-//     category: string;
-//     createdAt: string;
-//     expanded: boolean;
-// } | {
-//     type: 'DETAIL';
-//     id: number;
-//     parentId: number;
-// };
-
-// const fakeNotes: Note[] = [
-//     {
-//         type: 'MASTER',
-//         id: 1, // 각 row에 id 추가
-//         writer: 'John Doe',
-//         title: 'Lorem Ipsum',
-//         description: 'Lorem ipsum dolor sit amet',
-//         category: 'plan',
-//         createdAt: '2023-01-01',
-//         expanded: false,
-//     },
-//     {
-//         type: 'MASTER',
-//         id: 2,
-//         writer: 'Alice Smith',
-//         title: 'Dolor Sit Amet',
-//         description: 'Consectetur adipiscing elit',
-//         category: 'report',
-//         createdAt: '2023-02-15',
-//         expanded: false,
-//     },
-//     {
-//         type: 'MASTER',
-//         id: 3,
-//         writer: 'Bob Johnson',
-//         title: 'Adipiscing Elit',
-//         description: 'Sed do eiusmod tempor incididunt',
-//         category: 'skil',
-//         createdAt: '2023-03-20',
-//         expanded: false,
-//     },
-//     {
-//         type: 'MASTER',
-//         id: 4,
-//         writer: 'hyun',
-//         title: 'nest js 14 tutorial',
-//         description: 'Sed do eiusmod tempor incididunt',
-//         category: 'tutorial',
-//         createdAt: '2023-03-20',
-//         expanded: false,
-//     },
-//     {
-//         type: 'MASTER',
-//         id: 5,
-//         writer: 'hyun',
-//         title: 'nest js 14 tutorial',
-//         description: 'Sed do eiusmod tempor incididunt',
-//         category: 'qna',
-//         createdAt: '2023-03-20',
-//         expanded: false,
-//     },
-// ];
+import { SelectColumnForReactDataGrid } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
+import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
 
 const PlanNoteList = () => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
-    const [noteRows, setNoteRows] = useState<TechNote[]>([]);
+    const [noteRows, setNoteRows] = useState<TechNote[] | any>();
 
     const columns = [
-        SelectColumn,
-        // step1 열리고 닫게만 해보자
+        SelectColumnForReactDataGrid,
         {
             key: 'expanded',
             name: '',
@@ -105,6 +38,7 @@ const PlanNoteList = () => {
                 // return CellExpanderFormatter;
             }
         },
+        // step1 열리고 닫게만 해보자
         { key: 'id', name: 'ID' }, // Column에 id 추가
         {
             key: 'writer',
@@ -116,7 +50,11 @@ const PlanNoteList = () => {
                 );
             }
         },
-        { key: 'title', name: 'Title' },
+        {
+            key: 'title',
+            name: 'Title',
+            renderEditCell: CommonTextEditor
+        },
         { key: 'description', name: 'Description' },
         { key: 'category', name: 'Category' },
         { key: 'createdAt', name: 'Created At' },
@@ -127,22 +65,27 @@ const PlanNoteList = () => {
     console.log("dataForTechNoteList : ", dataForTechNoteList);
 
 
-    function onRowsChange(rows: TechNote[], { indexes }: RowsChangeData<TechNote>) {
-        console.log("rows : ", rows);
-        console.log("indexes : ", indexes);
+    function onRowsChange(rows: TechNote[], { indexes, column }: any) {
+        // console.log("indexes : ", indexes);
 
-        // const row = rows[indexes[0]];
-        // if (row.type === 'MASTER') {
-        //     if (row.expanded) {
-        //         rows.splice(indexes[0] + 1, 0, {
-        //             type: 'DETAIL',
-        //             id: row.id + 100,
-        //             parentId: row.id
-        //         });
-        //     } else {
-        //         rows.splice(indexes[0] + 1, 1);
-        //     }
-        // }
+        const row = rows[indexes[0]];
+        if (row.type === 'MASTER') {
+            console.log("here 1?");
+
+            if (row.expanded) {
+                console.log("here2 ? ");
+                rows.splice(indexes[0] + 1, 0, {
+                    type: 'DETAIL',
+                    id: row.id + 100,
+                    parentId: row.id
+                });
+            } else {
+                console.log("here ?");
+
+                if (column.key === "expanded")
+                    rows.splice(indexes[0] + 1, 1);
+            }
+        }
         setNoteRows(rows);
     }
 
@@ -154,10 +97,8 @@ const PlanNoteList = () => {
     // { key: 'createdAt', name: 'Created At' },
 
     useEffect(() => {
-        if (dataForTechNoteList) {
-            // setNoteRows(dataForTechNoteList?.techNoteList)
-
-            const rowsToUpdate = dataForTechNoteList.techNoteList.map((row) => {
+        if (!isLoading) {
+            const rowsToUpdate = dataForTechNoteList?.techNoteList.map((row: any) => {
                 return {
                     id: row.id,
                     writer: row.writer,
@@ -171,7 +112,7 @@ const PlanNoteList = () => {
             })
             setNoteRows(rowsToUpdate);
         }
-    }, [])
+    }, [dataForTechNoteList])
 
     return (
         <Box width={"98%"} m={"auto"}>

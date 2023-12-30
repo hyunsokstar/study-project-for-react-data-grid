@@ -11,19 +11,25 @@ interface Writer {
     profileImage: string | null;
 }
 
-interface TechNote {
+type TechNote = {
+    type: "MASTER";
     id: number;
     title: string;
     description: string;
     category: string;
     createdAt: string;
-    updatedAt?: string | null;
     writer: Writer;
-    type?: string;
-    expanded?: boolean
+    updatedAt?: string | null;
+    expanded?: boolean;
+    parentId?: any;
+} |
+{
+    type: "DETAIL",
+    id: any;
+    parentId: number;
 }
 
-interface ResponseDataTypeForGetAllTechNoteList {
+type ResponseDataTypeForGetAllTechNoteList = {
     techNoteList: TechNote[];
     totalCount: number;
     perPage: number;
