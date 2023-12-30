@@ -22,7 +22,7 @@ export class TechNotesModel {
     @Column({ nullable: true })
     category: string;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: true })
     createdAt: Date;
 
     @Column({ type: 'timestamp', nullable: true })
@@ -30,4 +30,5 @@ export class TechNotesModel {
 
     @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     writer: UsersModel;
+
 }
