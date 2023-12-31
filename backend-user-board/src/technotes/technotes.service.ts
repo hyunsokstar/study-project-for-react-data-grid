@@ -76,6 +76,12 @@ export class TechnotesService {
         for (const note of techNotesToSave) {
             const { id, title, description, category, writer, ...data } = note;
 
+            const writerObj = await this.usersRepository.findOne({
+                where: {
+                    email: writer
+                }
+            });
+
             if (id) {
                 console.log("id : ", id);
 
@@ -89,11 +95,15 @@ export class TechnotesService {
                         description: description,
                         category: category,
                         updatedAt: new Date(),
-                        writer: writer
+                        writer: writerObj
                     });
                 } else {
                     console.log("save here");
                     count++;
+
+                    if (!loginUser) {
+                        return { status: "error", message: `login is required to add tech note` }
+                    }
 
                     await this.techNotesRepo.save({
                         title: title,

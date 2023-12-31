@@ -11,7 +11,10 @@ export class TechnotesController {
     async getAllTechNoteList(
         @Query('pageNum') pageNum = 1,
         @Query('perPage') perPage = 10,
+        @Req() req: Request
     ) {
+        // console.log("req['user'] 2: ", req['user']);
+
         return this.technotesService.getAllTechNotes(pageNum, perPage);
     }
 
@@ -23,8 +26,7 @@ export class TechnotesController {
     @Post('saveTechNotes') // API 엔드포인트 추가
     async saveTodos(@Body() techNotesToSave: any, @Req() req: Request) {
         console.log("techNotesToSave at controller : ", techNotesToSave);
-        console.log("req.user : ", req['user']);
-
+        console.log("req['user']3 : ", req['user']);
 
         return this.technotesService.saveTechNotes(techNotesToSave, req['user']);
     }

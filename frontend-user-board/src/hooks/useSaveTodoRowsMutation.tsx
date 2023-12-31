@@ -9,7 +9,7 @@ const useSaveTodoRowsMutation = () => {
     const toast = useToast(); // useToast 훅 사용
 
     const mutationForSaveTodoRows = useMutation({
-        mutationFn: apiForSaveTechNotes,
+        mutationFn: apiForSaveTodoRows,
         onSuccess: (result) => {
             console.log("result : ", result);
 

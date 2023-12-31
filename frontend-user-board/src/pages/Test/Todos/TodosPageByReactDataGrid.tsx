@@ -175,7 +175,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
     const handleSave = () => {
         const todoRowsForSave = todoRows?.filter(row => selectedRows.has(row.id)) || [];
         console.log('todoRowsForSave : ', todoRowsForSave);
-        mutationForSaveTodoRows.mutate({ todoRowsForSave: todoRowsForSave });
+        mutationForSaveTodoRows.mutate({ todoRowsForSave });
         setSelectedRows(new Set())
     };
 

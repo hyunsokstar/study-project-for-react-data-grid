@@ -15,14 +15,29 @@ const useSaveTechNotesMutation = () => {
                 queryKey: ['apiForGetAllTechNoteList']
             });
 
-            toast({
-                title: "save tech note success",
-                description: result.message,
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-            });
+            if (result.status === "error") {
+                toast({
+                    title: "save tech note failure",
+                    description: result.message,
+                    status: "warning",
+                    duration: 2000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: "save tech note success",
+                    description: result.message,
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
+
         },
+        onError: (e) => {
+            console.log("error for save technote : ", e);
+
+        }
     });
 
     return mutationForSaveTodoRows;

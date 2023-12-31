@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import gridStyles from './styles.module.scss';
 import { useRowSelection } from 'react-data-grid';
+import { Input } from '@chakra-ui/react';
 
 interface TextEditorProps {
     row: any;
@@ -33,7 +34,7 @@ const CommonTextEditor = <TRow, TSummaryRow>({
     };
 
     return (
-        <input
+        <Input
             value={row[column.key]}
             onChange={(event) => onRowChange({ ...row, [column.key]: event.target.value })}
             onKeyDown={handleKeyPress}
@@ -44,6 +45,7 @@ const CommonTextEditor = <TRow, TSummaryRow>({
                 }
                 onClose(true, false)
             }}
+            height={"94%"}
         // className={gridStyles.inputStyle} // styles 객체에서 해당 클래스를 가져와서 적용
         />
     );

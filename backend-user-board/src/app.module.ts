@@ -55,9 +55,14 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware) // 사용할 미들웨어
       // .forRoutes('/users/login-check-by-accessToken');
+      // .forRoutes(
+      //   '/users/login-check-by-accessToken',
+      //   '/users/login-check-by-refreshToken'
+      // ); // 적용할 경로 설정
       .forRoutes(
         '/users/login-check-by-accessToken',
-        '/users/login-check-by-refreshToken'
+        '/users/login-check-by-refreshToken',
+        '/technotes/saveTechNotes'
       ); // 적용할 경로 설정
   }
 }

@@ -161,3 +161,12 @@ export const apiForUpdateProfileImage = ({ email, profileImage }: any) => {
         });
 
 }
+
+export const apiForGetAllUserEmails = async (): Promise<string[]> => {
+    try {
+        const response = await instance.get('getUserEmailsByArray'); // 이메일 목록을 반환하는 엔드포인트에 맞게 경로를 지정합니다.
+        return response.data; // 이메일 목록을 반환합니다.
+    } catch (error) {
+        throw error; // 에러를 던져서 처리할 수 있도록 합니다.
+    }
+};

@@ -35,7 +35,7 @@ export class AuthMiddleware implements NestMiddleware {
             };
 
 
-            // console.log("req['user'] ::: ", req['user']);
+            console.log("req['user'] ::: ", req['user']);
 
         } catch (error) {
             console.log("error :?? ", error);

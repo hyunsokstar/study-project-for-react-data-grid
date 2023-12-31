@@ -19,6 +19,17 @@ export class UsersService {
         private readonly configService: ConfigService
     ) { }
 
+    async getUserEmails(): Promise<string[]> {
+        const query = this.usersRepository.createQueryBuilder("user")
+            .select("DISTINCT(user.email)", "email");
+
+        const uniqueEmails = await query.getRawMany();
+
+        console.log("uniqueEmail : ", uniqueEmails);
+
+        return uniqueEmails.map((item) => item.email); // 이 부분을 수정합니다.
+    }
+
 
     async followUser(data: FollowUserDto): Promise<void> {
         const { userId, targetUserId } = data;
@@ -228,7 +239,7 @@ export class UsersService {
 
             const user = await this.getUserByEmailWithEmailRelations(userEmail); // 해당 이메일로 사용자 정보 가져오기
 
-            console.log("user for login check: ", user);
+            // console.log("user for login check: ", user);
 
 
             if (!user) {

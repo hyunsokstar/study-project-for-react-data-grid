@@ -5,10 +5,11 @@ import { apiForGetAllUsers } from '../api/apiForUserBoard';
 
 const useApiForGetAllUsersData = (pageNum: number) => {
     const [userRows, setUserRows] = useState<IUser[]>([]);
-    const { isLoading: isPending, error, data: dataForUserBoard } = useQuery<ITypeForResponseDataForGetAllUsers>({
-        queryKey: ['apiForGetAllUsers', pageNum],
-        queryFn: apiForGetAllUsers,
-    });
+    const { isLoading: isPending, error, data: dataForUserBoard } =
+        useQuery<ITypeForResponseDataForGetAllUsers>({
+            queryKey: ['apiForGetAllUsers', pageNum],
+            queryFn: apiForGetAllUsers,
+        });
 
     // 데이터 로딩이 완료되면 userRows 업데이트
     useEffect(() => {

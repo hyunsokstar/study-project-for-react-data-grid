@@ -22,7 +22,7 @@ const Home = () => {
     ];
 
     const links3 = [
-        { href: '/Note/TechNoteList', text: 'plan note list', visible: true },
+        { href: '/Note/TechNoteList', text: 'Tech Note List', visible: true },
         { href: '/Note/ReportNoteContentList', text: 'report note page', visible: true },
         { href: '/Note/ReportNoteContentList', text: 'report note page', visible: true },
     ];

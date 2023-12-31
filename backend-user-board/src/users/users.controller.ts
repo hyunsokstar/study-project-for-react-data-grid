@@ -111,7 +111,7 @@ export class UsersController {
       const accessToken = authorizationHeader.replace('Bearer ', '');
       const userOrError = await this.usersService.loginCheck(accessToken);
 
-      console.log("userOrError.user : ", userOrError.user);
+      // console.log("userOrError.user : ", userOrError.user);
 
 
       if (!userOrError.success) {
@@ -283,5 +283,12 @@ export class UsersController {
     }
   }
 
+  @Get('getUserEmailsByArray')
+  async getUsersEmailArrays(@Res() res: any) {
+    const userEmails = await this.usersService.getUserEmails()
+    console.log("userEmails : ", userEmails);
 
+    // return userEmails;
+    return res.status(HttpStatus.OK).json(userEmails);
+  }
 }

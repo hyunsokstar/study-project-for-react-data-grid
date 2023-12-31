@@ -7,10 +7,15 @@ import useGetAllTechNoteList from '@/hooks/useGetAllTechNoteList';
 import { SelectColumnForReactDataGrid } from '@/components/Formatter/CheckBox/SelectColumnForRdg';
 import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEditor';
 import useSaveTodoRowsMutation from '@/hooks/useSaveTodoRowsMutation';
+import useSaveTechNotesMutation from '@/hooks/useSaveTechNotesMutation';
+import CommonSelectBoxEdtior from '@/components/GridEditor/SelectBox/CommonSelectBoxEdtior';
+import SelectBoxForUserEmail from '@/components/GridEditor/SelectBox/SelectBoxForUserEmail';
+import useUser from '@/hooks/useUser';
 
 const PlanNoteList = () => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
     const [noteRows, setNoteRows] = useState<TechNote[] | any>();
+    const { isLoggedIn, loginUser, logout } = useUser();
 
     const columns = [
         SelectColumnForReactDataGrid,
@@ -42,20 +47,29 @@ const PlanNoteList = () => {
         {
             key: 'writer',
             name: 'Writer',
-            renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
+            // renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
 
-                return (
-                    <Box>{row.writer.email}</Box>
-                );
-            }
+            //     return (
+            //         <Box>{row.writer.email}</Box>
+            //     );
+            // },
+            renderEditCell: SelectBoxForUserEmail
         },
         {
             key: 'title',
             name: 'Title',
             renderEditCell: CommonTextEditor
         },
-        { key: 'description', name: 'Description' },
-        { key: 'category', name: 'Category' },
+        {
+            key: 'description',
+            name: 'Description',
+            renderEditCell: CommonTextEditor,
+        },
+        {
+            key: 'category',
+            name: 'Category',
+            renderEditCell: CommonTextEditor
+        },
         { key: 'createdAt', name: 'Created At' },
     ];
     const [pageNum, setPageNum] = useState(1);
@@ -65,7 +79,7 @@ const PlanNoteList = () => {
     console.log("dataForTechNoteList : ", dataForTechNoteList);
 
     // mutation
-    const mutationForSaveTodoRows = useSaveTodoRowsMutation();
+    const mutationForSaveTodoRows = useSaveTechNotesMutation();
 
     function onRowsChange(rows: TechNote[], { indexes, column }: any) {
         // console.log("indexes : ", indexes);
@@ -91,23 +105,21 @@ const PlanNoteList = () => {
         setNoteRows(rows);
     }
 
-    useEffect(() => {
-        if (!isLoading) {
-            const rowsToUpdate = dataForTechNoteList?.techNoteList.map((row: any) => {
-                return {
-                    id: row.id,
-                    writer: row.writer,
-                    title: row.title,
-                    description: row.description,
-                    category: row.category,
-                    createdAt: row.createdAt,
-                    type: "MASTER",
-                    expanded: false,
-                }
-            })
-            setNoteRows(rowsToUpdate);
+    const addRowHandler = () => {
+        console.log("addRowHandler");
+        // addrowhandler 는 뭔가?
+        // 목표
+
+        const newRow = {
+            id: 999999,
+            title: '12',
+            description: '',
+            category: '',
+            writer: loginUser.email ? loginUser.email : ""
         }
-    }, [dataForTechNoteList])
+
+        setNoteRows((prev: TechNote[]) => [...prev, newRow])
+    }
 
     const saveHandler = () => {
         if (selectedRows.size === 0 || !noteRows) {
@@ -122,11 +134,35 @@ const PlanNoteList = () => {
         mutationForSaveTodoRows.mutate(selectedNotes);
     };
 
+
+    useEffect(() => {
+        if (!isLoading) {
+            const rowsToUpdate = dataForTechNoteList?.techNoteList.map((row: any) => {
+                return {
+                    id: row.id,
+                    writer: row.writer ? row.writer.email : "",
+                    title: row.title,
+                    description: row.description,
+                    category: row.category,
+                    createdAt: row.createdAt,
+                    type: "MASTER",
+                    expanded: false,
+                }
+            })
+            setNoteRows(rowsToUpdate);
+        }
+    }, [dataForTechNoteList])
+
+
+
     // 2244
     return (
         <Box width={"98%"} m={"auto"}>
-            <Box display={"flex"} justifyContent={"flex-end"} my={2}>
+            <Box display={"flex"} justifyContent={"flex-end"} my={2} gap={2}>
                 <Button onClick={saveHandler} variant={"outline"}>save</Button>
+                {isLoggedIn ?
+                    <Button onClick={addRowHandler} variant={"outline"}>add</Button>
+                    : ""}
             </Box>
 
             <DataGrid
@@ -136,9 +172,7 @@ const PlanNoteList = () => {
                 renderers={{ renderCheckbox }}
                 selectedRows={selectedRows}
                 onSelectedRowsChange={setSelectedRows}
-
                 onRowsChange={onRowsChange}
-            // rowHeight={(row) => (row.type === 'DETAIL' ? 300 : 45)}
             />
         </Box>
     );
