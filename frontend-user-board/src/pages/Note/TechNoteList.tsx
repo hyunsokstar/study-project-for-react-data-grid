@@ -11,6 +11,8 @@ import useSaveTechNotesMutation from '@/hooks/useSaveTechNotesMutation';
 import CommonSelectBoxEdtior from '@/components/GridEditor/SelectBox/CommonSelectBoxEdtior';
 import SelectBoxForUserEmail from '@/components/GridEditor/SelectBox/SelectBoxForUserEmail';
 import useUser from '@/hooks/useUser';
+import useGetSkilNoteListByTechNoteId from '@/hooks/useGetSkilNoteListByTechNoteId';
+import DataGridForSkilNoteListForTechNoteId from '@/components/DataGrid.tsx/DataGridForSkilNoteListForTechNoteId';
 
 const PlanNoteList = () => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
@@ -29,7 +31,7 @@ const PlanNoteList = () => {
             },
             renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
                 if (row.type === 'DETAIL') {
-                    return <SubNoteGridTable parentId={row.parentId} />;
+                    return <DataGridForSkilNoteListForTechNoteId techNoteId={row.parentId} />;
                 }
 
                 return (
@@ -45,14 +47,15 @@ const PlanNoteList = () => {
         },
         { key: 'id', name: 'ID' }, // Column에 id 추가
         {
-            key: 'writer',
-            name: 'Writer',
-            // renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
+            key: 'email',
+            name: 'email',
 
-            //     return (
-            //         <Box>{row.writer.email}</Box>
-            //     );
-            // },
+            renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
+                return (
+                    <Box>{row.email}</Box>
+                );
+            },
+
             renderEditCell: SelectBoxForUserEmail
         },
         {
@@ -115,7 +118,7 @@ const PlanNoteList = () => {
             title: '12',
             description: '',
             category: '',
-            writer: loginUser.email ? loginUser.email : ""
+            email: loginUser.email ? loginUser.email : ""
         }
 
         setNoteRows((prev: TechNote[]) => [...prev, newRow])
@@ -140,7 +143,7 @@ const PlanNoteList = () => {
             const rowsToUpdate = dataForTechNoteList?.techNoteList.map((row: any) => {
                 return {
                     id: row.id,
-                    writer: row.writer ? row.writer.email : "",
+                    email: row.writer ? row.writer.email : "",
                     title: row.title,
                     description: row.description,
                     category: row.category,
@@ -157,7 +160,7 @@ const PlanNoteList = () => {
 
     // 2244
     return (
-        <Box width={"98%"} m={"auto"}>
+        <Box width={"94%"} m={"auto"}>
             <Box display={"flex"} justifyContent={"flex-end"} my={2} gap={2}>
                 <Button onClick={saveHandler} variant={"outline"}>save</Button>
                 {isLoggedIn ?
@@ -173,6 +176,8 @@ const PlanNoteList = () => {
                 selectedRows={selectedRows}
                 onSelectedRowsChange={setSelectedRows}
                 onRowsChange={onRowsChange}
+                rowHeight={(row) => (row.type === 'DETAIL' ? 400 : 100)}
+                style={{ width: "100%", height: "70vh" }}
             />
         </Box>
     );
@@ -188,8 +193,21 @@ function renderCheckbox({ onChange, ...props }: RenderCheckboxProps) {
 export default PlanNoteList;
 
 
-const SubNoteGridTable = ({ parentId }: any) => {
-    return (
-        <Box>SubNoteGridTable</Box>
-    )
-}
+// const SubNoteGridTable = ({ parentId }: any) => {
+
+//     const techNoteId = parentId;
+//     const [pageNum, setpageNum] = useState(1);
+
+//     const { isLoading, error, dataForSkilNotesByTechNoteId } = useGetSkilNoteListByTechNoteId({
+//         techNoteId, // parentId 값을 techNoteId로 전달
+//         pageNum, // pageNum을 전달
+//     });
+
+//     console.log("dataForSkilNotesByTechNoteId : ", dataForSkilNotesByTechNoteId);
+
+
+//     return (
+//         <Box border={"2px dotted black"} height={"98%"} my={1}>SubNoteGridTable {parentId}</Box>
+//     );
+// };
+

@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UsersModel } from '../../users/entities/users.entity';
-import { SkilNotesModel } from './skilnotes.entity';
+import { TechNotesModel } from './technotes.entity';
 
 export enum TodoStatus {
     READY = 'ready',
@@ -10,7 +10,7 @@ export enum TodoStatus {
 }
 
 @Entity()
-export class TechNotesModel {
+export class SkilNotesModel {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -32,6 +32,6 @@ export class TechNotesModel {
     @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     writer: UsersModel;
 
-    @OneToMany(() => SkilNotesModel, skilnote => skilnote.techNote)
-    skilnotes: SkilNotesModel[]
+    @ManyToOne(() => TechNotesModel, techNote => techNote.skilnotes, { onDelete: 'CASCADE', nullable: true })
+    techNote: TechNotesModel;
 }

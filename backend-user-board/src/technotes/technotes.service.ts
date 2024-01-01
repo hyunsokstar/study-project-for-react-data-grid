@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { TechNotesModel } from './entities/technotes.entity';
 import { DtoForCreateTechNote } from './dtos/dtoForCreateTechNote.dto';
 import { UsersModel } from 'src/users/entities/users.entity';
+import { SkilNotesModel } from './entities/skilnotes.entity';
 
 @Injectable()
 export class TechnotesService {
@@ -11,6 +12,8 @@ export class TechnotesService {
     constructor(
         @InjectRepository(TechNotesModel)
         private techNotesRepo: Repository<TechNotesModel>,
+        @InjectRepository(SkilNotesModel)
+        private skilNotesRepo: Repository<SkilNotesModel>,
 
         @InjectRepository(UsersModel) // UsersModel의 Repository를 주입합니다.
         private readonly usersRepository: Repository<UsersModel>,
@@ -64,6 +67,32 @@ export class TechnotesService {
 
     }
 
+    // async getAllSkilNotes(
+    //     pageNum: number = 1,
+    //     perPage: number = 10
+    // ): Promise<{
+    //     skilNoteList: SkilNotesModel[],
+    //     totalCount: number,
+    //     perPage: number,
+    // }> {
+    //     // return this.techNotesRepo.find();
+
+    //     const [skilNoteList, totalCount] = await this.skilNotesRepo.findAndCount({
+    //         skip: (pageNum - 1) * perPage,
+    //         take: perPage,
+    //         relations: ['writer'], // 이 부분이 추가된 부분입니다. User 정보를 가져오도록 설정합니다.
+    //         order: {
+    //             id: 'DESC'
+    //         }
+    //     });
+
+    //     return {
+    //         skilNoteList,
+    //         totalCount,
+    //         perPage
+    //     }
+
+    // }
 
     // saveTechNotes
     async saveTechNotes(techNotesToSave: any[], loginUser: UsersModel): Promise<any> {
@@ -74,17 +103,16 @@ export class TechnotesService {
         let count = 0;
 
         for (const note of techNotesToSave) {
-            const { id, title, description, category, writer, ...data } = note;
+            const { id, title, description, category, email, ...data } = note;
 
             const writerObj = await this.usersRepository.findOne({
                 where: {
-                    email: writer
+                    email: email
                 }
             });
 
             if (id) {
                 console.log("id : ", id);
-
                 const existingNote = await this.techNotesRepo.findOne({ where: { id: id } }); // 변경된 부분
 
                 if (existingNote) {
