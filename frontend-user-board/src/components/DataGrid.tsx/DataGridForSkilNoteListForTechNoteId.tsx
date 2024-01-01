@@ -29,9 +29,9 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
 
     console.log("dataForSkilNotesByTechNoteId : ", dataForSkilNotesByTechNoteId);
 
-    const detailHandler = () => {
+    const detailHandler = (skilNoteId: any) => {
         // todo: /Notes/SkilNoteContents/{techNoteId} 로 페이지 라우팅
-        router.push(`/Note/SkilNoteContents/${techNoteId}`);
+        router.push(`/Note/SkilNoteContents/${skilNoteId}`);
     }
 
     const columns = [
@@ -46,7 +46,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
             renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
                 return (
                     <Box>
-                        <Button size={"sm"} variant={"outline"} onClick={detailHandler}>detail</Button>
+                        <Button size={"sm"} variant={"outline"} onClick={() => detailHandler(row.id)}>detail</Button>
                     </Box>)
             }
         }
@@ -72,7 +72,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
     return (
         <Box width={"96%"} pt={2} backgroundColor={"blue.50"}>
             {skilnoteRows.length > 0 ? (
-                <DataGrid columns={columns} rows={skilnoteRows} />
+                <DataGrid columns={columns} rows={skilnoteRows} rowHeight={50} />
             ) : "no data for Skil Note Rows"}
         </Box>);
 };
