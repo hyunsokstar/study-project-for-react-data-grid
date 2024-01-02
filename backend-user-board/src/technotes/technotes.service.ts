@@ -20,6 +20,22 @@ export class TechnotesService {
 
     ) { }
 
+    // 1122
+    async deleteForCheckNoteIdsForCheckedIds(checkedIds: number[]): Promise<number> {
+        try {
+            console.log("checkedIds : ", checkedIds);
+            const deleteResult = await this.techNotesRepo.delete(checkedIds);
+            console.log("result for delete techNoteRowsForCheckedIds: ", deleteResult);
+
+            return deleteResult.affected ?? 0;
+
+        } catch (error) {
+            console.log("error : ", error);
+
+            throw new Error('삭제 중 오류가 발생했습니다.');
+        }
+    }
+
     async createTechNote(dto: DtoForCreateTechNote) {
         const { title, description, category, writerId } = dto;
         const writer = await this.usersRepository.findOne({ where: { id: writerId } });
@@ -91,7 +107,6 @@ export class TechnotesService {
     //         totalCount,
     //         perPage
     //     }
-
     // }
 
     // saveTechNotes

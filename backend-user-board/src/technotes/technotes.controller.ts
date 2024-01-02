@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query, Req } from "@nestjs/common";
 import { TechnotesService } from "./technotes.service";
 import { DtoForCreateTechNote } from "./dtos/dtoForCreateTechNote.dto";
 
@@ -30,6 +30,20 @@ export class TechnotesController {
         return this.technotesService.saveTechNotes(techNotesToSave, req['user']);
     }
 
+    @Delete('deleteCheckedRows')
+    async deleteUsersForCheckedIds(@Body('checkedIds') checkedIds: number[]) {
 
+        try {
+            console.log("유저 삭제 요청 받음");
 
+            const deletedCount = await this.technotesService.deleteForCheckNoteIdsForCheckedIds(checkedIds);
+
+            return {
+                message: `총 ${deletedCount}명의 유저가 삭제되었습니다.`,
+            };
+
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

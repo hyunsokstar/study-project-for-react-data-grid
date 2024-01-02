@@ -1,13 +1,16 @@
-import { apiForDeleteUsersForCheckedIds } from '@/api/apiForUserBoard';
+import React from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@chakra-ui/react';
+import { apiForDeleteTechNotesForCheckedIds } from '@/api/apiForTechNotes';
 
-const useDeleteUsersMutation = () => {
+type Props = {}
+
+const useApiForDeleteTechNotesForCheckedIds = () => {
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용
 
     const mutation = useMutation({
-        mutationFn: apiForDeleteUsersForCheckedIds,
+        mutationFn: apiForDeleteTechNotesForCheckedIds,
         onSuccess: (result) => {
             console.log("result : ", result);
 
@@ -28,6 +31,6 @@ const useDeleteUsersMutation = () => {
     });
 
     return mutation;
-};
+}
 
-export default useDeleteUsersMutation;
+export default useApiForDeleteTechNotesForCheckedIds

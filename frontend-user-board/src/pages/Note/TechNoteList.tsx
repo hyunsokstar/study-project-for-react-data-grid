@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'react-data-grid/lib/styles.css';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, useToast } from '@chakra-ui/react';
 import DataGrid, { RenderCheckboxProps, RowsChangeData, SelectColumn, textEditor } from 'react-data-grid';
 import { CellExpanderFormatter } from '../Test/ReactDataGrid/CellExpanderFormatter';
 import useGetAllTechNoteList from '@/hooks/useGetAllTechNoteList';
@@ -13,12 +13,14 @@ import SelectBoxForUserEmail from '@/components/GridEditor/SelectBox/SelectBoxFo
 import useUser from '@/hooks/useUser';
 import useGetSkilNoteListByTechNoteId from '@/hooks/useGetSkilNoteListByTechNoteId';
 import DataGridForSkilNoteListForTechNoteId from '@/components/DataGrid.tsx/DataGridForSkilNoteListForTechNoteId';
+import useApiForDeleteTechNotesForCheckedIds from '@/hooks/useApiForDeleteTechNotesForCheckedIds';
 
 const PlanNoteList = () => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
     const [noteRows, setNoteRows] = useState<TechNote[] | any>();
     const { isLoggedIn, loginUser, logout } = useUser();
-
+    const toast = useToast();
+    const deleteTechNoteRowsForCheckedIdsMutation = useApiForDeleteTechNotesForCheckedIds();
 
     const columns = [
         SelectColumnForReactDataGrid,
@@ -113,9 +115,13 @@ const PlanNoteList = () => {
         // addrowhandler 는 뭔가?
         // 목표
 
+        const randomId = Math.random().toString().substring(2, 7);
+        const currentTime = Date.now().toString();
+        const id = parseInt(randomId + currentTime, 10).toString().substring(0, 5);
+
         const newRow = {
-            id: 999999,
-            title: '12',
+            id: id,
+            title: '',
             description: '',
             category: '',
             email: loginUser.email ? loginUser.email : ""
@@ -129,14 +135,35 @@ const PlanNoteList = () => {
             return;
         }
 
-        const selectedNotes = Array.from(selectedRows).map((selectedId) =>
-            noteRows.find((note: TechNote) => note.id === selectedId)
-        );
+        const selectedNoteIds = Array.from(selectedRows).map((selectedId) => selectedId)
 
-        console.log('Selected Notes:', selectedNotes);
-        mutationForSaveTodoRows.mutate(selectedNotes);
+        const techNoteRowsToSave = noteRows.filter((note: TechNote) => {
+            if (selectedNoteIds.includes(note.id)) {
+                return note
+            }
+        })
+
+        // console.log('Selected Notes:', selectedNotes);
+        mutationForSaveTodoRows.mutate(techNoteRowsToSave);
     };
 
+    // fix
+    const deleteHandler = () => {
+
+
+        if (selectedRows.size === 0) {
+            toast({
+                title: '삭제할 항목을 선택해주세요.',
+                status: 'warning',
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
+        const checkNoteIdsForDelete = Array.from(selectedRows);
+        deleteTechNoteRowsForCheckedIdsMutation.mutate(checkNoteIdsForDelete)
+    }
 
     useEffect(() => {
         if (!isLoading) {
@@ -162,6 +189,7 @@ const PlanNoteList = () => {
     return (
         <Box width={"94%"} m={"auto"} border={"2px solid blue"}>
             <Box display={"flex"} justifyContent={"flex-end"} my={2} gap={2}>
+                <Button onClick={deleteHandler} variant={"outline"}>Delete</Button>
                 <Button onClick={saveHandler} variant={"outline"}>save</Button>
                 {isLoggedIn ?
                     <Button onClick={addRowHandler} variant={"outline"}>add</Button>
