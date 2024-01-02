@@ -8,14 +8,19 @@ import { SkillNoteRow } from "@/types/typeForSkilNote";
 import { SelectColumnForReactDataGrid } from "../Formatter/CheckBox/SelectColumnForRdg";
 import CommonTextEditor from "../GridEditor/TextEditor/CommonTextEditor";
 import SelectBoxForUserEmail from "../GridEditor/SelectBox/SelectBoxForUserEmail";
+import useSaveSkilNotesMutation from "@/hooks/useSaveSkilNotesMutation copy";
+import useUser from "@/hooks/useUser";
 
 interface IProps {
     techNoteId: any
 }
 
+// 1122
+// useSaveSkilNotesMutation
 const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
     const router = useRouter();
     const [pageNum, setpageNum] = useState(1);
+    const { isLoggedIn, loginUser, logout } = useUser();
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
 
     const [skilnoteRows, setSkilNoteRows] = useState<SkillNoteRow[]>();
@@ -24,6 +29,9 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
         techNoteId, // parentId 값을 techNoteId로 전달
         pageNum, // pageNum을 전달
     });
+
+    const mutationToSaveSkilNoteRows = useSaveSkilNotesMutation(techNoteId, pageNum);
+
 
     console.log("selectedRows : ", selectedRows);
     // console.log("dataForSkilNotesByTechNoteId : ", dataForSkilNotesByTechNoteId);
@@ -131,6 +139,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
             const initialSkilnoteRows = dataForSkilNotesByTechNoteId.skilNoteList.map((row) => {
                 return {
                     id: row.id,
+                    techNoteId: techNoteId,
                     email: row.writer?.email,
                     title: row.title,
                     description: row.description,
@@ -154,6 +163,10 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
         const selectedRowsIds = selectedRowsData?.map(row => row.id);
         console.log("Selected Rows IDs:", selectedRowsIds);
         console.log("selectedRowsData:", selectedRowsData);
+        if (selectedRowsData !== undefined) {
+            mutationToSaveSkilNoteRows.mutate(selectedRowsData);
+        }
+        setSelectedRows(new Set())
     }
 
     return (
@@ -162,7 +175,9 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
 
                 <Box display={"flex"} gap={2} justifyContent={"flex-end"} p={2}>
                     <Button variant={"outline"} size={"sm"}>delete</Button>
-                    <Button variant={"outline"} size={"sm"}>add</Button>
+                    {isLoggedIn ?
+                        <Button variant={"outline"} size={"sm"}>add</Button>
+                        : ""}
                     <Button variant={"outline"} size={"sm"} onClick={saveHandler}>save</Button>
                 </Box>
             ) : ""}

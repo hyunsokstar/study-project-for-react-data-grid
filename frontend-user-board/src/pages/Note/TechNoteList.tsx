@@ -191,8 +191,6 @@ function renderCheckbox({ onChange, ...props }: RenderCheckboxProps) {
 }
 
 export default PlanNoteList;
-
-
 // const SubNoteGridTable = ({ parentId }: any) => {
 
 //     const techNoteId = parentId;

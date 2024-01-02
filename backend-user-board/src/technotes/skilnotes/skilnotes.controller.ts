@@ -1,12 +1,11 @@
 import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { SkilnotesService } from './skilnotes.service';
-import { DtoForCreateTechNote } from '../dtos/dtoForCreateTechNote.dto';
 import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
+import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
 
 @Controller('skilnotes')
 export class SkilnotesController {
     constructor(private readonly skilnoteService: SkilnotesService) { }
-
 
     @Get()
     async getAllTechNoteList(
@@ -29,6 +28,24 @@ export class SkilnotesController {
         @Query('perPage') perPage = 10,
     ) {
         return this.skilnoteService.getSkilnotesForTechNote(techNoteId);
+    }
+
+    @Get(':skilnoteId/contents')
+    async getSkilNoteContents(@Param('skilnoteId') skilnoteId: string) {
+        return this.skilnoteService.getSkilNoteContentsBySkilNoteId(skilnoteId);
+    }
+
+    // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents
+    @Post(':skilnoteId/contents')
+    async createSkilNoteContents(@Body() dto: dtoForCreateSkilNoteContent) {
+        return this.skilnoteService.createSkilNoteContents(dto);
+    }
+
+    @Post('saveRows')
+    async saveSkilNoteRows(@Body() dataForNoteRows: dtoForCreateSkilNoteContent[], @Req() req: Request) {
+        console.log("dataForNoteRows : ", dataForNoteRows)
+        const loginUser = req['user']
+        return this.skilnoteService.saveSkilNoteRows(dataForNoteRows, loginUser);
     }
 
 }

@@ -17,16 +17,6 @@ export class TechnotesController {
         return this.technotesService.getAllTechNotes(pageNum, perPage);
     }
 
-    @Get()
-    // async getAllSkilNoteList(
-    //     @Query('pageNum') pageNum = 1,
-    //     @Query('perPage') perPage = 10,
-    //     @Req() req: Request
-    // ) {
-    //     // console.log("req['user'] 2: ", req['user']);
-    //     return this.technotesService.getAllSkilNotes(pageNum, perPage);
-    // }
-
     @Post() // POST 요청을 처리하는 엔드포인트 추가
     async createTechNote(@Body() dto: DtoForCreateTechNote) {
         return this.technotesService.createTechNote(dto);

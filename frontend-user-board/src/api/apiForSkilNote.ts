@@ -3,7 +3,7 @@ import { backendApi } from "./commonApi";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { access } from "fs";
 import { log } from "console";
-import { SkillNoteListResponse } from "@/types/typeForSkilNote";
+import { SkillNoteListResponse, SkillNoteRow, skilnoteRowToSave } from "@/types/typeForSkilNote";
 
 const instance = axios.create({
     baseURL: `${backendApi}/skilnotes`,
@@ -52,4 +52,12 @@ export const apiForGetSkilNoteContentListForSkilNoteId = async ({ queryKey }: Qu
     } catch (error) {
         throw new Error(`Skill notes를 불러오는 중 오류가 발생했습니다: ${error}`);
     }
+}
+
+// 
+export const apiForSaveSkilNotes = (skilnoteDataToSave: SkillNoteRow[]) => {
+    console.log("skilnoteDataToSave at api : ", skilnoteDataToSave);
+    return instance.post(
+        'saveRows', skilnoteDataToSave
+    ).then((response: any) => response.data)
 }

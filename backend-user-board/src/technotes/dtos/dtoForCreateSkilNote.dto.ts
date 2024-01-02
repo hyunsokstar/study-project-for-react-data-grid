@@ -1,5 +1,3 @@
-// dtoForCreateTechNote.dto.ts 파일
-
 import { IsString, IsNumber } from 'class-validator';
 
 export class dtoForCreateSkilNote {
@@ -12,8 +10,8 @@ export class dtoForCreateSkilNote {
     @IsString()
     category: string;
 
-    @IsNumber()
-    writerId: number;
+    @IsString()
+    email: string;
 
     @IsNumber()
     techNoteId: number;

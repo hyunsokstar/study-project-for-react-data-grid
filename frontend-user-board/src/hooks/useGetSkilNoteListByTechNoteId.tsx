@@ -13,7 +13,7 @@ type IProps = {
 const useApiForGetSkilNoteListByTechNoteId = ({ techNoteId, pageNum }: IProps) => {
 
     const { isLoading, error, data } = useQuery<SkillNoteListResponse>({
-        queryKey: ['apiForGetAllTodoList', techNoteId, pageNum],
+        queryKey: ['apiForGetSkillNotesByTechNoteId', techNoteId, pageNum],
         queryFn: () => apiForGetSkillNotesByTechNoteId(techNoteId, pageNum),
     });
 

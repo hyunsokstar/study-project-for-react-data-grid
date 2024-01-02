@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UsersModel } from '../../users/entities/users.entity';
-import { TechNotesModel } from './technotes.entity';
-import { SkilNoteContentsModel } from './skilnote_contents.entity';
+import { SkilNotesModel } from './skilnotes.entity';
 
 export enum TodoStatus {
     READY = 'ready',
@@ -11,18 +10,24 @@ export enum TodoStatus {
 }
 
 @Entity()
-export class SkilNotesModel {
+export class SkilNoteContentsModel {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     title: string;
 
-    @Column({ nullable: true })
-    description: string;
+    @Column()
+    file: string;
 
     @Column({ nullable: true })
-    category: string;
+    content: string;
+
+    @Column({ default: 1 })
+    page: number;
+
+    @Column({ default: 1 })
+    order: number;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: true })
     createdAt: Date;
@@ -33,10 +38,6 @@ export class SkilNotesModel {
     @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     writer: UsersModel;
 
-    @ManyToOne(() => TechNotesModel, techNote => techNote.skilnotes, { onDelete: 'CASCADE', nullable: true })
-    techNote: TechNotesModel;
-
-    @OneToMany(() => SkilNoteContentsModel, content => content.skilNote)
-    skilnote_contents: SkilNoteContentsModel[]
-
+    @ManyToOne(() => SkilNotesModel, skilnote => skilnote.skilnote_contents, { onDelete: 'CASCADE', nullable: true })
+    skilNote: SkilNotesModel;
 }

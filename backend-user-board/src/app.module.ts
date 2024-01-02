@@ -16,7 +16,8 @@ import { TodosModule } from './todos/todos.module';
 import { TodosModel } from "./todos/entities/todos.entity";
 import { TechnotesModule } from './technotes/technotes.module';
 import { TechNotesModel } from "./technotes/entities/technotes.entity";
-
+import { SkilNotesModel } from "./technotes/entities/skilnotes.entity";
+import { SkilNoteContentsModel } from "./technotes/entities/skilnote_contents.entity";
 
 @Module({
   imports: [
@@ -27,7 +28,14 @@ import { TechNotesModel } from "./technotes/entities/technotes.entity";
       username: "postgres",
       password: "postgres",
       database: "userAdminBoard",
-      entities: [UsersModel, UserPostingsModel, TodosModel, TechNotesModel],
+      entities: [
+        UsersModel,
+        UserPostingsModel,
+        TodosModel,
+        TechNotesModel,
+        SkilNotesModel,
+        SkilNoteContentsModel
+      ],
       synchronize: true,
     }),
     ConfigModule.forRoot({

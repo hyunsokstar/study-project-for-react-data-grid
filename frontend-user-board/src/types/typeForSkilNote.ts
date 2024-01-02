@@ -33,10 +33,19 @@ export type SkillNoteRow = {
     writer?: Writer;
     type: string,
     expanded?: boolean
+    techNoteId?: any
 }
 
 export interface SkillNoteListResponse {
     skilNoteList: SkillNoteRow[];
     totalCount: number;
     perPage: number;
+}
+
+export interface skilnoteRowToSave {
+    email: string;
+    title: string;
+    description: string;
+    category: string;
+    techNoteId: number;
 }
