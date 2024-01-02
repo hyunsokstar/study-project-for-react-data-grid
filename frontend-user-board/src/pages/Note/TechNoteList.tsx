@@ -19,6 +19,7 @@ const PlanNoteList = () => {
     const [noteRows, setNoteRows] = useState<TechNote[] | any>();
     const { isLoggedIn, loginUser, logout } = useUser();
 
+
     const columns = [
         SelectColumnForReactDataGrid,
         {
@@ -27,7 +28,7 @@ const PlanNoteList = () => {
             minWidth: 30,
             width: 30,
             colSpan(args: any) {
-                return args.type === 'ROW' && args.row.type === 'DETAIL' ? 7 : undefined;
+                return args.type === 'ROW' && args.row.type === 'DETAIL' ? 6 : undefined;
             },
             renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
                 if (row.type === 'DETAIL') {
@@ -45,11 +46,10 @@ const PlanNoteList = () => {
                 );
             }
         },
-        { key: 'id', name: 'ID' }, // Column에 id 추가
+        // { key: 'id', name: 'ID' }, // Column에 id 추가
         {
             key: 'email',
             name: 'email',
-
             renderCell({ row, tabIndex, onRowChange }: any): React.ReactNode {
                 return (
                     <Box>{row.email}</Box>
@@ -160,7 +160,7 @@ const PlanNoteList = () => {
 
     // 2244
     return (
-        <Box width={"94%"} m={"auto"}>
+        <Box width={"94%"} m={"auto"} border={"2px solid blue"}>
             <Box display={"flex"} justifyContent={"flex-end"} my={2} gap={2}>
                 <Button onClick={saveHandler} variant={"outline"}>save</Button>
                 {isLoggedIn ?
@@ -176,8 +176,8 @@ const PlanNoteList = () => {
                 selectedRows={selectedRows}
                 onSelectedRowsChange={setSelectedRows}
                 onRowsChange={onRowsChange}
-                rowHeight={(row) => (row.type === 'DETAIL' ? 400 : 100)}
-                style={{ width: "100%", height: "70vh" }}
+                rowHeight={(row) => (row.type === 'DETAIL' ? 480 : 50)}
+                style={{ width: "100%", height: "80vh" }}
             />
         </Box>
     );

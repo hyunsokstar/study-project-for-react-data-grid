@@ -11,14 +11,28 @@ export interface Writer {
     profileImage: string | null;
 }
 
-export interface SkillNoteRow {
+// return {
+//     id: row.id,
+//     title: row.title,
+//     description: row.description,
+//     category: row.category,
+//     createdAt: row.createdAt,
+//     writer: row.writer,
+//     type: "MASTER",
+//     expanded: false
+// }
+
+export type SkillNoteRow = {
     id: number;
-    title: string;
-    description: string;
-    category: string;
-    createdAt: string;
-    updatedAt: string | null;
-    writer: Writer;
+    email?: string;
+    title?: string;
+    description?: string;
+    category?: string;
+    createdAt?: string;
+    updatedAt?: string | null;
+    writer?: Writer;
+    type: string,
+    expanded?: boolean
 }
 
 export interface SkillNoteListResponse {

@@ -517,7 +517,7 @@ function ProductGrid({ parentId }: { parentId: number; }) {
                     setSelectedRows(selected);
                 }}
                 renderers={{ renderSortStatus, renderCheckbox }}
-                rowHeight={(row) => (row.type === 'DETAIL' ? 500 : 100)}
+                rowHeight={(row) => (row.type === 'DETAIL' ? 500 : 50)}
             />
         </Box>
     )
