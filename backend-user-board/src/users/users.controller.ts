@@ -138,19 +138,21 @@ export class UsersController {
 
   @Post("login-check-by-refreshToken")
   async loginCheckByRefreshToken(@Req() req: Request, @Res() response) {
-    console.log("login check by refresh token ");
 
     try {
       const authorizationHeader = req.headers['authorization'] as string;
+      console.log("authorizationHeader refresh: ", authorizationHeader);
 
-      if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+
+      if (!authorizationHeader || !authorizationHeader.startsWith('Basic ')) {
         return response.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
           message: 'Invalid authorization header',
         });
       }
 
-      const refreshToken = authorizationHeader.replace('Bearer ', '');
+      const refreshToken = authorizationHeader.replace('Basic ', '');
+      console.log("login check by refresh token :", refreshToken);
 
       const { user, accessToken } = await this.usersService.resignAccessTokenByRefreshToken(refreshToken);
 

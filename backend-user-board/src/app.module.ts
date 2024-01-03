@@ -68,9 +68,10 @@ export class AppModule implements NestModule {
       //   '/users/login-check-by-refreshToken'
       // ); // 적용할 경로 설정
       .forRoutes(
-        '/users/login-check-by-accessToken',
-        '/users/login-check-by-refreshToken',
-        '/technotes/saveTechNotes'
+        // '/users/login-check-by-accessToken',
+        // '/users/login-check-by-refreshToken',
+        '/technotes/saveTechNotes',
+        '/skilnotes/saveRows'
       ); // 적용할 경로 설정
   }
 }

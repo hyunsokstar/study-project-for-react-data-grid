@@ -36,9 +36,13 @@ export class SkilnotesController {
     }
 
     // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents
-    @Post(':skilnoteId/contents')
-    async createSkilNoteContents(@Body() dto: dtoForCreateSkilNoteContent) {
-        return this.skilnoteService.createSkilNoteContents(dto);
+    @Post(':skilNoteId/contents')
+    async createSkilNoteContents(
+        @Param('skilNoteId') skilNoteId: string,
+        @Body() dto: dtoForCreateSkilNoteContent
+    ) {
+        console.log("skilNoteId : ", skilNoteId);
+        return this.skilnoteService.createSkilNoteContents(skilNoteId, dto);
     }
 
     @Post('saveRows')

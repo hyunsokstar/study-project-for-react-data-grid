@@ -23,7 +23,7 @@ export interface Writer {
 // }
 
 export type SkillNoteRow = {
-    id: number;
+    id: any;
     email?: string;
     title?: string;
     description?: string;

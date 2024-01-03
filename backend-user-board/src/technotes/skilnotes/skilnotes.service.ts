@@ -21,11 +21,14 @@ export class SkilnotesService {
         private readonly usersRepository: Repository<UsersModel>,
     ) { }
 
-    async createSkilNoteContents(dto: dtoForCreateSkilNoteContent) {
-        const { title, file, content, page, order, writerId, skilNoteId } = dto;
+    async createSkilNoteContents(skilNoteId: string, dto: dtoForCreateSkilNoteContent) {
+        const { title, file, content, page, order, writerId } = dto;
+        console.log("skilnoteId : ", skilNoteId);
+        console.log("skilnoteId : ", typeof skilNoteId);
+
         // todo 
         const writerObj = await this.usersRepository.findOne({ where: { id: writerId } });
-        const skilNoteObj = await this.skilNotesRepo.findOne({ where: { id: skilNoteId } })
+        const skilNoteObj = await this.skilNotesRepo.findOne({ where: { id: parseInt(skilNoteId) } })
 
         if (!writerObj || !skilNoteObj) {
             throw new Error('writerId나 skilNoteId가 필요합니다.');
@@ -42,11 +45,29 @@ export class SkilnotesService {
         return this.skilNoteContentsRepo.save(skilNoteContentsObj);
     }
 
-    async getSkilNoteContentsBySkilNoteId(skilnoteId: string) {
+    async getSkilNoteContentsBySkilNoteId(skilnoteId: any) {
         const options: FindManyOptions<SkilNoteContentsModel> = {
             where: { skilNote: { id: parseInt(skilnoteId) } },
         };
-        return this.skilNoteContentsRepo.find(options);
+
+        const skilnoteContents = await this.skilNoteContentsRepo.find(options)
+
+        // 추가로 필요 skilnote Info by skilNoteId
+        const skilNoteInfo = await this.skilNotesRepo
+            .findOne({
+                where: { id: skilnoteId },
+                relations: ['writer'] // 작성자 정보를 포함하기 위한 관계 설정
+            })
+        console.log("skilNoteInfo : ", skilNoteInfo);
+
+        const responseObj = {
+            title: skilNoteInfo.title,
+            writer: skilNoteInfo.writer,
+            countForSkilNoteContents: (await skilnoteContents).length,
+            skilnoteContents: skilnoteContents
+        }
+
+        return responseObj;
     }
 
     async getAllSkilNoteList(
@@ -132,11 +153,16 @@ export class SkilnotesService {
         let count = 0;
 
         for (const note of skilNotesToSave) {
-            const { id, title, description, category, email, ...data } = note;
+            const { id, title, description, category, email, techNoteId, ...data } = note;
 
             const writerObj = await this.usersRepository.findOne({
                 where: {
                     email: email
+                }
+            });
+            const techNoteObj = await this.techNotesRepo.findOne({
+                where: {
+                    id: techNoteId
                 }
             });
 
@@ -152,23 +178,25 @@ export class SkilnotesService {
                         description: description,
                         category: category,
                         updatedAt: new Date(),
-                        writer: writerObj
+                        writer: writerObj,
+                        techNote: techNoteObj
                     });
                 } else {
                     console.log("save here");
                     count++;
 
                     if (!loginUser) {
-                        return { status: "error", message: `login is required to add tech note` }
+                        return { status: "error", message: `login is required to add skil note` }
                     }
 
-                    await this.skilNoteContentsRepo
+                    await this.skilNotesRepo
                         .save({
                             title: title,
                             description: description,
                             category: category,
                             createdAt: new Date(),
-                            writer: loginUser
+                            writer: loginUser,
+                            techNote: techNoteObj
                         });
                 }
 

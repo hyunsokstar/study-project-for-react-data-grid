@@ -83,7 +83,7 @@ export class UsersService {
         };
 
         // 1d, 1h, 1m
-        const accessToken = jwt.sign(accessTokenPayload, accessTokenSecret, { expiresIn: '10m' });
+        const accessToken = jwt.sign(accessTokenPayload, accessTokenSecret, { expiresIn: '1m' });
         const refreshToken = jwt.sign(refreshTokenPayload, refreshTokenSecret, { expiresIn: '1h' });
 
         return { accessToken, refreshToken };
@@ -268,6 +268,10 @@ export class UsersService {
     }
 
     async resignAccessTokenByRefreshToken(refreshToken: string): Promise<{ user: UsersModel; accessToken: string }> {
+
+        console.log("refresh token check : ", refreshToken);
+
+
         const isRefreshTokenValid = await this.validateRefreshToken(refreshToken);
 
         if (!isRefreshTokenValid) {

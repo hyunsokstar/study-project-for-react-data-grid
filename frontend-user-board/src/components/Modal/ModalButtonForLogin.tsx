@@ -99,7 +99,6 @@ const ModalButtonForLogin: React.FC<ModalButtonForLoginProps> = ({ buttonText })
                 {buttonText}
             </Button>
 
-
             <Modal isOpen={isOpen} onClose={onClose} size="md">
                 <ModalOverlay />
                 <ModalContent borderRadius="lg">

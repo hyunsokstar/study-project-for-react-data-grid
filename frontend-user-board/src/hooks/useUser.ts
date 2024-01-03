@@ -47,12 +47,15 @@ const useUser = () => {
                     );
                 } else {
                     console.log("error : ", result.response.data);
-                    const tokkenERROR = result.response.data.reason
+                    const tokkenERROR = result.response.data.reason.name
 
-                    if (tokkenERROR === "ExpiredToken") {
+                    if (tokkenERROR === "TokenExpiredError") {
                         console.log("토큰 기한이 지났습니다 refresh token 을 이용해 재발급을 시도 하겠습니다");
+                        localStorage.removeItem('accessToken');
 
                         try {
+                            console.log("refresh token : ", refreshToken);
+
                             const result = await apiForLoginCheckWithRefreshToken(refreshToken);
                             console.log("result : ", result);
 

@@ -24,6 +24,7 @@ const PlanNoteList = () => {
 
     const columns = [
         SelectColumnForReactDataGrid,
+        // { key: "id", name: "id" },
         {
             key: 'expanded',
             name: '',
@@ -187,7 +188,7 @@ const PlanNoteList = () => {
 
     // 2244
     return (
-        <Box width={"94%"} m={"auto"} border={"2px solid blue"}>
+        <Box width={"98%"} m={"auto"} border={"2px solid blue"}>
             <Box display={"flex"} justifyContent={"flex-end"} my={2} gap={2}>
                 <Button onClick={deleteHandler} variant={"outline"}>Delete</Button>
                 <Button onClick={saveHandler} variant={"outline"}>save</Button>
@@ -195,18 +196,19 @@ const PlanNoteList = () => {
                     <Button onClick={addRowHandler} variant={"outline"}>add</Button>
                     : ""}
             </Box>
-
-            <DataGrid
-                rowKeyGetter={(row) => row.id}
-                columns={columns}
-                rows={noteRows ? noteRows : []}
-                renderers={{ renderCheckbox }}
-                selectedRows={selectedRows}
-                onSelectedRowsChange={setSelectedRows}
-                onRowsChange={onRowsChange}
-                rowHeight={(row) => (row.type === 'DETAIL' ? 480 : 50)}
-                style={{ width: "100%", height: "80vh" }}
-            />
+            <Box width={"100%"} border={"2px solid red"} py={1}>
+                <DataGrid
+                    rowKeyGetter={(row) => row.id}
+                    columns={columns}
+                    rows={noteRows ? noteRows : []}
+                    renderers={{ renderCheckbox }}
+                    selectedRows={selectedRows}
+                    onSelectedRowsChange={setSelectedRows}
+                    onRowsChange={onRowsChange}
+                    rowHeight={(row) => (row.type === 'DETAIL' ? 420 : 50)}
+                    style={{ width: "100%", height: "80vh", borderColor: "orange" }}
+                />
+            </Box>
         </Box>
     );
 };

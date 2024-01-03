@@ -26,6 +26,6 @@ export class dtoForCreateSkilNoteContent {
     @IsNumber()
     writerId: number
 
-    @IsNumber()
-    skilNoteId: number
+    // @IsNumber()
+    // skilNoteId: string
 }

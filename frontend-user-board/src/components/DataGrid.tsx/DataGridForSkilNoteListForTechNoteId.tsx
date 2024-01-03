@@ -23,7 +23,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
     const { isLoggedIn, loginUser, logout } = useUser();
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
 
-    const [skilnoteRows, setSkilNoteRows] = useState<SkillNoteRow[]>();
+    const [skilnoteRows, setSkilNoteRows] = useState<SkillNoteRow[]>([]);
 
     const { isLoading, error, data: dataForSkilNotesByTechNoteId } = useApiForGetSkilNoteListByTechNoteId({
         techNoteId, // parentId 값을 techNoteId로 전달
@@ -74,7 +74,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
             key: 'expanded',
             name: '',
             colSpan(args: any) {
-                return args.type === 'ROW' && args.row.type === 'DETAIL' ? 7 : undefined;
+                return args.type === 'ROW' && args.row.type === 'DETAIL' ? 9 : undefined;
             }, renderCell({ row, tabIndex, onRowChange }: any) {
                 if (row.type === "DETAIL") {
                     return (
@@ -163,38 +163,89 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
         const selectedRowsIds = selectedRowsData?.map(row => row.id);
         console.log("Selected Rows IDs:", selectedRowsIds);
         console.log("selectedRowsData:", selectedRowsData);
+
         if (selectedRowsData !== undefined) {
             mutationToSaveSkilNoteRows.mutate(selectedRowsData);
         }
         setSelectedRows(new Set())
     }
 
-    return (
-        <Box width={"96%"} pt={2} backgroundColor={"blue.50"}>
-            {skilnoteRows && skilnoteRows.length > 0 ? (
+    // export type SkillNoteRow = {
+    //     id: number;
+    //     email?: string;
+    //     title?: string;
+    //     description?: string;
+    //     category?: string;
+    //     createdAt?: string;
+    //     updatedAt?: string | null;
+    //     writer?: Writer;
+    //     type: string,
+    //     expanded?: boolean
+    //     techNoteId?: any
+    // }
 
-                <Box display={"flex"} gap={2} justifyContent={"flex-end"} p={2}>
-                    <Button variant={"outline"} size={"sm"}>delete</Button>
-                    {isLoggedIn ?
-                        <Button variant={"outline"} size={"sm"}>add</Button>
-                        : ""}
-                    <Button variant={"outline"} size={"sm"} onClick={saveHandler}>save</Button>
+    const addRowHandler = () => {
+        console.log("addRowHandler");
+        // addrowhandler 는 뭔가?
+        // 목표
+
+        const randomId = Math.random().toString().substring(2, 7);
+        const currentTime = Date.now().toString();
+        const id = parseInt(randomId + currentTime, 10).toString().substring(0, 5);
+
+        const newRow = {
+            id: id,
+            techNoteId: techNoteId,
+            title: '',
+            description: '',
+            category: '',
+            email: loginUser.email ? loginUser.email : "",
+            expanded: false,
+            type: "MASTER"
+        }
+
+        setSkilNoteRows((prev: SkillNoteRow[]) => [...prev, newRow])
+    }
+
+    return (
+        <Box width={"100%"} border={"1px solid purple"} height={"100%"} gap={1} lineHeight={"20px"}>
+            <Box display={"flex"} justifyContent={"flex-end"}>
+                {skilnoteRows && skilnoteRows.length > 0 ? (
+                    <Box display={"flex"} gap={1} p={1}>
+                        <Button variant={"outline"} size={"sm"}>delete</Button>
+                        <Button variant={"outline"} size={"sm"} onClick={saveHandler}>save</Button>
+                    </Box>
+                ) : ""}
+                {isLoggedIn ?
+                    <Box display={"flex"} justifyContent={"flex-end"} alignItems={"center"} pr={1}>
+                        <Button variant={"outline"} size={"sm"} onClick={addRowHandler}>add</Button>
+                    </Box>
+                    : ""}
+            </Box>
+            <Box mb={1} width={"100%"} border={"2px solid green"} lineHeight={"20px"}>
+                <Box lineHeight={"20px"}>
+                    hi2 {skilnoteRows.length} 개
+                    {skilnoteRows && skilnoteRows.length > 0 ?
+                        <DataGrid
+                            columns={columns}
+                            rows={skilnoteRows}
+                            rowKeyGetter={(row) => row.id}
+                            rowHeight={(row) => (row.type === 'DETAIL' ? 270 : 50)}
+                            renderers={{ renderCheckbox }}
+                            selectedRows={selectedRows}
+                            onSelectedRowsChange={setSelectedRows}
+                            onRowsChange={onRowsChange}
+                            style={{ height: "90%", width: "100%" }}
+                        />
+                        : "no data"}
                 </Box>
-            ) : ""}
-            {skilnoteRows && skilnoteRows.length > 0 ? (
-                <DataGrid
-                    columns={columns}
-                    rows={skilnoteRows}
-                    rowKeyGetter={(row) => row.id}
-                    rowHeight={(row) => (row.type === 'DETAIL' ? 270 : 50)}
-                    renderers={{ renderCheckbox }}
-                    selectedRows={selectedRows}
-                    onSelectedRowsChange={setSelectedRows}
-                    onRowsChange={onRowsChange}
-                    style={{ height: "50vh" }}
-                />
-            ) : "no data for Skil Note Rows"}
-        </Box>);
+
+            </Box>
+
+            <Box>
+            </Box>
+        </Box>
+    );
 };
 
 function renderCheckbox({ onChange, ...props }: RenderCheckboxProps) {

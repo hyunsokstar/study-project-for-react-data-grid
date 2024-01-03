@@ -25,7 +25,7 @@ export class TechnotesController {
     @Post('saveTechNotes') // API 엔드포인트 추가
     async saveTodos(@Body() techNotesToSave: any, @Req() req: Request) {
         console.log("techNotesToSave at controller : ", techNotesToSave);
-        console.log("req['user']3 : ", req['user']);
+        console.log("req['user'] at save tech note : ", req['user']);
 
         return this.technotesService.saveTechNotes(techNotesToSave, req['user']);
     }

@@ -16,7 +16,7 @@ const useApiForDeleteTechNotesForCheckedIds = () => {
 
             // 사용자 데이터를 다시 불러오는 쿼리를 리프레시
             queryClient.refetchQueries({
-                queryKey: ['apiForGetAllUsers']
+                queryKey: ['apiForGetAllTechNoteList']
             });
 
             // Chakra UI 토스트 표시

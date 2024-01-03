@@ -61,3 +61,6 @@ export const apiForSaveSkilNotes = (skilnoteDataToSave: SkillNoteRow[]) => {
         'saveRows', skilnoteDataToSave
     ).then((response: any) => response.data)
 }
+
+// http://127.0.0.1:8080/skilnotes/10/contents
+// 

@@ -36,10 +36,10 @@ export const apiForSaveOrUpdateUserInfoForChecked = async (data: IUser[]) => {
 
 
 export const apiForLoginCheckWithRefreshToken = async (refreshToken: string) => {
-    console.log("login check by refresh token at front");
+    console.log("refresh token check : ", refreshToken);
 
     const headers = {
-        Authorization: `Bearer ${refreshToken}`
+        Authorization: `Basic ${refreshToken}`
     };
 
     try {
