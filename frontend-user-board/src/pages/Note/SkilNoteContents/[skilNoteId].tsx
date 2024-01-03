@@ -18,6 +18,19 @@ const SkilNoteContents = () => {
         }
     };
 
+    const editorRef = useRef<HTMLDivElement | null>(null); // 참조 추가
+
+
+    const scrollToEditor = () => {
+        if (editorRef.current) {
+            editorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const buttonsForScroll = dataForskilNoteContent?.skilnoteContents.map((row, i) => {
+        return (<Button onClick={() => scrollToCard(i + 1)}>{i + 1}</Button>)
+    })
+
     return (
         <Box>
             <Box border={"1px solid blue"} width={"100%"} m={"auto"} display={"flex"} gap={2} backgroundColor={"blue.50"}>
@@ -25,24 +38,27 @@ const SkilNoteContents = () => {
                 <Text>writer: {dataForskilNoteContent?.writer.email}</Text>
             </Box>
             <Box display={"flex"} border={"3px dotted black"} overflowY={"scroll"} height={"70vh"}>
-                <Box flex={3} border={"1px dotted red"}>
+                <Box flex={7} border={"1px dotted red"}>
 
-                    <Box border="1px dashed red" p={2} display={"flex"} flexDirection={"column"} gap={2}>
+                    <Box border="0px dashed red" p={2} display={"flex"} flexDirection={"column"} gap={2}>
                         {dataForskilNoteContent?.skilnoteContents.map((row) => (
                             <div data-order={row.order} key={row.id} ref={(ref) => (cardRefs.current[row.order] = ref)}>
                                 <CardForSkilNoteContent key={row.id} order={row.order} data-order={row.order} />
                             </div>
                         ))}
+                        <Box border="1px dashed red" p={2} ref={editorRef} height={"68vh"}>
+                            에디터 영역
+                        </Box>
                     </Box>
                 </Box>
 
-                <Box flex={1} border={"1px dotted red"} position="sticky" top={0}>
-                    <Grid templateColumns="12fr 1fr 4fr" gap={4} p={2}>
+                <Box flex={3} border={"0px dotted red"} position="sticky" top={0}>
+                    <Grid templateColumns="1fr 5fr" gap={2} p={2}>
                         <Box display={"flex"} flexDirection={"column"} gap={2} border={"2px dotted purple"} textAlign={"center"}>
-                            <Button onClick={() => scrollToCard(1)}>1</Button>
-                            <Button onClick={() => scrollToCard(2)}>2</Button>
-                            <Button onClick={() => scrollToCard(3)}>3</Button>
-                            <Button onClick={() => scrollToCard(4)}>4</Button>
+                            {buttonsForScroll}
+                            <Box>
+                                <Button onClick={scrollToEditor}>create</Button> {/* 에디터 영역으로 스크롤 */}
+                            </Box>
                         </Box>
 
                         <Box border="1px dashed" borderColor="gray.300" p={2}>

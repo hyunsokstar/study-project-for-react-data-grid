@@ -11,7 +11,7 @@ const CardForSkilNoteContent = ({ skilNoteId, order }: Props) => {
     return (
         <>
             <Box borderWidth="1px" borderRadius="lg" overflow="hidden" display={"flex"} flexDirection={"column"} gap={2}>
-                <Box p={6} border={"2px solid blue"}>
+                <Box p={3} border={"2px solid blue"}>
                     <HStack fontSize="xl" mb={2} border={"1px solid black"}>
                         <Text>
                             <Button variant={"outlined"} size={"md"} border={"1px"}>
