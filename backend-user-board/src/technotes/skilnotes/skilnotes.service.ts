@@ -22,7 +22,7 @@ export class SkilnotesService {
     ) { }
 
     async createSkilNoteContents(skilNoteId: string, dto: dtoForCreateSkilNoteContent) {
-        const { title, file, content, page, order, writerId } = dto;
+        const { title, file, content, page, writerId } = dto;
         console.log("skilnoteId : ", skilNoteId);
         console.log("skilnoteId : ", typeof skilNoteId);
 
@@ -34,12 +34,21 @@ export class SkilnotesService {
             throw new Error('writerId나 skilNoteId가 필요합니다.');
         }
 
+        const existingSkilNoteContents = await this.skilNoteContentsRepo.find({
+            where: { skilNote: { id: parseInt(skilNoteId) } },
+            order: { order: 'DESC' }, // order를 내림차순으로 정렬하여 최대값을 가져옴
+            take: 1 // 최대값 하나만 가져오기
+        });
+
+        const maxOrder = existingSkilNoteContents.length > 0 ? existingSkilNoteContents[0].order : 0;
+
+
         const skilNoteContentsObj = new SkilNoteContentsModel();
         skilNoteContentsObj.title = title;
         skilNoteContentsObj.file = file;
         skilNoteContentsObj.content = content;
         skilNoteContentsObj.page = page;
-        skilNoteContentsObj.order = order;
+        skilNoteContentsObj.order = maxOrder + 1;
         skilNoteContentsObj.writer = writerObj
         skilNoteContentsObj.skilNote = skilNoteObj
         return this.skilNoteContentsRepo.save(skilNoteContentsObj);

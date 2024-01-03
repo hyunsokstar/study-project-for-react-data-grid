@@ -16,9 +16,9 @@ export class dtoForCreateSkilNoteContent {
     @IsOptional()
     page?: number;
 
-    @IsNumber()
-    @IsOptional()
-    order?: number;
+    // @IsNumber()
+    // @IsOptional()
+    // order?: number;
 
     @IsOptional()
     createdAt?: Date;

@@ -1,17 +1,23 @@
 import React from 'react'
-import { Box, Grid, HStack, Input, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Grid, HStack, Input, Text, VStack } from '@chakra-ui/react';
 
 type Props = {
-    skilNoteId: any;
+    skilNoteId?: any;
+    order: number;
 }
 
-const CardForSkilNoteContent = ({ skilNoteId }: Props) => {
+const CardForSkilNoteContent = ({ skilNoteId, order }: Props) => {
+
     return (
         <>
             <Box borderWidth="1px" borderRadius="lg" overflow="hidden" display={"flex"} flexDirection={"column"} gap={2}>
                 <Box p={6} border={"2px solid blue"}>
-
                     <HStack fontSize="xl" mb={2} border={"1px solid black"}>
+                        <Text>
+                            <Button variant={"outlined"} size={"md"} border={"1px"}>
+                                {order}
+                            </Button>
+                        </Text>
                         <Input defaultValue={""} />
                         <Input defaultValue={""} />
                     </HStack>
@@ -19,7 +25,7 @@ const CardForSkilNoteContent = ({ skilNoteId }: Props) => {
                     <Box
                         border={"1px dotted black"}
                         overflowY={"scroll"}
-                        height={"50vh"}
+                        height={"60vh"}
                     >
                         hi <br />
                         hi2 <br />
