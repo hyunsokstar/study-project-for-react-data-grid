@@ -1,4 +1,5 @@
 import CardForSkilNoteContent from '@/components/Card/CardForSkilNoteContent';
+import EditorForCreateSkilNoteContents from '@/components/RichEditor/EditorForCreateSkilNoteContents';
 import useApiForGetSkilNoteContentsForSkilNoteId from '@/hooks/useApiForGetSkilNoteContentsForSkilNoteId';
 import { Box, Button, Grid, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -47,7 +48,7 @@ const SkilNoteContents = () => {
                             </div>
                         ))}
                         <Box border="1px dashed red" p={2} ref={editorRef} height={"68vh"}>
-                            에디터 영역
+                            <EditorForCreateSkilNoteContents />
                         </Box>
                     </Box>
                 </Box>

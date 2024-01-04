@@ -56,7 +56,7 @@ const Editor = () => {
         const files = event.dataTransfer.files;
         // 파일을 업로드하고 URL을 얻는 등의 로직 수행 후
         // imageUrl을 얻었다고 가정하고 insertImage 함수 호출
-        const imageUrl = 'https://www.shutterstock.com/image-vector/cute-robot-gundam-premium-vector-260nw-2216289819.jpg';
+        const imageUrl = 'https://montevista.greatheartsamerica.org/wp-content/uploads/sites/2/2016/11/default-placeholder-375x375.png';
         if (imageUrl) {
             insertImage(editor, imageUrl);
         }
@@ -77,12 +77,14 @@ const Editor = () => {
             }}
         >
             <div
+                style={{ border: '1px solid #ccc', padding: '8px' }} // 테두리 스타일 적용
                 onDrop={(event) => handleDrop(event, editor)}
                 onDragOver={(event) => event.preventDefault()}
             >
                 <Editable
                     renderElement={renderElement}
                     placeholder="Enter some plain text..."
+                    style={{ backgroundColor: "skyblue" }}
                 />
             </div>
         </Slate>

@@ -73,11 +73,11 @@ const Home = () => {
     ];
 
     const links13 = [
-        { href: '/Test/CardList/PostingList', text: 'slate-editor (1)', visible: true },
+        { href: '/Test/Editor/EditorTest', text: 'slate-editor (1)', visible: true },
     ];
 
     const links14 = [
-        { href: '/Test/CardList/PostingList', text: 'slate-editor (2)', visible: true },
+        { href: '/Test/Editor/EditorTest', text: 'slate-editor (1)', visible: true },
     ];
 
     return (
@@ -87,8 +87,8 @@ const Home = () => {
             justifyContent={"center"}
             alignItems={"center"}
         >
-            <NavigationMenuBoxForMainPage links1={links1} links2={links2} menuTitle={'boiler plate1 (회원 서비스)'} menuBg={'red.100'} menuColor={'black'} menuHover={'red.200'} />
             <NavigationMenuBoxForMainPage links1={links3} links2={links4} menuTitle={'boiler plate2 (콘텐츠 관리)'} menuBg={'orange.100'} menuColor={'black'} menuHover={'orange.200'} />
+            <NavigationMenuBoxForMainPage links1={links1} links2={links2} menuTitle={'boiler plate1 (회원 서비스)'} menuBg={'red.100'} menuColor={'black'} menuHover={'red.200'} />
             <NavigationMenuBoxForMainPage links1={links5} links2={links6} menuTitle={'boiler plate3 (todo list)'} menuBg={'green.100'} menuColor={'black'} menuHover={'green.200'} />
             <NavigationMenuBoxForMainPage links1={links7} links2={links8} menuTitle={'todo list by ag grid'} menuBg={'blue.100'} menuColor={'black'} menuHover={'blue.200'} />
             <NavigationMenuBoxForMainPage links1={links3} links2={links4} menuTitle={'todo list by react table'} menuBg={'blue.100'} menuColor={'black'} menuHover={'blue.200'} />
