@@ -12,9 +12,9 @@ export class dtoForCreateSkilNoteContent {
     @IsOptional()
     content?: string;
 
-    @IsNumber()
-    @IsOptional()
-    page?: number;
+    // @IsNumber()
+    // @IsOptional()
+    // page?: number;
 
     // @IsNumber()
     // @IsOptional()

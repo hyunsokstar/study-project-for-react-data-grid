@@ -21,8 +21,8 @@ export class SkilnotesService {
         private readonly usersRepository: Repository<UsersModel>,
     ) { }
 
-    async createSkilNoteContents(skilNoteId: string, dto: dtoForCreateSkilNoteContent) {
-        const { title, file, content, page, writerId } = dto;
+    async createSkilNoteContents(skilNoteId: string, pageNum: any, dto: dtoForCreateSkilNoteContent) {
+        const { title, file, content, writerId } = dto;
         console.log("skilnoteId : ", skilNoteId);
         console.log("skilnoteId : ", typeof skilNoteId);
 
@@ -47,7 +47,7 @@ export class SkilnotesService {
         skilNoteContentsObj.title = title;
         skilNoteContentsObj.file = file;
         skilNoteContentsObj.content = content;
-        skilNoteContentsObj.page = page;
+        skilNoteContentsObj.page = pageNum;
         skilNoteContentsObj.order = maxOrder + 1;
         skilNoteContentsObj.writer = writerObj
         skilNoteContentsObj.skilNote = skilNoteObj

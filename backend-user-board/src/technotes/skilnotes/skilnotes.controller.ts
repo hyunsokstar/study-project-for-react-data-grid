@@ -38,21 +38,22 @@ export class SkilnotesController {
         return this.skilnoteService.getSkilNoteContentsBySkilNoteId(skilnoteId, pageNum);
     }
 
-    // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents
-    @Post(':skilNoteId/contents')
-    async createSkilNoteContents(
-        @Param('skilNoteId') skilNoteId: string,
-        @Body() dto: dtoForCreateSkilNoteContent
-    ) {
-        console.log("skilNoteId : ", skilNoteId);
-        return this.skilnoteService.createSkilNoteContents(skilNoteId, dto);
-    }
-
     @Post('saveRows')
     async saveSkilNoteRows(@Body() dataForNoteRows: dtoForCreateSkilNoteContent[], @Req() req: Request) {
         console.log("dataForNoteRows : ", dataForNoteRows)
         const loginUser = req['user']
         return this.skilnoteService.saveSkilNoteRows(dataForNoteRows, loginUser);
+    }
+
+    // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents/:pageNum
+    @Post(':skilNoteId/contents/:pageNum')
+    async createSkilNoteContents(
+        @Body() dto: dtoForCreateSkilNoteContent,
+        @Param('skilNoteId') skilNoteId: string,
+        @Param('pageNum') pageNum: string
+    ) {
+        console.log("skilNoteId : ", skilNoteId);
+        return this.skilnoteService.createSkilNoteContents(skilNoteId, pageNum, dto);
     }
 
 }
