@@ -37,6 +37,11 @@ export class AuthMiddleware implements NestMiddleware {
 
             console.log("req['user'] ::: ", req['user']);
 
+            // if (req['user']) {
+            //     next()
+            // }
+
+
         } catch (error) {
             console.log("error :?? ", error);
             // console.log("token 유효 기간 지남");
@@ -53,5 +58,4 @@ export class AuthMiddleware implements NestMiddleware {
 
         next();
     }
-
 }

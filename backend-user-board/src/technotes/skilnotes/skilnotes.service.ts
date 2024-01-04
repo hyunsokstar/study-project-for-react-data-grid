@@ -21,17 +21,19 @@ export class SkilnotesService {
         private readonly usersRepository: Repository<UsersModel>,
     ) { }
 
-    async createSkilNoteContents(skilNoteId: string, pageNum: any, dto: dtoForCreateSkilNoteContent) {
-        const { title, file, content, writerId } = dto;
+    async createSkilNoteContents(skilNoteId: string, pageNum: any, loginUser, dto: dtoForCreateSkilNoteContent) {
+        const { title, file, content } = dto;
         console.log("skilnoteId : ", skilNoteId);
         console.log("skilnoteId : ", typeof skilNoteId);
 
+        console.log("service check for create");
+
         // todo 
-        const writerObj = await this.usersRepository.findOne({ where: { id: writerId } });
+        // const writerObj = await this.usersRepository.findOne({ where: { id: writerId } });
         const skilNoteObj = await this.skilNotesRepo.findOne({ where: { id: parseInt(skilNoteId) } })
 
-        if (!writerObj || !skilNoteObj) {
-            throw new Error('writerId나 skilNoteId가 필요합니다.');
+        if (!loginUser || !skilNoteObj) {
+            throw new Error('loginUser or skilNoteId가 필요합니다.');
         }
 
         const existingSkilNoteContents = await this.skilNoteContentsRepo.find({
@@ -42,16 +44,19 @@ export class SkilnotesService {
 
         const maxOrder = existingSkilNoteContents.length > 0 ? existingSkilNoteContents[0].order : 0;
 
-
         const skilNoteContentsObj = new SkilNoteContentsModel();
         skilNoteContentsObj.title = title;
         skilNoteContentsObj.file = file;
         skilNoteContentsObj.content = content;
         skilNoteContentsObj.page = pageNum;
         skilNoteContentsObj.order = maxOrder + 1;
-        skilNoteContentsObj.writer = writerObj
+        skilNoteContentsObj.writer = loginUser
         skilNoteContentsObj.skilNote = skilNoteObj
-        return this.skilNoteContentsRepo.save(skilNoteContentsObj);
+        const saveResult = await this.skilNoteContentsRepo.save(skilNoteContentsObj);
+
+        console.log("saveResult : ", saveResult);
+
+        return saveResult;
     }
 
     async getSkilNoteContentsBySkilNoteId(skilnoteId: any, pageNum: any) {

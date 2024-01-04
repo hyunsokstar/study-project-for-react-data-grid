@@ -8,6 +8,7 @@ import { SkilNotesModel } from './entities/skilnotes.entity';
 import { SkilnotesController } from './skilnotes/skilnotes.controller';
 import { SkilnotesService } from './skilnotes/skilnotes.service';
 import { SkilNoteContentsModel } from './entities/skilnote_contents.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 
 @Module({
@@ -15,7 +16,7 @@ import { SkilNoteContentsModel } from './entities/skilnote_contents.entity';
     TypeOrmModule.forFeature([TechNotesModel, UsersModel, SkilNotesModel, SkilNoteContentsModel])
   ],
   controllers: [TechnotesController, SkilnotesController],
-  providers: [TechnotesService, SkilnotesService]
+  providers: [TechnotesService, SkilnotesService, AuthGuard]
 })
 
 

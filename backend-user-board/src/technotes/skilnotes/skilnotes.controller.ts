@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { SkilnotesService } from './skilnotes.service';
 import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
 import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('skilnotes')
 export class SkilnotesController {
@@ -35,6 +36,7 @@ export class SkilnotesController {
         @Param('skilnoteId') skilnoteId: string,
         @Param('pageNum') pageNum: string
     ) {
+        console.log("hi");
         return this.skilnoteService.getSkilNoteContentsBySkilNoteId(skilnoteId, pageNum);
     }
 
@@ -46,14 +48,32 @@ export class SkilnotesController {
     }
 
     // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents/:pageNum
+    @UseGuards(AuthGuard)
     @Post(':skilNoteId/contents/:pageNum')
     async createSkilNoteContents(
+        @Req() req: Request,
         @Body() dto: dtoForCreateSkilNoteContent,
         @Param('skilNoteId') skilNoteId: string,
-        @Param('pageNum') pageNum: string
+        @Param('pageNum') pageNum: string,
+        @Res() response
     ) {
+        const loginUser = req['user'];
+        console.log("pageNum : ", pageNum);
+
+        console.log("loginUser at create skilnote contents: ", loginUser);
+        // if (loginUser === undefined) {
+        //     return response.status(HttpStatus.UNAUTHORIZED).json({
+        //         status: "error",
+        //         message: '로그인 사용자만 skilnote content 를 입력 가능',
+        //     });
+        // }
+
         console.log("skilNoteId : ", skilNoteId);
-        return this.skilnoteService.createSkilNoteContents(skilNoteId, pageNum, dto);
+        console.log("skilnote content 입력 check !");
+
+        const result = await this.skilnoteService.createSkilNoteContents(skilNoteId, pageNum, loginUser, dto);
+        return response.status(HttpStatus.CREATED).json({ message: "create skilnote contents success", result: result });
+
     }
 
 }

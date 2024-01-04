@@ -18,6 +18,7 @@ import { TechnotesModule } from './technotes/technotes.module';
 import { TechNotesModel } from "./technotes/entities/technotes.entity";
 import { SkilNotesModel } from "./technotes/entities/skilnotes.entity";
 import { SkilNoteContentsModel } from "./technotes/entities/skilnote_contents.entity";
+import { GuardsModule } from './guards/guards.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { SkilNoteContentsModel } from "./technotes/entities/skilnote_contents.en
     TodosModule,
     CloudflareModule,
     TechnotesModule,
+    GuardsModule,
   ],
   controllers: [AppController],
   providers: [AppService,
@@ -71,7 +73,8 @@ export class AppModule implements NestModule {
         // '/users/login-check-by-accessToken',
         // '/users/login-check-by-refreshToken',
         '/technotes/saveTechNotes',
-        '/skilnotes/saveRows'
+        '/skilnotes/saveRows',
+        '/skilnotes/:skilNoteId/contents/:pageNum'
       ); // 적용할 경로 설정
   }
 }

@@ -12,20 +12,7 @@ export class dtoForCreateSkilNoteContent {
     @IsOptional()
     content?: string;
 
-    // @IsNumber()
-    // @IsOptional()
-    // page?: number;
-
-    // @IsNumber()
-    // @IsOptional()
-    // order?: number;
-
     @IsOptional()
     createdAt?: Date;
 
-    @IsNumber()
-    writerId: number
-
-    // @IsNumber()
-    // skilNoteId: string
 }

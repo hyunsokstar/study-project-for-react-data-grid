@@ -83,7 +83,7 @@ export class UsersService {
         };
 
         // 1d, 1h, 1m
-        const accessToken = jwt.sign(accessTokenPayload, accessTokenSecret, { expiresIn: '1m' });
+        const accessToken = jwt.sign(accessTokenPayload, accessTokenSecret, { expiresIn: '10m' });
         const refreshToken = jwt.sign(refreshTokenPayload, refreshTokenSecret, { expiresIn: '1h' });
 
         return { accessToken, refreshToken };
