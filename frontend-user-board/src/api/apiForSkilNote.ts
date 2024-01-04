@@ -41,13 +41,14 @@ export const apiForGetSkillNotesByTechNoteId = async (techNoteId: number, page: 
 };
 
 export const apiForGetSkilNoteContentListForSkilNoteId = async ({ queryKey }: QueryFunctionContext) => {
-    const skilNoteId = queryKey[1] as string; // 값이 없을 경우를 대비하여 타입 캐스팅
-    if (!skilNoteId) {
-        throw new Error('SkilNoteId가 올바르지 않습니다.');
+    const [queryName, skilNoteId, pageNum] = queryKey;
+
+    if (!skilNoteId || !pageNum) {
+        throw new Error('SkilNoteId나 pageNum이 올바르지 않습니다.');
     }
 
     try {
-        const response = await instance.get(`/${skilNoteId}/contents`); // 이 부분 수정
+        const response = await instance.get(`/${skilNoteId}/contents/${pageNum}`); // 이 부분 수정
         return response.data;
     } catch (error) {
         throw new Error(`Skill notes를 불러오는 중 오류가 발생했습니다: ${error}`);

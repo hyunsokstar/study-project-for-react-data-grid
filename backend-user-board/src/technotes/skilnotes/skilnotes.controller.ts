@@ -30,9 +30,12 @@ export class SkilnotesController {
         return this.skilnoteService.getSkilnotesForTechNote(techNoteId);
     }
 
-    @Get(':skilnoteId/contents')
-    async getSkilNoteContents(@Param('skilnoteId') skilnoteId: string) {
-        return this.skilnoteService.getSkilNoteContentsBySkilNoteId(skilnoteId);
+    @Get(':skilnoteId/contents/:pageNum')
+    async getSkilNoteContents(
+        @Param('skilnoteId') skilnoteId: string,
+        @Param('pageNum') pageNum: string
+    ) {
+        return this.skilnoteService.getSkilNoteContentsBySkilNoteId(skilnoteId, pageNum);
     }
 
     // http://127.0.0.1:8080/skilnotes/:skilnoteId/contents

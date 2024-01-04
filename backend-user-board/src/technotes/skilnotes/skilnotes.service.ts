@@ -54,9 +54,9 @@ export class SkilnotesService {
         return this.skilNoteContentsRepo.save(skilNoteContentsObj);
     }
 
-    async getSkilNoteContentsBySkilNoteId(skilnoteId: any) {
+    async getSkilNoteContentsBySkilNoteId(skilnoteId: any, pageNum: any) {
         const options: FindManyOptions<SkilNoteContentsModel> = {
-            where: { skilNote: { id: parseInt(skilnoteId) } },
+            where: { skilNote: { id: parseInt(skilnoteId) }, page: pageNum },
         };
 
         const skilnoteContents = await this.skilNoteContentsRepo.find(options)

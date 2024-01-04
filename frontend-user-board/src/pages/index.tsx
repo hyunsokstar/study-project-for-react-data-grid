@@ -9,6 +9,15 @@ const Home = () => {
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
     console.log("loginUser : ", loginUser);
 
+    const links3 = [
+        { href: '/Note/TechNoteList', text: 'Tech Note List', visible: true },
+        { href: '/Note/SkilNoteContents/10/1', text: 'note contents sample', visible: true },
+    ];
+
+    const links4 = [
+        { href: '/Test/CardList/PostingList', text: 'react-data-grid basic(2)', visible: true },
+    ];
+
     const links1 = [
         { href: '/users', text: '회원 관리 (기본)', visible: true },
         { href: '/users/UserlistByDataGrid', text: '회원 관리(react-data-grid)', visible: true },
@@ -19,16 +28,6 @@ const Home = () => {
 
     const links2 = [
         { href: '/Test/CardList/PostingList', text: '포스팅 리스트', visible: true },
-    ];
-
-    const links3 = [
-        { href: '/Note/TechNoteList', text: 'Tech Note List', visible: true },
-        { href: '/Note/ReportNoteContentList', text: 'report note page', visible: true },
-        { href: '/Note/ReportNoteContentList', text: 'report note page', visible: true },
-    ];
-
-    const links4 = [
-        { href: '/Test/CardList/PostingList', text: 'react-data-grid basic(2)', visible: true },
     ];
 
     // todo list by react data grid 1227
