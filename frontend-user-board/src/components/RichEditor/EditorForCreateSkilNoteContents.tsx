@@ -16,7 +16,7 @@ const EditorForCreateSkilNoteContents = (props: Props) => {
     return (
         <>
             <Box borderWidth="1px" borderRadius="lg" overflow="hidden" display={"flex"} flexDirection={"column"} gap={2} key="editorForCreateSkilNoteContents">
-                <Box p={3} border={"2px solid blue"}>
+                <Box p={2} border={"2px solid blue"} height={"100%"}>
                     <HStack fontSize="xl" mb={2} border={"1px solid black"}>
                         <Text>
                             <Button variant={"outlined"} size={"md"} border={"1px"}>
@@ -30,13 +30,17 @@ const EditorForCreateSkilNoteContents = (props: Props) => {
                     <Box
                         border={"1px dotted black"}
                         overflowY={"scroll"}
-                        height={"60vh"}
+                        height={"100%"}
                     >
                         <TinyMCEEditor
                             initialValue={note_content_content}
                             onChange={handleContentChange}
                             apiKey="mj1ss81rnxfcig1ol8gp6j8oui9jpkp61hw3m901pbt14ei1"
                         />
+                    </Box>
+                    <Box display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2} mt={2.5}>
+                        <Button variant={"outline"} width={"100%"}>Submit</Button>
+                        <Button variant={"outline"} width={"100%"}>Initialize</Button>
                     </Box>
                 </Box>
 

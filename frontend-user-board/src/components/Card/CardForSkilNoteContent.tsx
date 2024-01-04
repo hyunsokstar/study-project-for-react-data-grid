@@ -39,7 +39,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, order }: Props) => {
                         <Box
                             border={"1px dotted black"}
                             overflowY={"scroll"}
-                            height={"60vh"}
+                            height={"70vh"}
                         >
                             {noteObj.content}
                         </Box>

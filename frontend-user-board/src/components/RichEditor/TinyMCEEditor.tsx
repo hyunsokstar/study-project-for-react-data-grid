@@ -25,7 +25,7 @@ const TinyMCEEditor: React.FC<Props> = ({
     };
 
     return (
-        <Box sx={{ height: "60vh", overflowY: 'scroll' }}>
+        <Box sx={{ height: "65vh", overflowY: 'scroll' }}>
             <Editor
                 apiKey={apiKey}
                 value={initialValue}
