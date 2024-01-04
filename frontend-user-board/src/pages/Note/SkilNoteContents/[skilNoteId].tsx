@@ -39,15 +39,15 @@ const SkilNoteContents = () => {
                 <Text>writer: {dataForskilNoteContent?.writer.email}</Text>
             </Box>
             <Box display={"flex"} border={"3px dotted black"} overflowY={"scroll"} height={"70vh"}>
-                <Box flex={7} border={"1px dotted red"}>
+                <Box flex={7} border={"0px dotted red"} >
 
                     <Box border="0px dashed red" p={2} display={"flex"} flexDirection={"column"} gap={2}>
                         {dataForskilNoteContent?.skilnoteContents.map((row) => (
                             <div data-order={row.order} key={row.id} ref={(ref) => (cardRefs.current[row.order] = ref)}>
-                                <CardForSkilNoteContent key={row.id} order={row.order} data-order={row.order} />
+                                <CardForSkilNoteContent key={row.id} noteObj={row} order={row.order} data-order={row.order} />
                             </div>
                         ))}
-                        <Box border="1px dashed red" p={2} ref={editorRef} height={"68vh"}>
+                        <Box border="0px dashed red" ref={editorRef} height={"68vh"} width={"100%"}>
                             <EditorForCreateSkilNoteContents />
                         </Box>
                     </Box>

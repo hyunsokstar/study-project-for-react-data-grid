@@ -15,7 +15,7 @@ const EditorForCreateSkilNoteContents = (props: Props) => {
 
     return (
         <>
-            <Box borderWidth="1px" borderRadius="lg" overflow="hidden" display={"flex"} flexDirection={"column"} gap={2}>
+            <Box borderWidth="1px" borderRadius="lg" overflow="hidden" display={"flex"} flexDirection={"column"} gap={2} key="editorForCreateSkilNoteContents">
                 <Box p={3} border={"2px solid blue"}>
                     <HStack fontSize="xl" mb={2} border={"1px solid black"}>
                         <Text>
