@@ -51,7 +51,10 @@ const SkilNoteContents = () => {
                             </div>
                         ))}
                         <Box border="0px dashed red" ref={editorRef} height={"80vh"} width={"100%"}>
-                            <EditorForCreateSkilNoteContents />
+                            <EditorForCreateSkilNoteContents
+                                skilNoteId={skilNoteId}
+                                pageNum={pageNum}
+                            />
                         </Box>
                     </Box>
                 </Box>

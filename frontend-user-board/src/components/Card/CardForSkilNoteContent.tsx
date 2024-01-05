@@ -10,8 +10,7 @@ type Props = {
 
 const CardForSkilNoteContent = ({ noteObj, skilNoteId, order }: Props) => {
 
-    console.log("noteObj ? ", noteObj);
-
+    // console.log("noteObj ? ", noteObj);
 
     return (
         <>

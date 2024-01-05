@@ -3,7 +3,7 @@ import { backendApi } from "./commonApi";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { access } from "fs";
 import { log } from "console";
-import { SkillNoteListResponse, SkillNoteRow, skilnoteRowToSave } from "@/types/typeForSkilNote";
+import { SkillNoteListResponse, SkillNoteRow, dataForCreateSkilNoteContent, skilnoteRowToSave } from "@/types/typeForSkilNote";
 
 const instance = axios.create({
     baseURL: `${backendApi}/skilnotes`,
@@ -25,6 +25,29 @@ instance.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+// todo
+// /${skilnoteId}/contents/${pageNum}
+// 함수 이름: apiForCreateSkilNoteContent
+// 서버로 보내야할 데이터: skilNoteId, pageNum, title, file, content
+// with ts
+export const apiForCreateSkilNoteContent = async (data: dataForCreateSkilNoteContent) => {
+
+    const skilNoteId = data.skilNoteId
+    const pageNum = data.pageNum
+
+    console.log("data : ", data);
+
+    try {
+        const response = await instance.post(`/${skilNoteId}/contents/${pageNum}`, { title: data.title, file: data.file, content: data.content });
+        return response.data;
+    } catch (error) {
+        console.log("error : ", error);
+
+    }
+};
+
+
 
 // todo: http://127.0.0.1:8080/skilnotes/byTechNoteId/16?page=1 로 요청하는 axios 요청 로직 추가 해줘
 export const apiForGetSkillNotesByTechNoteId = async (techNoteId: number, page: number): Promise<SkillNoteListResponse> => {

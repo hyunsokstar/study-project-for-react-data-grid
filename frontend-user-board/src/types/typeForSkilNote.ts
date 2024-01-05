@@ -49,3 +49,11 @@ export interface skilnoteRowToSave {
     category: string;
     techNoteId: number;
 }
+
+export interface dataForCreateSkilNoteContent {
+    skilNoteId: any;
+    pageNum: any;
+    title: string;
+    file: string;
+    content: string;
+}

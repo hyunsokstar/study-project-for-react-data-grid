@@ -15,7 +15,7 @@ const Home = () => {
     ];
 
     const links4 = [
-        { href: '/Test/CardList/PostingList', text: 'react-data-grid basic(2)', visible: true },
+        { href: '/Test/ReactBeauifulDnd/BasicDnd1', text: 'BasicDnd1', visible: true },
     ];
 
     const links1 = [
