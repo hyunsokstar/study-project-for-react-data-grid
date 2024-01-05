@@ -37,9 +37,9 @@ export class AuthMiddleware implements NestMiddleware {
 
             console.log("req['user'] ::: ", req['user']);
 
-            // if (req['user']) {
-            //     next()
-            // }
+            if (req['user']) {
+                next()
+            }
 
 
         } catch (error) {
@@ -51,11 +51,12 @@ export class AuthMiddleware implements NestMiddleware {
                 // throw error
                 res.status(401).json({ message: '토큰이 만료되었습니다.', reason: 'ExpiredToken' });
             } else {
-                // res.status(403).json({ message: '인증 실패' });
+                res.status(403).json({ message: '인증 실패' });
                 // next();
             }
         }
 
-        next();
+        // next();
     }
+
 }
