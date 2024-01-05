@@ -16,6 +16,7 @@ const Home = () => {
 
     const links4 = [
         { href: '/Test/ReactBeauifulDnd/BasicDnd1', text: 'BasicDnd1', visible: true },
+        { href: '/Test/ReactBeauifulDnd/BasicDnd2', text: 'BasicDnd2', visible: true },
     ];
 
     const links1 = [

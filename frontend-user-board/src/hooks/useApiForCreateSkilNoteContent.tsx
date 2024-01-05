@@ -32,13 +32,13 @@ const useApiForCreateSkilNoteContent = (skilNoteId: any, pageNum: number) => {
         onError: (error: any) => {
             console.log("error : ", error);
 
-            // toast({
-            //     title: error.response.data.error,
-            //     description: error.response.data.message,
-            //     status: "error",
-            //     duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
-            //     isClosable: true, // 닫기 버튼 표시
-            // });
+            toast({
+                title: error.response.data.error,
+                description: error.response.data.message,
+                status: "error",
+                duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
+                isClosable: true, // 닫기 버튼 표시
+            });
 
         },
     });

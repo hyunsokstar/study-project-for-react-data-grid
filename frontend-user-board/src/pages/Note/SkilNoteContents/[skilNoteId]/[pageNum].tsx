@@ -1,15 +1,21 @@
 import CardForSkilNoteContent from '@/components/Card/CardForSkilNoteContent';
+import NavigatorForScrollContents from '@/components/Navigator/NavigatorForScrollContents';
 import EditorForCreateSkilNoteContents from '@/components/RichEditor/EditorForCreateSkilNoteContents';
 import useApiForGetSkilNoteContentsForSkilNoteId from '@/hooks/useApiForGetSkilNoteContentsForSkilNoteId';
 import { Box, Button, Grid, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+type Item = {
+    id: string;
+    order: string;
+};
 
 const SkilNoteContents = () => {
     const router = useRouter();
     const { skilNoteId, pageNum } = router.query;
     const cardRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+    const [orderInfos, setOrderInfos] = useState<Item[]>();
 
     const { data: dataForskilNoteContent } = useApiForGetSkilNoteContentsForSkilNoteId(skilNoteId, pageNum);
 
@@ -32,6 +38,19 @@ const SkilNoteContents = () => {
     const buttonsForScroll = dataForskilNoteContent?.skilnoteContents.map((row, i) => {
         return (<Button onClick={() => scrollToCard(i + 1)}>{i + 1}</Button>)
     })
+
+    useEffect(() => {
+        if (dataForskilNoteContent) {
+            const ordersArray = dataForskilNoteContent?.skilnoteContents.map((row) => {
+                return {
+                    id: `${row.id}`,
+                    order: `${row.order}`
+                }
+            })
+            setOrderInfos(ordersArray)
+        }
+    }, [dataForskilNoteContent])
+
 
     return (
         <Box>
@@ -62,10 +81,13 @@ const SkilNoteContents = () => {
                 <Box flex={3} border={"0px dotted red"} position="sticky" top={0} mt={2}>
                     <Grid templateColumns="1fr 5fr" gap={2} px={2}>
                         <Box display={"flex"} flexDirection={"column"} gap={2} border={"2px dotted purple"} textAlign={"center"}>
-                            {buttonsForScroll}
+                            {/* {buttonsForScroll}
                             <Box width={"100%"}>
-                                <Button onClick={scrollToEditor} width={"100%"}>create</Button> {/* 에디터 영역으로 스크롤 */}
-                            </Box>
+                                <Button onClick={scrollToEditor} width={"100%"}>create</Button> 
+                            </Box> */}
+
+                            <NavigatorForScrollContents itemsInfo={orderInfos ? orderInfos : []} />
+
                         </Box>
 
                         <Box border="1px dashed" borderColor="gray.300" p={0}>
@@ -75,8 +97,8 @@ const SkilNoteContents = () => {
                         </Box>
                     </Grid>
                 </Box>
-            </Box>
-        </Box>
+            </Box >
+        </Box >
     );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { apiForGetSkilNoteContentListForSkilNoteId } from '@/api/apiForSkilNote';
+import { responseTypeForGetSkilNoteContents } from '@/types/typeForSkilNoteContents';
 
 type typeForSkilNoteContentRow = {
     id: number;
@@ -14,11 +15,11 @@ type typeForSkilNoteContentRow = {
 }
 
 
-type responseTypeForGetSkilNoteContents = {
-    title: string;
-    writer: Writer;
-    skilnoteContents: typeForSkilNoteContentRow[]
-};
+// type responseTypeForGetSkilNoteContents = {
+//     title: string;
+//     writer: Writer;
+//     skilnoteContents: typeForSkilNoteContentRow[]
+// };
 
 const useApiForGetSkilNoteContentsForSkilNoteId = (skilNoteId: any, pageNum: any) => {
 

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   DragDropContext,
@@ -66,35 +66,26 @@ const BasicDnd1: React.FC = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
-          <Box
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <div>
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        provided.draggableProps.style,
-                        snapshot.isDragging
-                      )}
-                    >
-                      {item.content}
-                    </div>
-                  </div>
+      {items.map((item, index) => (
+        <Draggable key={item.id} draggableId={item.id} index={index}>
+          {(provided, snapshot) => (
+            <Box>
+              <Button
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps} // 드래그 핸들 props
+                style={getItemStyle(
+                  provided.draggableProps.style,
+                  snapshot.isDragging
                 )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Box>
-        )}
-      </Droppable>
+                border={"2px solid red"}
+              >
+                {item.content}
+              </Button>
+            </Box>
+          )}
+        </Draggable>
+      ))}
     </DragDropContext>
   );
 };

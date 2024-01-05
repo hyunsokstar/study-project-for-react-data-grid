@@ -43,7 +43,7 @@ export const apiForCreateSkilNoteContent = async (data: dataForCreateSkilNoteCon
         return response.data;
     } catch (error) {
         console.log("error : ", error);
-
+        throw error
     }
 };
 
