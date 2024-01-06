@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { SkilnotesService } from './skilnotes.service';
 import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
 import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { dtoForReorderContents } from '../dtos/dtoForReorderContents';
 
 @Controller('skilnotes')
 export class SkilnotesController {
@@ -74,6 +75,11 @@ export class SkilnotesController {
         const result = await this.skilnoteService.createSkilNoteContents(skilNoteId, pageNum, loginUser, dto);
         return response.status(HttpStatus.CREATED).json({ message: "create skilnote contents success", result: result });
 
+    }
+
+    @Put('contents/reorder')
+    async reorderingSkilNoteContents(@Body() contents: dtoForReorderContents[]) {
+        console.log("contents : ", contents);
     }
 
 }

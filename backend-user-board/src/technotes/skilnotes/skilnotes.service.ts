@@ -7,6 +7,7 @@ import { SkilNotesModel } from '../entities/skilnotes.entity';
 import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
 import { SkilNoteContentsModel } from '../entities/skilnote_contents.entity';
 import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
+import { dtoForReorderContents } from '../dtos/dtoForReorderContents';
 
 @Injectable()
 export class SkilnotesService {
@@ -21,12 +22,17 @@ export class SkilnotesService {
         private readonly usersRepository: Repository<UsersModel>,
     ) { }
 
+    async reorderingForSkilnoteContents(
+        dto: dtoForReorderContents
+    ) {
+        console.log("dto : ", dto);
+
+    }
+
     async createSkilNoteContents(skilNoteId: string, pageNum: any, loginUser, dto: dtoForCreateSkilNoteContent) {
         const { title, file, content } = dto;
         console.log("skilnoteId : ", skilNoteId);
         console.log("skilnoteId : ", typeof skilNoteId);
-
-        console.log("service check for create");
 
         // todo 
         // const writerObj = await this.usersRepository.findOne({ where: { id: writerId } });
