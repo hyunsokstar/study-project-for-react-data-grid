@@ -58,13 +58,15 @@ interface IProps {
     itemsInfo: Item[]
     skilNoteId: any
     pageNum: any
+    scrollToCard: (index: number) => void
 }
 
-const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum }: IProps) => {
+const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCard }: IProps) => {
     const [items, setItems] = useState<Item[]>(itemsInfo);
-    const mutationForCreateSkilNoteContent = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum); // 훅 사용
+    const mutationForCreateSkilNoteContent = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum);
 
     console.log("itemsInfo : ", itemsInfo);
+    // console.log("scrollToCard : ", scrollToCard);
 
 
     const onDragEnd = (result: DropResult) => {
@@ -114,7 +116,7 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum }: IProps) 
                                                 provided.draggableProps.style,
                                                 snapshot.isDragging
                                             )}
-                                            onClick={() => alert(item.id)}
+                                            onClick={() => scrollToCard(parseInt(item.order))}
                                         >
                                             {/* {item.order} */}
                                             {index + 1}

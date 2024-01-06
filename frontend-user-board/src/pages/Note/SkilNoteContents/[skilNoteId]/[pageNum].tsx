@@ -89,7 +89,9 @@ const SkilNoteContents = () => {
                             <NavigatorForScrollContents
                                 skilNoteId={skilNoteId}
                                 pageNum={pageNum}
-                                itemsInfo={orderInfos ? orderInfos : []} />
+                                itemsInfo={orderInfos ? orderInfos : []}
+                                scrollToCard={scrollToCard}
+                            />
 
                         </Box>
 
