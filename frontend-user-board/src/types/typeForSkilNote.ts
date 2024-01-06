@@ -57,3 +57,10 @@ export interface dataForCreateSkilNoteContent {
     file: string;
     content: string;
 }
+
+export interface dataForUpdateSkilNoteContent {
+    skilNoteContentId: any;
+    title: string;
+    file: string;
+    content: string;
+}

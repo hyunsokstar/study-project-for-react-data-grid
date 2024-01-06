@@ -8,11 +8,12 @@ type Props = {
     skilNoteId?: any;
     index: number;
     noteObj?: SkilNoteContentsRow;
+    pageNum: any;
 }
 
-const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
+const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum }: Props) => {
     const [copied, setCopied] = useState(false);
-    const [isEditMode, setIsEditMode] = useState(true);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const copyHtmlToClipboard = () => {
         const textToCopy = stripHtmlTags(noteObj?.content || '');
@@ -41,7 +42,10 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
             {isEditMode ?
                 <Box>
                     <EditorForUpdateSkilNotes
-                        skilNoteContentId={skilNoteId}
+                        skilNoteId={skilNoteId}
+                        pageNum={pageNum}
+                        // skilNoteContentId={noteObj?.id}
+                        skilNoteContentId={noteObj?.order}
                         title={noteObj?.title}
                         file={noteObj?.file}
                         content={noteObj?.content}
@@ -59,7 +63,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
                     flexDirection="column"
                     gap={2}
                 >
-                    <Box p={3} border="2px solid blue">
+                    <Box p={1} border="2px solid blue">
                         <HStack spacing={1} mb={1}>
                             <Text>
                                 <Button variant="outlined" size="md" border="1px">
@@ -89,7 +93,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
                             </Button>
                         </Box>
                     </Box>
-                    hi
+                    {/* hi */}
                 </Box>
                 : ""}
         </>

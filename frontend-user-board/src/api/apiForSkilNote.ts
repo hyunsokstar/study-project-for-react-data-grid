@@ -3,7 +3,7 @@ import { backendApi } from "./commonApi";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { access } from "fs";
 import { log } from "console";
-import { SkillNoteListResponse, SkillNoteRow, dataForCreateSkilNoteContent, skilnoteRowToSave } from "@/types/typeForSkilNote";
+import { SkillNoteListResponse, SkillNoteRow, dataForCreateSkilNoteContent, dataForUpdateSkilNoteContent, skilnoteRowToSave } from "@/types/typeForSkilNote";
 
 const instance = axios.create({
     baseURL: `${backendApi}/skilnotes`,
@@ -51,9 +51,7 @@ export const apiForCreateSkilNoteContent = async (data: dataForCreateSkilNoteCon
 
 // todo: http://127.0.0.1:8080/skilnotes/byTechNoteId/16?page=1 로 요청하는 axios 요청 로직 추가 해줘
 export const apiForGetSkillNotesByTechNoteId = async (techNoteId: number, page: number): Promise<SkillNoteListResponse> => {
-
     console.log("techNoteId, page : ", techNoteId, page);
-
 
     try {
         const response = await instance.get(`/byTechNoteId/${techNoteId}?pageNum=${page}`);
@@ -87,8 +85,6 @@ export const apiForSaveSkilNotes = (skilnoteDataToSave: SkillNoteRow[]) => {
 }
 
 // http://127.0.0.1:8080/skilnotes/10/contents
-// 
-
 interface parameterTypeForUpdateSkilNoteContents {
     id: string;
     order: string;
@@ -102,3 +98,17 @@ export const apiForUpdateSkilNoteContentsOrder = (
         'contents/reorder', orderInfoArray
     )
 }
+
+export const apiForUpdateSkilNoteContent = async (data: dataForUpdateSkilNoteContent) => {
+    const skilNoteContentId = data.skilNoteContentId;
+    console.log("data : ", data);
+
+    try {
+        const response = await instance.put(`/content/${skilNoteContentId}`, { title: data.title, file: data.file, content: data.content });
+        return response.data;
+    } catch (error) {
+        console.log("error : ", error);
+        throw error
+    }
+
+};

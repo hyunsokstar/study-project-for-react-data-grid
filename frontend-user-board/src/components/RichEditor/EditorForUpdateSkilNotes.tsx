@@ -3,8 +3,11 @@ import { Box, Button, Grid, HStack, Input, Text } from '@chakra-ui/react';
 import TinyMCEEditor from "./TinyMCEEditor";
 import { useForm } from "react-hook-form";
 import useApiForCreateSkilNoteContent from "@/hooks/useApiForCreateSkilNoteContent";
+import useApiForUpdateSkilNoteContent from "@/hooks/useApiForUpdateSkilNoteContent";
 
 type Props = {
+    skilNoteId: any;
+    pageNum: any;
     skilNoteContentId: any;
     title?: string;
     file?: string;
@@ -17,8 +20,9 @@ type FormData = {
 };
 
 
-const EditorForUpdateSkilNotes = ({ skilNoteContentId, title, file, content }: Props) => {
+const EditorForUpdateSkilNotes = ({ skilNoteId, pageNum, skilNoteContentId, title, file, content }: Props) => {
     // const mutationForCreateSkilNoteContent = useApiForCreateSkilNoteContent(skilNoteContentId);
+    const mutationForUpdateSkilNoteContent = useApiForUpdateSkilNoteContent(skilNoteId, pageNum);
 
     const [note_content, set_note_content] =
         useState<string>("");
@@ -35,16 +39,23 @@ const EditorForUpdateSkilNotes = ({ skilNoteContentId, title, file, content }: P
         console.log("note_content : ", note_content);
 
         const data_for_create_note_content = {
+            skilNoteContentId,
             title: data.title,
             file: data.file,
             content: note_content
         }
 
-        // mutationForCreateSkilNoteContent.mutate(data_for_create_note_content);
-        reset()
-        set_note_content("")
+        mutationForUpdateSkilNoteContent.mutate(data_for_create_note_content);
+        // reset()
+        // set_note_content("")
 
     };
+
+    useEffect(() => {
+        if (content) {
+            set_note_content(content)
+        }
+    }, [content])
 
     return (
         <>
@@ -54,7 +65,7 @@ const EditorForUpdateSkilNotes = ({ skilNoteContentId, title, file, content }: P
                         <Box display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2} mb={2}>
                             <Text>
                                 <Button variant={"outlined"} size={"md"} border={"1px"}>
-                                    C
+                                    {skilNoteContentId}
                                 </Button>
                             </Text>
                             <Input {...register("title")}
@@ -74,7 +85,7 @@ const EditorForUpdateSkilNotes = ({ skilNoteContentId, title, file, content }: P
                             height={"100%"}
                         >
                             <TinyMCEEditor
-                                initialValue={content}
+                                initialValue={note_content}
                                 onChange={handleContentChange}
                                 apiKey="mj1ss81rnxfcig1ol8gp6j8oui9jpkp61hw3m901pbt14ei1"
                             />

@@ -39,7 +39,7 @@ const grid = 8;
 
 const getItemStyle = (
     draggableStyle: any,
-    isDragging: boolean
+    isDragging: boolean,
 ): React.CSSProperties => ({
     userSelect: "none",
     padding: grid * 2,
@@ -63,11 +63,10 @@ interface IProps {
 
 const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCard }: IProps) => {
     const [items, setItems] = useState<Item[]>(itemsInfo);
-    const mutationForCreateSkilNoteContent = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum);
+    const mutationForUpdateOrderForSkilNoteContents = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum);
 
     console.log("itemsInfo : ", itemsInfo);
     // console.log("scrollToCard : ", scrollToCard);
-
 
     const onDragEnd = (result: DropResult) => {
         console.log("옮긴 박스의 order number : ", result.draggableId);
@@ -84,7 +83,7 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
         );
         setItems(newItems);
 
-        mutationForCreateSkilNoteContent.mutate(newItems)
+        mutationForUpdateOrderForSkilNoteContents.mutate(newItems)
     };
 
     useEffect(() => {
@@ -97,39 +96,41 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
 
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                    <Box
-                        ref={provided.innerRef}
-                        style={getListStyle(snapshot.isDraggingOver)}
-                    >
-                        {items && items.map((item, index) => (
-                            <Draggable key={item.id} draggableId={item.id} index={index}>
-                                {(provided, snapshot) => (
-                                    <div>
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                provided.draggableProps.style,
-                                                snapshot.isDragging
-                                            )}
-                                            onClick={() => scrollToCard(parseInt(item.order))}
-                                        >
-                                            {/* {item.order} */}
-                                            {index + 1}
-                                        </div>
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </Box>
-                )}
-            </Droppable>
-        </DragDropContext>
+        <Box overflowY={"scroll"} height={"80%"}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <Box
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                        >
+                            {items && items.map((item, index) => (
+                                <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    {(provided, snapshot) => (
+                                        <Box>
+                                            <Box
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                style={getItemStyle(
+                                                    provided.draggableProps.style,
+                                                    snapshot.isDragging
+                                                )}
+                                                onClick={() => scrollToCard(parseInt(item.order))}
+                                            >
+                                                {/* {item.order} */}
+                                                {index + 1}
+                                            </Box>
+                                        </Box>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </Box>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        </Box>
     );
 };
 

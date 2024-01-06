@@ -74,7 +74,8 @@ export class AppModule implements NestModule {
         // '/users/login-check-by-refreshToken',
         '/technotes/saveTechNotes',
         '/skilnotes/saveRows',
-        '/skilnotes/:skilNoteId/contents/:pageNum'
+        '/skilnotes/:skilNoteId/contents/:pageNum',
+        '/skilnotes/content/:skilNoteContentId',
       ); // 적용할 경로 설정
   }
 }

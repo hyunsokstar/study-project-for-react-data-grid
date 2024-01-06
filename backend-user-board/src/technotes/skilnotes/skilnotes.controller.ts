@@ -84,4 +84,29 @@ export class SkilnotesController {
         return updatedContents;
     }
 
+    // http://127.0.0.1:8080/skilnotes/content/:skilNoteContetId
+    @UseGuards(AuthGuard)
+    @Put('content/:skilNoteContentId')
+    async updateSkilNoteContent(
+        @Req() req: Request,
+        @Param('skilNoteContentId') skilNoteContentId: string,
+        @Body() dto: dtoForCreateSkilNoteContent,
+        @Res() response
+    ) {
+        const loginUser = req['user'];
+
+        if (!loginUser) {
+
+        }
+
+        console.log("loginUser at create skilnote contents: ", loginUser);
+        console.log("skilNoteContentId : ", skilNoteContentId);
+        console.log("skilnote content 입력 check !");
+
+        const result = await this.skilnoteService.updateSkilNoteContent(skilNoteContentId, dto, loginUser);
+        return response.status(HttpStatus.CREATED).json({ message: "update skilnote content success", result: result });
+
+    }
+
+
 }

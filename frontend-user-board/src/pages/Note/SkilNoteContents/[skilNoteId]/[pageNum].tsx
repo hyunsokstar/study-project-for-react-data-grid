@@ -22,22 +22,23 @@ const SkilNoteContents = () => {
     const scrollToCard = (order: number) => {
         const selectedCard = cardRefs.current[order];
         if (selectedCard) {
-            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // smooth scroll
+            // selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // smooth scroll 끝난 후 정확한 위치로 추가 스크롤
+            // selectedCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+            selectedCard.scrollIntoView({ behavior: 'smooth' });
+
+            setTimeout(() => {
+                selectedCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }, 300); // 애니메이션 시간 고려
+
         }
     };
 
     const editorRef = useRef<HTMLDivElement | null>(null); // 참조 추가
 
-
-    const scrollToEditor = () => {
-        if (editorRef.current) {
-            editorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
-
-    const buttonsForScroll = dataForskilNoteContent?.skilnoteContents.map((row, i) => {
-        return (<Button onClick={() => scrollToCard(i + 1)}>{i + 1}</Button>)
-    })
 
     useEffect(() => {
         if (dataForskilNoteContent) {
@@ -53,20 +54,19 @@ const SkilNoteContents = () => {
 
 
     return (
-        <Box>
-            <Box display={"flex"} border={"2px dotted black"} mx={2} p={2} gap={2}>
+        <Box border={"0px solid pink"}>
+            <Box display={"flex"} border={"2px dotted black"} mx={2} p={0} gap={2}>
                 <Text>title: {dataForskilNoteContent?.title}</Text>
                 <Text>writer: {dataForskilNoteContent?.writer.email}</Text>
                 <Text>noteId: {skilNoteId}</Text>
                 <Text>pageNum: {pageNum}</Text>
             </Box>
-            <Box display={"flex"} border={"0px dotted black"} overflowY={"scroll"} height={"80vh"} mt={2}>
-                <Box flex={7} border={"0px dotted red"} >
-
-                    <Box border="0px dashed red" p={2} display={"flex"} flexDirection={"column"} gap={2}>
+            <Box display={"flex"} border={"0px dotted black"} overflowY={"scroll"} height={"100%"} m={2}>
+                <Box flex={7} border={"0px dotted red"}>
+                    <Box border="0px dashed red" p={0} display={"flex"} flexDirection={"column"} gap={2} overflowY={"scroll"} height={"80vh"} mt={0}>
                         {dataForskilNoteContent?.skilnoteContents.map((row, index) => (
                             <div data-order={row.order} key={row.id} ref={(ref) => (cardRefs.current[row.order] = ref)}>
-                                <CardForSkilNoteContent key={row.id} noteObj={row} index={index + 1} data-order={row.order} />
+                                <CardForSkilNoteContent key={row.id} noteObj={row} index={index + 1} data-order={row.order} pageNum={pageNum} />
                             </div>
                         ))}
                         <Box border="0px dashed red" ref={editorRef} height={"80vh"} width={"100%"}>
@@ -78,7 +78,7 @@ const SkilNoteContents = () => {
                     </Box>
                 </Box>
 
-                <Box flex={3} border={"0px dotted red"} position="sticky" top={0} mt={2}>
+                <Box flex={3} border={"2px dotted red"} position="sticky" top={0} mt={0} height={"80vh"}>
                     <Grid templateColumns="1fr 5fr" gap={2} px={2}>
                         <Box display={"flex"} flexDirection={"column"} gap={2} border={"2px dotted purple"} textAlign={"center"}>
                             {/* {buttonsForScroll}

@@ -4,6 +4,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiForCreateSkilNoteContent, apiForUpdateSkilNoteContentsOrder } from '@/api/apiForSkilNote';
 
 const useApiForUpdateOrderForSkilNoteContents = (skilNoteId: any, pageNum: number) => {
+
+    console.log("skinoteId :::::", skilNoteId);
+    console.log("pageNum :::::", pageNum);
+
+
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용
 

@@ -44,12 +44,14 @@ export class AuthMiddleware implements NestMiddleware {
 
         } catch (error) {
             console.log("error :?? ", error);
-            // console.log("token 유효 기간 지남");
+            console.log("token 유효 기간 지남");
+
+            // res.status(401).json({ message: error, reason: error });
 
             if (error.name === 'TokenExpiredError') {
                 // next();
                 // throw error
-                res.status(401).json({ message: '토큰이 만료되었습니다.', reason: 'ExpiredToken' });
+                // res.status(401).json({ message: '토큰이 만료되었습니다.', reason: 'ExpiredToken' });
             } else {
                 // res.status(403).json({ status: "error", message: '인증 실패' });
                 // next();

@@ -25,12 +25,15 @@ export class SkilnotesService {
     async reorderContents(contents: dtoForReorderContents[]) {
         const updatedContents = [];
 
-        for (const content of contents) {
+        console.log("contents : ", contents);
+
+
+        for (const [index, content] of contents.entries()) {
             const { id, order } = content;
 
             await this.skilNoteContentsRepo.update(
                 { id }, // 해당 ID에 대해
-                { order }, // 주어진 order 값으로 업데이트
+                { order: index + 1 }, // 주어진 order 값으로 업데이트
             );
 
             // 업데이트된 정보를 findOne 메서드로 얻기
@@ -89,6 +92,7 @@ export class SkilnotesService {
     async getSkilNoteContentsBySkilNoteId(skilnoteId: any, pageNum: any) {
         const options: FindManyOptions<SkilNoteContentsModel> = {
             where: { skilNote: { id: parseInt(skilnoteId) }, page: pageNum },
+            order: { order: 'ASC' } // order 속성을 사용하여 오름차순 정렬
         };
 
         const skilnoteContents = await this.skilNoteContentsRepo.find(options)
@@ -245,6 +249,33 @@ export class SkilnotesService {
             }
         }
         return { message: `save skil note is successfully excuted ${count}` };
+    }
+
+    async updateSkilNoteContent(skilNoteContentId: string, dto: dtoForCreateSkilNoteContent, loginUser) {
+        console.log("skilNoteContentId : ", skilNoteContentId);
+        console.log("skilNoteContentId : ", typeof skilNoteContentId);
+
+        if (!loginUser || !skilNoteContentId) {
+            throw new Error('loginUser or skilNoteId가 필요합니다.');
+        }
+
+        const skilNoteContentObj =
+            await this.skilNoteContentsRepo.findOne({
+                where: { id: parseInt(skilNoteContentId) },
+                relations: ['writer']
+            })
+
+        if (skilNoteContentObj.writer.email !== loginUser.email) {
+            throw new Error("작성자만 수정 할 수 있습니다.");
+        }
+
+        const update_result = await this.skilNoteContentsRepo.update(skilNoteContentId, {
+            title: dto.title,
+            file: dto.file,
+            content: dto.content,
+        });
+
+        return update_result;
     }
 
 }
