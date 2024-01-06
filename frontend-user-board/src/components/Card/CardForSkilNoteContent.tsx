@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { SkilNoteContentsRow } from '@/types/typeForSkilNoteContents';
+import EditorForCreateSkilNoteContents from '../RichEditor/EditorForCreateSkilNoteContents';
+import EditorForUpdateSkilNotes from '../RichEditor/EditorForUpdateSkilNotes';
 
 type Props = {
     skilNoteId?: any;
@@ -10,6 +12,7 @@ type Props = {
 
 const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
     const [copied, setCopied] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(true);
 
     const copyHtmlToClipboard = () => {
         const textToCopy = stripHtmlTags(noteObj?.content || '');
@@ -35,7 +38,18 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
 
     return (
         <>
-            {noteObj ?
+            {isEditMode ?
+                <Box>
+                    <EditorForUpdateSkilNotes
+                        skilNoteContentId={skilNoteId}
+                        title={noteObj?.title}
+                        file={noteObj?.file}
+                        content={noteObj?.content}
+                    />
+                </Box>
+                : ""}
+
+            {!isEditMode && noteObj ?
                 <Box
                     key={noteObj.id}
                     borderWidth="1px"
@@ -75,7 +89,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
                             </Button>
                         </Box>
                     </Box>
-
+                    hi
                 </Box>
                 : ""}
         </>
