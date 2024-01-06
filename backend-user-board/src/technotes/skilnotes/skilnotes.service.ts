@@ -22,12 +22,33 @@ export class SkilnotesService {
         private readonly usersRepository: Repository<UsersModel>,
     ) { }
 
-    async reorderingForSkilnoteContents(
-        dto: dtoForReorderContents
-    ) {
-        console.log("dto : ", dto);
+    async reorderContents(contents: dtoForReorderContents[]) {
+        const updatedContents = [];
 
+        for (const content of contents) {
+            const { id, order } = content;
+
+            await this.skilNoteContentsRepo.update(
+                { id }, // 해당 ID에 대해
+                { order }, // 주어진 order 값으로 업데이트
+            );
+
+            // 업데이트된 정보를 findOne 메서드로 얻기
+            const updatedContent =
+                await this.skilNoteContentsRepo.findOne({ where: { id } });
+
+            if (updatedContent) {
+                updatedContents.push(updatedContent);
+            } else {
+                console.error(`Failed to find updated content with ID ${id}`);
+            }
+        }
+
+        return updatedContents;
     }
+
+
+
 
     async createSkilNoteContents(skilNoteId: string, pageNum: any, loginUser, dto: dtoForCreateSkilNoteContent) {
         const { title, file, content } = dto;

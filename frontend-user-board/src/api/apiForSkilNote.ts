@@ -88,3 +88,17 @@ export const apiForSaveSkilNotes = (skilnoteDataToSave: SkillNoteRow[]) => {
 
 // http://127.0.0.1:8080/skilnotes/10/contents
 // 
+
+interface parameterTypeForUpdateSkilNoteContents {
+    id: string;
+    order: string;
+}
+
+export const apiForUpdateSkilNoteContentsOrder = (
+    orderInfoArray: parameterTypeForUpdateSkilNoteContents[]
+) => {
+    console.log("hi");
+    return instance.put(
+        'contents/reorder', orderInfoArray
+    )
+}

@@ -6,6 +6,7 @@ import {
     DropResult,
 } from "react-beautiful-dnd";
 import dynamic from "next/dynamic";
+import useApiForUpdateOrderForSkilNoteContents from "@/hooks/useApiForUpdateOrderForSkilNoteContents";
 
 const Droppable = dynamic(
     () => import("react-beautiful-dnd").then((res) => res.Droppable),
@@ -55,10 +56,13 @@ const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
 
 interface IProps {
     itemsInfo: Item[]
+    skilNoteId: any
+    pageNum: any
 }
 
-const NavigatorForScrollContents = ({ itemsInfo }: IProps) => {
+const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum }: IProps) => {
     const [items, setItems] = useState<Item[]>(itemsInfo);
+    const mutationForCreateSkilNoteContent = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum); // 훅 사용
 
     console.log("itemsInfo : ", itemsInfo);
 
@@ -76,8 +80,9 @@ const NavigatorForScrollContents = ({ itemsInfo }: IProps) => {
             result.source.index,
             result.destination.index
         );
-
         setItems(newItems);
+
+        mutationForCreateSkilNoteContent.mutate(newItems)
     };
 
     useEffect(() => {
@@ -111,7 +116,8 @@ const NavigatorForScrollContents = ({ itemsInfo }: IProps) => {
                                             )}
                                             onClick={() => alert(item.id)}
                                         >
-                                            {item.order}
+                                            {/* {item.order} */}
+                                            {index + 1}
                                         </div>
                                     </div>
                                 )}

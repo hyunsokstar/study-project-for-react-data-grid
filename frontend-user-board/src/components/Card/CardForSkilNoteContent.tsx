@@ -4,11 +4,11 @@ import { SkilNoteContentsRow } from '@/types/typeForSkilNoteContents';
 
 type Props = {
     skilNoteId?: any;
-    order: number;
+    index: number;
     noteObj?: SkilNoteContentsRow;
 }
 
-const CardForSkilNoteContent = ({ noteObj, skilNoteId, order }: Props) => {
+const CardForSkilNoteContent = ({ noteObj, skilNoteId, index }: Props) => {
 
     // console.log("noteObj ? ", noteObj);
 
@@ -28,7 +28,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, order }: Props) => {
                         <HStack fontSize="xl" mb={2} border={"1px solid black"}>
                             <Text>
                                 <Button variant={"outlined"} size={"md"} border={"1px"}>
-                                    {order}
+                                    {index}
                                 </Button>
                             </Text>
                             <Input defaultValue={noteObj.title} />

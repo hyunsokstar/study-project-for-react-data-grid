@@ -1,15 +1,14 @@
 import React from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiForCreateSkilNoteContent } from '@/api/apiForSkilNote';
+import { apiForCreateSkilNoteContent, apiForUpdateSkilNoteContentsOrder } from '@/api/apiForSkilNote';
 
-// apiForGetSkilNoteContentListForSkilNoteId', skilNoteId, pageNum
-const useApiForCreateSkilNoteContent = (skilNoteId: any, pageNum: number) => {
+const useApiForUpdateOrderForSkilNoteContents = (skilNoteId: any, pageNum: number) => {
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용
 
     const mutationForCreateSkilNoteContent = useMutation({
-        mutationFn: apiForCreateSkilNoteContent,
+        mutationFn: apiForUpdateSkilNoteContentsOrder,
         onSuccess: (result: any) => {
             console.log("result : ", result);
 
@@ -21,7 +20,7 @@ const useApiForCreateSkilNoteContent = (skilNoteId: any, pageNum: number) => {
 
             // alert("success")
             toast({
-                title: "save todo rows success",
+                title: "update skil note content order success",
                 description: result.message,
                 status: "success",
                 duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
@@ -45,4 +44,4 @@ const useApiForCreateSkilNoteContent = (skilNoteId: any, pageNum: number) => {
     return mutationForCreateSkilNoteContent;
 };
 
-export default useApiForCreateSkilNoteContent
+export default useApiForUpdateOrderForSkilNoteContents

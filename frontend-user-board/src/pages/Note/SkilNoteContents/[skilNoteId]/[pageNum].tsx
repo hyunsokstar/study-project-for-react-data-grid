@@ -64,9 +64,9 @@ const SkilNoteContents = () => {
                 <Box flex={7} border={"0px dotted red"} >
 
                     <Box border="0px dashed red" p={2} display={"flex"} flexDirection={"column"} gap={2}>
-                        {dataForskilNoteContent?.skilnoteContents.map((row) => (
+                        {dataForskilNoteContent?.skilnoteContents.map((row, index) => (
                             <div data-order={row.order} key={row.id} ref={(ref) => (cardRefs.current[row.order] = ref)}>
-                                <CardForSkilNoteContent key={row.id} noteObj={row} order={row.order} data-order={row.order} />
+                                <CardForSkilNoteContent key={row.id} noteObj={row} index={index + 1} data-order={row.order} />
                             </div>
                         ))}
                         <Box border="0px dashed red" ref={editorRef} height={"80vh"} width={"100%"}>
@@ -86,7 +86,10 @@ const SkilNoteContents = () => {
                                 <Button onClick={scrollToEditor} width={"100%"}>create</Button> 
                             </Box> */}
 
-                            <NavigatorForScrollContents itemsInfo={orderInfos ? orderInfos : []} />
+                            <NavigatorForScrollContents
+                                skilNoteId={skilNoteId}
+                                pageNum={pageNum}
+                                itemsInfo={orderInfos ? orderInfos : []} />
 
                         </Box>
 

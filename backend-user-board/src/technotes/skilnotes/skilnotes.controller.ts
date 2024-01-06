@@ -79,7 +79,9 @@ export class SkilnotesController {
 
     @Put('contents/reorder')
     async reorderingSkilNoteContents(@Body() contents: dtoForReorderContents[]) {
-        console.log("contents : ", contents);
+        console.log("reorder 요청 check ", contents);
+        const updatedContents = await this.skilnoteService.reorderContents(contents);
+        return updatedContents;
     }
 
 }
