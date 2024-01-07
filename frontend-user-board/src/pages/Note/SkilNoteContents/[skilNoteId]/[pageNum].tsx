@@ -109,6 +109,32 @@ const SkilNoteContents = () => {
         }
     }, [dataForskilNoteContent])
 
+    const allCheckHandler = () => {
+
+        const AllIdsForSkilNoteContents = dataForskilNoteContent?.skilnoteContents.map((row) => {
+            return row.id
+        })
+
+        if (checkedRows.length === AllIdsForSkilNoteContents?.length) {
+            setCheckedRows([])
+        } else {
+            if (AllIdsForSkilNoteContents) {
+                setCheckedRows(AllIdsForSkilNoteContents)
+            }
+        }
+    }
+
+    const scrollCardToEditor = () => {
+        // data-order 값 가져오기
+        const orderAttribute = editorRef.current?.getAttribute('data-order');
+
+        console.log("orderAttribute : ", orderAttribute);
+
+        if (orderAttribute === 'last') {
+            // 스크롤 이동
+            editorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     return (
         <Box border={"0px solid pink"}>
@@ -119,7 +145,10 @@ const SkilNoteContents = () => {
                     <Text>noteId: {skilNoteId}</Text>
                     <Text>pageNum: {pageNum}</Text>
                 </Box>
-                <Box mx={2} pt={1}>
+                <Box mx={2} pt={1} pl={0} display={"flex"} gap={2}>
+                    <Button onClick={allCheckHandler} border={checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "1px solid red" : ""}>
+                        all check {checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "(" + checkedRows.length + ")" : ""}
+                    </Button>
                     <Button>delete</Button>
                 </Box>
             </Box>
@@ -139,7 +168,13 @@ const SkilNoteContents = () => {
                                 />
                             </div>
                         ))}
-                        <Box border="0px dashed red" ref={editorRef} height={"80vh"} width={"100%"}>
+                        <Box
+                            border="0px dashed red"
+                            ref={editorRef}
+                            height={"80vh"}
+                            width={"100%"}
+                            data-order={"last"}
+                        >
                             <EditorForCreateSkilNoteContents
                                 skilNoteId={skilNoteId}
                                 pageNum={pageNum}
@@ -165,6 +200,9 @@ const SkilNoteContents = () => {
                                 pageNum={pageNum}
                                 itemsInfo={orderInfos ? orderInfos : []}
                                 scrollToCard={scrollToCard}
+                                checkedRows={checkedRows}
+                                setCheckedRows={setCheckedRows}
+                                scrollCardToEditor={scrollCardToEditor}
                             />
 
                         </Box>
@@ -174,7 +212,6 @@ const SkilNoteContents = () => {
                                 <Button width={"50%"} onClick={handleBeforeClick}>Before</Button>
                                 <Button width={"50%"} onClick={handleNextClick}>Next</Button>
                             </Box>
-                            {/* current page:{pageNum} */}
                         </Box>
                     </Grid>
                 </Box>
