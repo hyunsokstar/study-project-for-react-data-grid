@@ -32,12 +32,67 @@ const SkilNoteContents = () => {
 
             setTimeout(() => {
                 selectedCard.scrollIntoView({ behavior: 'instant', block: 'start' });
-            }, 300); // 애니메이션 시간 고려
+            }, 500); // 애니메이션 시간 고려
 
         }
     };
 
     const editorRef = useRef<HTMLDivElement | null>(null); // 참조 추가
+
+    const handleBeforeClick = () => {
+        const currentUrl = window.location.href;
+        console.log('currentUrl : ', currentUrl);
+
+        // 정규식을 사용하여 URL에서 마지막 숫자를 추출
+        const regex = /\/(\d+)$/; // URL에서 맨 뒤의 연속된 숫자를 찾기 위한 정규식
+        const match = currentUrl.match(regex);
+
+        if (match) {
+            const lastNumber = parseInt(match[1]); // 맨 뒤의 숫자 추출
+            const newLastNumber = lastNumber - 1; // 변경할 숫자 계산
+
+            if (newLastNumber === 0) {
+                alert("1 페이지 보다 커야 합니다")
+                return
+            }
+
+            const newUrl = currentUrl.replace(regex, `/${newLastNumber}`); // 새로운 URL 생성
+            console.log('새로운 URL : ', newUrl);
+            router.push(newUrl); // 새로운 URL로 페이지 이동
+
+        } else {
+            console.log('URL에서 변경할 숫자를 찾을 수 없습니다.');
+        }
+
+    };
+
+
+
+    const handleNextClick = () => {
+        const currentUrl = window.location.href;
+        console.log('currentUrl : ', currentUrl);
+
+        // 정규식을 사용하여 URL에서 마지막 숫자를 추출
+        const regex = /\/(\d+)$/; // URL에서 맨 뒤의 연속된 숫자를 찾기 위한 정규식
+        const match = currentUrl.match(regex);
+
+        if (match) {
+            const lastNumber = parseInt(match[1]); // 맨 뒤의 숫자 추출
+            const newLastNumber = lastNumber + 1; // 변경할 숫자 계산
+
+            if (newLastNumber === 101) {
+                alert("100 페이지 보다 작아야 합니다")
+                return
+            }
+
+            const newUrl = currentUrl.replace(regex, `/${newLastNumber}`); // 새로운 URL 생성
+            console.log('새로운 URL : ', newUrl);
+            router.push(newUrl); // 새로운 URL로 페이지 이동
+
+        } else {
+            console.log('URL에서 변경할 숫자를 찾을 수 없습니다.');
+        }
+    };
 
 
     useEffect(() => {
@@ -96,9 +151,11 @@ const SkilNoteContents = () => {
                         </Box>
 
                         <Box border="1px dashed" borderColor="gray.300" p={0}>
-                            <Box>left, right</Box>
-                            <Text fontSize="xl" mb={4}>Right side</Text>
-                            <Text>{skilNoteId}</Text>
+                            <Box width={"100%"} display={"flex"} gap={2} p={1}>
+                                <Button width={"50%"} onClick={handleBeforeClick}>Before</Button>
+                                <Button width={"50%"} onClick={handleNextClick}>Next</Button>
+                            </Box>
+                            current page:{pageNum}
                         </Box>
                     </Grid>
                 </Box>

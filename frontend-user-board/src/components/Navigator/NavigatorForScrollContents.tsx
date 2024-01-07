@@ -18,10 +18,16 @@ type Item = {
     order: string;
 };
 
+// const getItems = (count: number): Item[] =>
+//     Array.from({ length: count }, (v, k) => k).map((k) => ({
+//         id: `${k + 1}`,
+//         order: `${k + 1}`,
+//     }));
+
 const getItems = (count: number): Item[] =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
+    Array.from({ length: count }, (v, k) => ({
         id: `${k + 1}`,
-        order: `${k + 1}`,
+        order: `${k + 1} (${v})`,
     }));
 
 const reorder = (
@@ -51,7 +57,7 @@ const getItemStyle = (
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
     background: isDraggingOver ? "lightblue" : "lightgrey",
     padding: grid,
-    width: 80,
+    width: 100,
 });
 
 interface IProps {
@@ -65,7 +71,7 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
     const [items, setItems] = useState<Item[]>(itemsInfo);
     const mutationForUpdateOrderForSkilNoteContents = useApiForUpdateOrderForSkilNoteContents(skilNoteId, pageNum);
 
-    console.log("itemsInfo : ", itemsInfo);
+    // console.log("itemsInfo : ", itemsInfo);
     // console.log("scrollToCard : ", scrollToCard);
 
     const onDragEnd = (result: DropResult) => {
@@ -92,11 +98,11 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
         }
     }, [itemsInfo])
 
-    console.log("items : ", items);
+    // console.log("items : ", items);
 
 
     return (
-        <Box overflowY={"scroll"} height={"80%"}>
+        <Box overflowY={"scroll"} height={"99%"}>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
@@ -117,9 +123,10 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
                                                     snapshot.isDragging
                                                 )}
                                                 onClick={() => scrollToCard(parseInt(item.order))}
+                                                fontSize={14}
                                             >
                                                 {/* {item.order} */}
-                                                {index + 1}
+                                                {index + 1} ({item.id})
                                             </Box>
                                         </Box>
                                     )}

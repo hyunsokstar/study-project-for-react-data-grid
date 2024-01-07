@@ -5,8 +5,8 @@ import { apiForCreateSkilNoteContent, apiForUpdateSkilNoteContentsOrder } from '
 
 const useApiForUpdateOrderForSkilNoteContents = (skilNoteId: any, pageNum: number) => {
 
-    console.log("skinoteId :::::", skilNoteId);
-    console.log("pageNum :::::", pageNum);
+    // console.log("skinoteId :::::", skilNoteId);
+    // console.log("pageNum :::::", pageNum);
 
 
     const queryClient = useQueryClient();
