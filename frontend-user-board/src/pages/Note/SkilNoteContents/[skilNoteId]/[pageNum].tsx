@@ -147,7 +147,9 @@ const SkilNoteContents = () => {
                 </Box>
                 <Box mx={2} pt={1} pl={0} display={"flex"} gap={2}>
                     <Button onClick={allCheckHandler} border={checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "1px solid red" : ""}>
-                        all check {checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "(" + checkedRows.length + ")" : ""}
+                        {/* check  {checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "(" + checkedRows.length + ")" : ""} */}
+                        {checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "all " : ""}
+                        check  {"( " + checkedRows.length + " ) "}
                     </Button>
                     <Button>delete</Button>
                 </Box>
