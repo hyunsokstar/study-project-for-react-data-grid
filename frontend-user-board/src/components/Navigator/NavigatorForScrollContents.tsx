@@ -102,7 +102,7 @@ const NavigatorForScrollContents = ({ itemsInfo, skilNoteId, pageNum, scrollToCa
 
 
     return (
-        <Box overflowY={"scroll"} height={"99%"}>
+        <Box>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (

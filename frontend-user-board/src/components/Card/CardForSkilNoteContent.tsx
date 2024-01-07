@@ -9,9 +9,11 @@ type Props = {
     index: number;
     noteObj?: SkilNoteContentsRow;
     pageNum: any;
+    checkedRows: number[];
+    setCheckedRows: any;
 }
 
-const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum }: Props) => {
+const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum, checkedRows, setCheckedRows }: Props) => {
     const [copied, setCopied] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -36,6 +38,20 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum }: Props) 
             console.error('Failed to copy: ', err);
         }
     };
+
+    // const [checkedRows, setCheckedRows] = useState<number[]>([]);
+
+    const handlerForCardCheck = (contentId: any) => {
+        console.log("handlerForCardCheck");
+        if (checkedRows.includes(contentId)) {
+            const updatedRows = checkedRows.filter(id => id !== contentId);
+            setCheckedRows(updatedRows); // contentId를 제거한 배열로 상태 업데이트
+
+        } else {
+            const updatedRows = [...checkedRows, contentId];
+            setCheckedRows(updatedRows); // contentId를 추가한 배열로 상태 업데이트
+        }
+    }
 
     return (
         <>
@@ -63,10 +79,19 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum }: Props) 
                     flexDirection="column"
                     gap={2}
                 >
+                    {/* {checkedRows && checkedRows.map((row) => {
+                        return <Box>{row}</Box>
+                    })} */}
                     <Box p={1} border="2px solid blue">
                         <HStack spacing={1} mb={1}>
                             <Text>
-                                <Button variant="outlined" size="md" border="1px">
+                                <Button
+                                    variant="outlined"
+                                    size="md"
+                                    border="1px"
+                                    onClick={() => handlerForCardCheck(noteObj.id)}
+                                    backgroundColor={checkedRows.includes(noteObj.id) ? "yellow.100" : "white"}
+                                >
                                     {index}
                                 </Button>
                             </Text>
@@ -84,7 +109,7 @@ const CardForSkilNoteContent = ({ noteObj, skilNoteId, index, pageNum }: Props) 
                             <Button
                                 position="absolute"
                                 top="1px"
-                                right="15px"
+                                right="18px"
                                 size="sm"
                                 variant="outline"
                                 onClick={copyHtmlToClipboard}

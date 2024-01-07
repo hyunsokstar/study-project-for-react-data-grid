@@ -11,11 +11,13 @@ type Item = {
     order: string;
 };
 
+// 1122
 const SkilNoteContents = () => {
     const router = useRouter();
     const { skilNoteId, pageNum } = router.query;
     const cardRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
     const [orderInfos, setOrderInfos] = useState<Item[]>();
+    const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
     const { data: dataForskilNoteContent } = useApiForGetSkilNoteContentsForSkilNoteId(skilNoteId, pageNum);
 
@@ -110,18 +112,31 @@ const SkilNoteContents = () => {
 
     return (
         <Box border={"0px solid pink"}>
-            <Box display={"flex"} border={"2px dotted black"} mx={2} p={0} gap={2}>
-                <Text>title: {dataForskilNoteContent?.title}</Text>
-                <Text>writer: {dataForskilNoteContent?.writer.email}</Text>
-                <Text>noteId: {skilNoteId}</Text>
-                <Text>pageNum: {pageNum}</Text>
+            <Box>
+                <Box display={"flex"} border={"2px dotted black"} mx={2} p={0} gap={2}>
+                    <Text>title: {dataForskilNoteContent?.title}</Text>
+                    <Text>writer: {dataForskilNoteContent?.writer.email}</Text>
+                    <Text>noteId: {skilNoteId}</Text>
+                    <Text>pageNum: {pageNum}</Text>
+                </Box>
+                <Box mx={2} pt={1}>
+                    <Button>delete</Button>
+                </Box>
             </Box>
-            <Box display={"flex"} border={"0px dotted black"} overflowY={"scroll"} height={"100%"} m={2}>
+            <Box display={"flex"} border={"0px dotted black"} overflowY={"scroll"} height={"100%"} mt={1} mx={2}>
                 <Box flex={7} border={"0px dotted red"}>
                     <Box border="0px dashed red" p={0} display={"flex"} flexDirection={"column"} gap={2} overflowY={"scroll"} height={"80vh"} mt={0}>
                         {dataForskilNoteContent?.skilnoteContents.map((row, index) => (
                             <div data-order={row.order} key={row.id} ref={(ref) => (cardRefs.current[row.order] = ref)}>
-                                <CardForSkilNoteContent key={row.id} noteObj={row} index={index + 1} data-order={row.order} pageNum={pageNum} />
+                                <CardForSkilNoteContent
+                                    key={row.id}
+                                    noteObj={row}
+                                    index={index + 1}
+                                    data-order={row.order}
+                                    pageNum={pageNum}
+                                    checkedRows={checkedRows}
+                                    setCheckedRows={setCheckedRows}
+                                />
                             </div>
                         ))}
                         <Box border="0px dashed red" ref={editorRef} height={"80vh"} width={"100%"}>
@@ -135,12 +150,16 @@ const SkilNoteContents = () => {
 
                 <Box flex={3} border={"2px dotted red"} position="sticky" top={0} mt={0} height={"80vh"}>
                     <Grid templateColumns="1fr 5fr" gap={2} px={2}>
-                        <Box display={"flex"} flexDirection={"column"} gap={2} border={"2px dotted purple"} textAlign={"center"}>
-                            {/* {buttonsForScroll}
-                            <Box width={"100%"}>
-                                <Button onClick={scrollToEditor} width={"100%"}>create</Button> 
-                            </Box> */}
-
+                        <Box
+                            display={"flex"}
+                            flexDirection={"column"}
+                            gap={2}
+                            border={"2px dotted purple"}
+                            textAlign={"center"}
+                            height={"80vh"}
+                            overflowY={"scroll"}
+                            width={"122px"}
+                        >
                             <NavigatorForScrollContents
                                 skilNoteId={skilNoteId}
                                 pageNum={pageNum}
@@ -155,7 +174,7 @@ const SkilNoteContents = () => {
                                 <Button width={"50%"} onClick={handleBeforeClick}>Before</Button>
                                 <Button width={"50%"} onClick={handleNextClick}>Next</Button>
                             </Box>
-                            current page:{pageNum}
+                            {/* current page:{pageNum} */}
                         </Box>
                     </Grid>
                 </Box>
