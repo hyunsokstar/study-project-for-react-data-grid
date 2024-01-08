@@ -12,6 +12,8 @@ import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEdito
 import CommonDateTimePicker from '@/components/GridEditor/DateTimePicker/CommonDateTimePicker';
 import SelectBoxForNumberToAddRow from '@/components/Select/SelectBoxForNumberToAddRow';
 import { groupBy as rowGrouper } from 'lodash-es';
+import useApiForDeleteSkilNoteContentsForCheckedIds from '@/hooks/useApiForDeleteSkilNoteContentsForCheckedIds';
+import useApiForDeleteTodosForCheckedIds from '@/hooks/useApiForDeleteTodosForCheckedIds';
 
 type Props = {};
 
@@ -146,6 +148,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
             new Set<unknown>(['United States of America', 'United States of America__2015'])
     );
 
+    const deleteForSkilNoteContentsForCheckedIdsMutation = useApiForDeleteTodosForCheckedIds(pageNum);
 
     // mutation
     const mutationForSaveTodoRows = useSaveTodoRowsMutation();
@@ -219,6 +222,15 @@ const TodosPageByReactDataGrid = (props: Props) => {
         }
     }, [dataForTodos])
 
+    // const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
+    const deleteButtonHandler = () => {
+        const selectedRowsArray = Array.from(selectedRows);
+        const idsToDelete = selectedRowsArray.map(id => id);
+        console.log("IDs to delete:", idsToDelete);
+        deleteForSkilNoteContentsForCheckedIdsMutation.mutate(idsToDelete)
+        setSelectedRows(new Set())
+    };
+
     return (
         <Box width={"80%"} margin={"auto"} mt={3} gap={2}>
 
@@ -246,10 +258,9 @@ const TodosPageByReactDataGrid = (props: Props) => {
                         {/* {rowNumToAdd} */}
                         <SelectBoxForNumberToAddRow rowNumToAdd={rowNumToAdd} setRowNumToAdd={setRowNumToAdd} />
                     </Box>
-
-
                     <Button variant={"outline"} onClick={handleAddRow}>Add Row</Button>
                     <Button variant={"outline"} onClick={handleSave}>Save</Button>
+                    <Button variant={"outline"} onClick={deleteButtonHandler}>Delete ({selectedRows.size})</Button>
                 </Box>
 
                 <Box width={"100%"}>

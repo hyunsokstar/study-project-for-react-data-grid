@@ -25,11 +25,16 @@ const HeaderMenus = () => {
         // position="sticky" top={0}
         >
             <Box>
-                <Heading size="lg">
+                <Box display={"flex"} gap={5} px={2}>
                     <Link href="/" color="#4267B2" _hover={{ textDecoration: "none" }}>
-                        UserBoard
+                        Home
                     </Link>
-                </Heading>
+
+                    <Link href="/Test/Todos/TodosPageByReactDataGrid" color="#4267B2" _hover={{ textDecoration: "none" }}>
+                        todo
+                    </Link>
+
+                </Box>
             </Box>
             {isLoggedIn ? (
                 <Flex alignItems="center">

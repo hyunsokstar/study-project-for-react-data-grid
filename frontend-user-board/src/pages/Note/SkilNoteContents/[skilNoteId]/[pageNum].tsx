@@ -1,6 +1,7 @@
 import CardForSkilNoteContent from '@/components/Card/CardForSkilNoteContent';
 import NavigatorForScrollContents from '@/components/Navigator/NavigatorForScrollContents';
 import EditorForCreateSkilNoteContents from '@/components/RichEditor/EditorForCreateSkilNoteContents';
+import useApiForDeleteSkilNoteContentsForCheckedIds from '@/hooks/useApiForDeleteSkilNoteContentsForCheckedIds';
 import useApiForGetSkilNoteContentsForSkilNoteId from '@/hooks/useApiForGetSkilNoteContentsForSkilNoteId';
 import { Box, Button, Grid, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -20,6 +21,8 @@ const SkilNoteContents = () => {
     const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
     const { data: dataForskilNoteContent } = useApiForGetSkilNoteContentsForSkilNoteId(skilNoteId, pageNum);
+
+    const deleteForSkilNoteContentsForCheckedIdsMutation = useApiForDeleteSkilNoteContentsForCheckedIds(skilNoteId, pageNum);
 
     const scrollToCard = (order: number) => {
         const selectedCard = cardRefs.current[order];
@@ -136,6 +139,12 @@ const SkilNoteContents = () => {
         }
     };
 
+    const deleteHandlerForCheckedRows = () => {
+        deleteForSkilNoteContentsForCheckedIdsMutation.mutate(checkedRows)
+        setCheckedRows([])
+    }
+
+    // 2244
     return (
         <Box border={"0px solid pink"}>
             <Box>
@@ -151,7 +160,7 @@ const SkilNoteContents = () => {
                         {checkedRows.length === dataForskilNoteContent?.skilnoteContents.length ? "all " : ""}
                         check  {"( " + checkedRows.length + " ) "}
                     </Button>
-                    <Button>delete</Button>
+                    <Button onClick={deleteHandlerForCheckedRows}>delete</Button>
                 </Box>
             </Box>
             <Box display={"flex"} border={"0px dotted black"} overflowY={"scroll"} height={"100%"} mt={1} mx={2}>

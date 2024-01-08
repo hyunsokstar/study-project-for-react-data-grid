@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { SkilnotesService } from './skilnotes.service';
 import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
 import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { dtoForReorderContents } from '../dtos/dtoForReorderContents';
+import { DeleteSkilNoteContentsDto } from 'src/users/dtos/DeleteSkilNoteContentsDto';
 
 @Controller('skilnotes')
 export class SkilnotesController {
@@ -105,8 +106,33 @@ export class SkilnotesController {
 
         const result = await this.skilnoteService.updateSkilNoteContent(skilNoteContentId, dto, loginUser);
         return response.status(HttpStatus.CREATED).json({ message: "update skilnote content success", result: result });
-
     }
 
+    @UseGuards(AuthGuard)
+    @Delete('content/deleteByCheckedIds')
+    async deleteSkilNoteContentsByCheckedIds(
+        @Req() req: Request,
+        @Body() checkedIds: DeleteSkilNoteContentsDto,
+        @Res() response
+    ) {
+        const loginUser = req['user'];
+
+        if (!loginUser) {
+        }
+
+        console.log("checkdIds : ", checkedIds);
+        console.log("skilnote content 입력 check !");
+
+        // const result = await this.skilnoteService.deleteSkilNoteContentForCheckedIds(checkedIds, loginUser);
+        // // return response.status(HttpStatus.CREATED).json({ message: "update skilnote content success", result: result });
+        try {
+            const result = await this.skilnoteService.deleteSkilNoteContentForCheckedIds(checkedIds, loginUser);
+            return response.status(200).json({ message: 'Skilnote content deleted successfully', result }); // 성공적으로 삭제됨 응답
+        } catch (error) {
+            return response.status(500).json({ message: 'Error deleting skilnote content', error: error.message }); // 삭제 중 에러 발생 응답
+        }
+
+
+    }
 
 }

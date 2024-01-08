@@ -54,3 +54,17 @@ export const apiForSaveTodoRows = ({ todoRowsForSave }: any) => {
         'saveTodos', todoRowsForSave
     ).then((response: any) => response.data)
 }
+
+export const apiForDeleteTodosForCheckedRows = (checkedIds: number[]): Promise<any> => {
+    console.log('checkedIds at api', checkedIds);
+
+    return instance.delete(`/deleteTodosForCheckedRows`, { data: { checkedIds } })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log("error : ", error);
+
+            throw error; // 에러를 그대로 던지기
+        });
+};

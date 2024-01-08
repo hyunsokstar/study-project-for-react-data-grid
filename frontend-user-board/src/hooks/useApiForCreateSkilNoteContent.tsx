@@ -3,7 +3,7 @@ import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiForCreateSkilNoteContent } from '@/api/apiForSkilNote';
 
-// apiForGetSkilNoteContentListForSkilNoteId', skilNoteId, pageNum
+// useApiForCreateSkilNoteContent', skilNoteId, pageNum
 const useApiForCreateSkilNoteContent = (skilNoteId: any, pageNum: number) => {
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용

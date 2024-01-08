@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { backendApi } from "./commonApi";
 import { QueryFunctionContext } from "@tanstack/react-query";
-import { access } from "fs";
-import { log } from "console";
 import { SkillNoteListResponse, SkillNoteRow, dataForCreateSkilNoteContent, dataForUpdateSkilNoteContent, skilnoteRowToSave } from "@/types/typeForSkilNote";
 
 const instance = axios.create({
@@ -111,4 +109,17 @@ export const apiForUpdateSkilNoteContent = async (data: dataForUpdateSkilNoteCon
         throw error
     }
 
+};
+
+export const apiForDeleteSkilNoteContentsForCheckedRows = (checkedIds: number[]): Promise<any> => {
+    console.log('apiForDeleteTechNotesForCheckedIds check data:', checkedIds);
+
+    return instance.delete(`content/deleteByCheckedIds`, { data: { checkedIds } })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            console.log("error : ", error);
+            // throw error; // 에러를 그대로 던지기
+        });
 };

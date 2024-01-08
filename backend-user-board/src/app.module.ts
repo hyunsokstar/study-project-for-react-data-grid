@@ -76,6 +76,8 @@ export class AppModule implements NestModule {
         '/skilnotes/saveRows',
         '/skilnotes/:skilNoteId/contents/:pageNum',
         '/skilnotes/content/:skilNoteContentId',
+        '/skilnotes/content/deleteByCheckedIds',
+        'todos/deleteTodosForCheckedRows'
       ); // 적용할 경로 설정
   }
 }

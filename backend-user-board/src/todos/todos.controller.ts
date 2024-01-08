@@ -1,8 +1,9 @@
 // TodosController.ts
-import { Controller, Post, Body, Get, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Delete, UseGuards, Req } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { DtoForCreateTodo } from './dtos/createTodo.dto';
 import { TodosModel } from './entities/todos.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('todos')
 export class TodosController {
@@ -26,6 +27,16 @@ export class TodosController {
     async saveTodos(@Body() todoRowsForSave: any) {
         console.log("todoRowsForSave at controller : ", todoRowsForSave);
         return this.todosService.saveTodos(todoRowsForSave);
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete("/deleteTodosForCheckedRows") // DELETE 메서드로 새로운 엔드포인트를 정의합니다.
+    deleteTodosForCheckedIds(
+        @Body('checkedIds') checkedIds: number[],
+        @Req() req: Request,
+    ) {
+        const loginUser = req['user'];
+        return this.todosService.deleteTodosForCheckedIds(checkedIds, loginUser);
     }
 
 }

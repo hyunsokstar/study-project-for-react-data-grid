@@ -1,24 +1,25 @@
-import React from 'react';
-import { apiForSaveTodoRows } from '@/api/apiForTodos';
-import { useToast } from '@chakra-ui/react';
+import React from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiForSaveTechNotes } from '@/api/apiForTechNotes';
+import { useToast } from '@chakra-ui/react';
+import { apiForDeleteTodosForCheckedRows } from '@/api/apiForTodos';
 
-const useSaveTodoRowsMutation = () => {
+type Props = {}
+
+const useApiForDeleteTodosForCheckedIds = (pageNum: any) => {
     const queryClient = useQueryClient();
     const toast = useToast(); // useToast 훅 사용
 
-    const mutationForSaveTodoRows = useMutation({
-        mutationFn: apiForSaveTodoRows,
+    const mutation = useMutation({
+        mutationFn: apiForDeleteTodosForCheckedRows,
         onSuccess: (result) => {
             console.log("result : ", result);
 
             queryClient.refetchQueries({
-                queryKey: ['apiForGetAllTodoList']
+                queryKey: ['apiForGetAllTodoList', pageNum]
             });
 
             toast({
-                title: "save todo rows success",
+                title: "delete todos for checked ids success",
                 description: result.message,
                 status: "success",
                 duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
@@ -26,11 +27,12 @@ const useSaveTodoRowsMutation = () => {
             });
         },
         onError: (error: any) => {
-            // ...
-            console.log("error : ", error);
+
+            const message = error.response.data.message
+
             toast({
-                title: error.response.data.error,
-                description: error.response.data.message,
+                title: "error occured when delete todos",
+                description: message,
                 status: "error",
                 duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
                 isClosable: true, // 닫기 버튼 표시
@@ -39,7 +41,7 @@ const useSaveTodoRowsMutation = () => {
         },
     });
 
-    return mutationForSaveTodoRows;
-};
+    return mutation;
+}
 
-export default useSaveTodoRowsMutation
+export default useApiForDeleteTodosForCheckedIds

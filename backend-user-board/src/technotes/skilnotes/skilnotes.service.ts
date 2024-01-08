@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TechNotesModel } from '../entities/technotes.entity';
 import { FindManyOptions, Repository } from 'typeorm';
@@ -8,6 +8,7 @@ import { dtoForCreateSkilNote } from '../dtos/dtoForCreateSkilNote.dto';
 import { SkilNoteContentsModel } from '../entities/skilnote_contents.entity';
 import { dtoForCreateSkilNoteContent } from '../dtos/dtoForCreateSkilNoteContents';
 import { dtoForReorderContents } from '../dtos/dtoForReorderContents';
+import { DeleteSkilNoteContentsDto } from 'src/users/dtos/DeleteSkilNoteContentsDto';
 
 @Injectable()
 export class SkilnotesService {
@@ -277,5 +278,33 @@ export class SkilnotesService {
 
         return update_result;
     }
+
+    async deleteSkilNoteContentForCheckedIds(
+        { checkedIds }: DeleteSkilNoteContentsDto,
+        loginUser
+    ) {
+        try {
+            console.log("check by checked ids for skilnote contents : ", checkedIds);
+
+            // checkedIds에 해당하는 모든 ID에 대해 삭제
+            for (const id of checkedIds) {
+                const content = await this.skilNoteContentsRepo.findOne({ where: { id: id } });
+
+                if (!content) {
+                    throw new NotFoundException(`Content with ID ${id} not found.`);
+                }
+
+                if (content.writer && content.writer.email !== loginUser.email) {
+                    throw new HttpException('작성자만 삭제 가능합니다.', HttpStatus.UNAUTHORIZED);
+                }
+
+                await this.skilNoteContentsRepo.remove(content);
+            }
+            return { success: true };
+        } catch (error) {
+            throw new Error(`Error deleting skilnote content: ${error.message}`);
+        }
+    }
+
 
 }

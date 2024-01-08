@@ -38,7 +38,7 @@ const DataGridForSkilNoteListForTechNoteId = ({ techNoteId }: IProps) => {
 
     const detailHandler = (skilNoteId: any) => {
         // todo: /Notes/SkilNoteContents/{techNoteId} 로 페이지 라우팅
-        router.push(`/Note/SkilNoteContents/${skilNoteId}`);
+        router.push(`/Note/SkilNoteContents/${skilNoteId}/1`);
     }
 
     // step3 
