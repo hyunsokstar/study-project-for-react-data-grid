@@ -13,7 +13,7 @@ const SelectBoxForNumberToAddRow: React.FC<SelectBoxForNumberToAddRowProps> = ({
     };
 
     return (
-        <Select value={rowNumToAdd} onChange={handleChange}>
+        <Select value={rowNumToAdd} onChange={handleChange} size={"md"}>
             {[1, 2, 3, 4, 5].map((number) => (
                 <option key={number} value={number}>
                     {number}

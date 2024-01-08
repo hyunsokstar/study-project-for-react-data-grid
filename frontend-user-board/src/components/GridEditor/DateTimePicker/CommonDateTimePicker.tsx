@@ -19,7 +19,6 @@
 // export default CommonDateTimePicker;
 import { Box, Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { useState } from 'react';
-import DateTimePicker from 'react-datetime-picker';
 
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
@@ -40,9 +39,6 @@ interface EditorProps {
     onClose: any;
 }
 
-// const formatDateTime = (dateTime: string) => {
-//     return format(new Date(dateTime), "yy-MM-dd HH:mm");
-// };
 
 function CommonDateTimePicker({
     row,
@@ -50,7 +46,6 @@ function CommonDateTimePicker({
     onRowChange,
     onClose,
 }: EditorProps) {
-
 
     const [initialValue, setInitialValue] = useState(new Date());
     const [isRowSelected, onRowSelectionChange] = useRowSelection();

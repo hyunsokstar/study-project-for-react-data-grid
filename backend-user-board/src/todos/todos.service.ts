@@ -29,6 +29,17 @@ export class TodosService {
             // console.log("task check : ", task);
             console.log("todo.email : ", todo.email);
 
+            const startedAt = new Date(todo.startTime).getTime();
+            const currentDeadline = new Date().getTime();
+            console.log("currentDeadline : ", currentDeadline);
+            console.log("startedAt : ", startedAt);
+            const timeDifferenceInMilliseconds = currentDeadline - startedAt;
+            // const timeDifferenceAsTimestamp = new Date(timeDifferenceInMilliseconds).toISOString();
+
+            const hoursDifference = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60)); // 시간
+            const minutesDifference = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)); // 분
+
+
             // 이메일로 해당하는 유저를 찾음
             const manager = await this.usersRepository.findOne({ where: { email: todo.email } });
             console.log("manager : ", manager);
@@ -49,8 +60,9 @@ export class TodosService {
                                 manager: manager, // 찾은 유저 객체를 할당
                                 task: todo.task,
                                 status: todo.status,
-                                startTime: null,
-                                deadline: null
+                                startTime: new Date,
+                                // deadline: null,
+                                elapsedTime: null,
                             });
                         }
                         else if (todo.status === "progress") {
@@ -62,37 +74,36 @@ export class TodosService {
                                     task: todo.task,
                                     status: todo.status,
                                     startTime: new Date(), // 현재 시간 할당
-                                    deadline: null
+                                    // deadline: null,
+                                    elapsedTime: null,
                                 });
                             } else {
                                 await this.todosRepository.update(id, {
                                     manager: manager, // 찾은 유저 객체를 할당
                                     task: todo.task,
                                     status: todo.status,
-                                    // startTime: new Date(),
-                                    deadline: null
+                                    deadline: null,
+                                    elapsedTime: null,
                                 });
                             }
-
-                            // return { message: `Todos updated successfully ${count}` };
                         }
                         else if (todo.status === "testing") {
                             await this.todosRepository.update(id, {
                                 manager: manager, // 찾은 유저 객체를 할당
                                 task: todo.task,
                                 status: todo.status,
-                                deadline: null
-                                // deadline: todo.deadline
+                                deadline: null,
+                                elapsedTime: null,
                             });
                         }
 
                         else if (todo.status === "complete") {
                             await this.todosRepository.update(id, {
-                                manager: manager, // 찾은 유저 객체를 할당
+                                manager: manager,
                                 task: todo.task,
                                 status: todo.status,
-                                deadline: new Date(), // 현재 시간 할당
-                                // deadline: todo.deadline
+                                // deadline: new Date(),
+                                elapsedTime: hoursDifference + "시간 " + minutesDifference + "분",
                             });
                         }
 
@@ -104,17 +115,18 @@ export class TodosService {
                                 manager: manager,
                                 task: todo.task,
                                 status: todo.status,
-                                // startTime는 변경하지 않음
-                                // deadline: todo.deadline
                             });
-                            // return { message: `Todos updated successfully ${count}` };
                         }
                     } else {
                         console.log(`ID '${id}'에 해당하는 Todo를 찾을 수 없습니다. ${count}`);
+                        console.log("todo : ", todo);
+
                         await this.todosRepository.save({
                             manager: manager,
                             task: todo.task,
-                            status: todo.READY
+                            status: todo.READY,
+                            startTime: new Date(),
+                            deadline: todo.deadline
                         });
                         return { message: 'New Todo created successfully' };
                     }

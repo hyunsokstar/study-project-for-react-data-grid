@@ -12,8 +12,8 @@ import CommonTextEditor from '@/components/GridEditor/TextEditor/CommonTextEdito
 import CommonDateTimePicker from '@/components/GridEditor/DateTimePicker/CommonDateTimePicker';
 import SelectBoxForNumberToAddRow from '@/components/Select/SelectBoxForNumberToAddRow';
 import { groupBy as rowGrouper } from 'lodash-es';
-import useApiForDeleteSkilNoteContentsForCheckedIds from '@/hooks/useApiForDeleteSkilNoteContentsForCheckedIds';
 import useApiForDeleteTodosForCheckedIds from '@/hooks/useApiForDeleteTodosForCheckedIds';
+import BasicDateTimePicker from '@/components/DateTimePicker/BasicDateTimePicker';
 
 type Props = {};
 
@@ -27,15 +27,16 @@ function getColumns(
 ) {
     return [
         SelectColumnForReactDataGrid,
-        {
-            key: 'id',
-            name: 'ID',
-            width: 50
-        },
+        // {
+        //     key: 'id',
+        //     name: 'ID',
+        //     width: 50
+        // },
         {
             key: 'email',
             name: 'Email',
-            // width: 200,
+            width: 180,
+            frozen: true,
             // renderEditCell: CommonSelectBoxEdtior(usersEmailInfo)
             renderEditCell: (props: {
                 row: any;
@@ -52,12 +53,14 @@ function getColumns(
         {
             key: 'task',
             name: 'Task',
-            width: 300,
+            width: 500,
             renderEditCell: CommonTextEditor
         },
         {
             key: 'status',
             name: "Status",
+            width: 200,
+
             renderEditCell: (props: {
                 row: any;
                 column: { key: keyof any };
@@ -73,6 +76,8 @@ function getColumns(
         {
             key: 'startTime',
             name: 'startTime',
+            width: 240,
+
             renderCell(props: any) {
                 console.log("props.row.startTime : ", props.row.startTime);
 
@@ -91,7 +96,7 @@ function getColumns(
         {
             key: 'deadline',
             name: 'deadline',
-            width: 200,
+            width: 240,
             renderCell(props: any) {
                 if (props.row.deadline !== null && props.row.deadline !== "") {
                     const value = formatDateTime(props.row.deadline);
@@ -105,6 +110,10 @@ function getColumns(
                 }
             },
             renderEditCell: CommonDateTimePicker
+        }, {
+            key: 'elapsedTime',
+            name: 'elapsedTime',
+            width: 240,
         }
     ];
 }
@@ -132,6 +141,9 @@ const TodosPageByReactDataGrid = (props: Props) => {
     const [selectedRows, setSelectedRows] = useState((): ReadonlySet<number> => new Set());
 
     const [defaultUserEmail, setDefaultUserEmail] = useState('');
+
+    const [defaultDeadLine, setDefaultDeadline] = useState('');
+
     const [rowNumToAdd, setRowNumToAdd] = useState<number>(1);
 
     const { isLoading, error, dataForTodos } = useGetAllTodos(pageNum);
@@ -164,7 +176,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                 task: 'todo for sample',
                 status: 'ready',
                 startTime: '',
-                deadline: ''
+                deadline: defaultDeadLine || ''
             };
         });
 
@@ -215,7 +227,8 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     task: row.task,
                     status: row.status,
                     startTime: row.startTime, // 변환된 형태로 저장
-                    deadline: row.deadline
+                    deadline: row.deadline,
+                    elapsedTime: row.elapsedTime,
                 }
             })
             setTodoRows(todoRowsToShow)
@@ -232,16 +245,18 @@ const TodosPageByReactDataGrid = (props: Props) => {
     };
 
     return (
-        <Box width={"80%"} margin={"auto"} mt={3} gap={2}>
+        <Box width={"100%"} margin={"auto"} mt={3} gap={2} px={2}>
 
             <Box display={"flex"} flexDirection={"column"} gap={2}>
-                <Box display={"flex"} justifyContent={"flex-end"} gap={2} pr={2}>
+                <Box display={"flex"} justifyContent={"flex-end"} gap={2}>
+
                     <Box width={"20%"}>
                         {usersEmailInfo.length ? (
                             <Select
                                 placeholder="Select default user"
                                 value={defaultUserEmail} // 현재 defaultUserEmail 상태값으로 선택
                                 onChange={handleSelectChange} // 선택 시 상태 업데이트
+                                size={"md"}
                             >
                                 {usersEmailInfo.map((email, index) => (
                                     <option key={index} value={email}>
@@ -252,6 +267,20 @@ const TodosPageByReactDataGrid = (props: Props) => {
                         ) : (
                             "No users"
                         )}
+                    </Box>
+
+                    <Box
+                        width={"27%"}
+                        border={"0px solid green"}
+                        textAlign={"center"}
+                    // display="flex"
+                    // alignItems="center"
+                    >
+                        {/* {defaultDeadLine} */}
+                        <BasicDateTimePicker
+                            defaultDeadLine={defaultDeadLine}
+                            setDefaultDeadline={setDefaultDeadline}
+                        />
                     </Box>
 
                     <Box>
@@ -293,15 +322,11 @@ const TodosPageByReactDataGrid = (props: Props) => {
                         renderers={{ renderSortStatus, renderCheckbox }}
                         onRowsChange={setTodoRows}
                         // step3 group by 속성 추가 
-                        // groupBy
-                        // rowGrouper
-                        // expandedGroupIds
-                        // onExpandedGroupIdsChange
                         groupBy={selectedOptions}
                         rowGrouper={rowGrouper}
                         expandedGroupIds={expandedGroupIds}
                         onExpandedGroupIdsChange={setExpandedGroupIds}
-
+                    // style={{ width: "100%" }}
                     />;
                 </Box>
             </Box>

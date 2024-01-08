@@ -18,6 +18,7 @@ export interface ITypeForTodoRow {
     status: string;
     startTime: string;
     deadline: string;
+    elapsedTime: string;
     priority: number;
     manager: IManager;
     supervisor: IManager | null;

@@ -28,6 +28,9 @@ export class TodosModel {
     @Column({ type: 'timestamp', nullable: true })
     deadline: Date;
 
+    @Column({ nullable: true })
+    elapsedTime: string;
+
     @Column({ type: 'int', default: 1, nullable: true })
     priority: number;
 
@@ -36,4 +39,5 @@ export class TodosModel {
 
     @ManyToOne(() => UsersModel, { onDelete: 'CASCADE', nullable: true })
     supervisor: UsersModel;
+
 }
