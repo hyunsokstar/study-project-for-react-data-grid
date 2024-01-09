@@ -9,17 +9,16 @@ const Home = () => {
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
     console.log("loginUser : ", loginUser);
 
-    const links3 = [
+    const links1 = [
+        { href: '/Test/Todos/TodosPageByReactDataGrid', text: 'todo 관리', visible: true },
+    ];
+
+    const links2 = [
         { href: '/Note/TechNoteList', text: 'Tech Note List', visible: true },
         { href: '/Note/SkilNoteContents/10/1', text: 'note contents sample', visible: true },
     ];
 
-    const links4 = [
-        { href: '/Test/ReactBeauifulDnd/BasicDnd1', text: 'BasicDnd1', visible: true },
-        { href: '/Test/ReactBeauifulDnd/BasicDnd2', text: 'BasicDnd2', visible: true },
-    ];
-
-    const links1 = [
+    const links3 = [
         { href: '/users', text: '회원 관리 (기본)', visible: true },
         { href: '/users/UserlistByDataGrid', text: '회원 관리(react-data-grid)', visible: true },
         { href: '/Test/AgGridBasic', text: '회원 관리(ag-grid)', visible: true },
@@ -27,7 +26,7 @@ const Home = () => {
         { href: '/payment', text: '결제(구현 예정)', visible: true },
     ];
 
-    const links2 = [
+    const links4 = [
         { href: '/Test/CardList/PostingList', text: '포스팅 리스트', visible: true },
     ];
 
@@ -87,8 +86,8 @@ const Home = () => {
             justifyContent={"center"}
             alignItems={"center"}
         >
-            <NavigationMenuBoxForMainPage links1={links3} links2={links4} menuTitle={'boiler plate2 (콘텐츠 관리)'} menuBg={'orange.100'} menuColor={'black'} menuHover={'orange.200'} />
-            <NavigationMenuBoxForMainPage links1={links1} links2={links2} menuTitle={'boiler plate1 (회원 서비스)'} menuBg={'red.100'} menuColor={'black'} menuHover={'red.200'} />
+            <NavigationMenuBoxForMainPage links1={links1} links2={links2} menuTitle={'main 1'} menuBg={'orange.100'} menuColor={'black'} menuHover={'orange.200'} />
+            {/* <NavigationMenuBoxForMainPage links1={links1} links2={links2} menuTitle={'boiler plate1 (회원 서비스)'} menuBg={'red.100'} menuColor={'black'} menuHover={'red.200'} /> */}
             <NavigationMenuBoxForMainPage links1={links5} links2={links6} menuTitle={'boiler plate3 (todo list)'} menuBg={'green.100'} menuColor={'black'} menuHover={'green.200'} />
             <NavigationMenuBoxForMainPage links1={links7} links2={links8} menuTitle={'todo list by ag grid'} menuBg={'blue.100'} menuColor={'black'} menuHover={'blue.200'} />
             <NavigationMenuBoxForMainPage links1={links3} links2={links4} menuTitle={'todo list by react table'} menuBg={'blue.100'} menuColor={'black'} menuHover={'blue.200'} />

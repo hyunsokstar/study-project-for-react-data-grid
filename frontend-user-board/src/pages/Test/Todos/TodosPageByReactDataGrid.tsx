@@ -110,11 +110,17 @@ function getColumns(
                 }
             },
             renderEditCell: CommonDateTimePicker
-        }, {
+        },
+        {
             key: 'elapsedTime',
             name: 'elapsedTime',
-            width: 240,
-        }
+            width: 180,
+        },
+        // {
+        //     key: 'briefing',
+        //     name: 'briefing',
+        //     width: 80,
+        // }
     ];
 }
 
@@ -250,7 +256,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
             <Box display={"flex"} flexDirection={"column"} gap={2}>
                 <Box display={"flex"} justifyContent={"flex-end"} gap={2}>
 
-                    <Box width={"20%"}>
+                    <Box width={"14%"}>
                         {usersEmailInfo.length ? (
                             <Select
                                 placeholder="Select default user"
@@ -270,7 +276,7 @@ const TodosPageByReactDataGrid = (props: Props) => {
                     </Box>
 
                     <Box
-                        width={"27%"}
+                        width={"14%"}
                         border={"0px solid green"}
                         textAlign={"center"}
                     // display="flex"

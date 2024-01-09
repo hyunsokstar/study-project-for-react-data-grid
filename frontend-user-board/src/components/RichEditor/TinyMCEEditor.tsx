@@ -49,6 +49,7 @@ const TinyMCEEditor: React.FC<Props> = ({
                         { title: 'Inline Code', inline: 'code' },
                         { title: 'Code Block', block: 'pre', classes: 'prettyprint linenums' }
                     ],
+                    images_upload_max_size: 5 * 1024 * 1024,
                     ...init,
                 }}
             />

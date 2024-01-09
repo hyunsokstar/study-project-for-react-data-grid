@@ -20,7 +20,7 @@ export class SkilNoteContentsModel {
     @Column()
     file: string;
 
-    @Column({ nullable: true })
+    @Column({ type: 'text', nullable: true })
     content: string;
 
     @Column({ default: 1 })
